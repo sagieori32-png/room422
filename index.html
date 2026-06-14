@@ -19,805 +19,708 @@
       --busy-text: #9f1239;
       --warn-bg: #fff7ed;
       --warn-text: #9a3412;
-      --shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
+      --shadow: 0 14px 40px rgba(15,23,42,.08);
     }
-
     * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: Arial, "Noto Sans Hebrew", "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top right, #e0f2fe 0, transparent 32%), var(--bg);
-      color: var(--text);
-    }
-
-    .container { max-width: 1380px; margin: 0 auto; padding: 20px; }
+    body { margin:0; font-family:Arial,"Noto Sans Hebrew","Segoe UI",sans-serif; background:radial-gradient(circle at top right,#e0f2fe 0,transparent 32%),var(--bg); color:var(--text); }
+    .container { max-width:1380px; margin:0 auto; padding:20px; }
 
     header {
-      background: linear-gradient(135deg, #ffffff, #eef6ff);
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      padding: 22px 24px;
-      box-shadow: var(--shadow);
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      align-items: center;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
+      background:linear-gradient(135deg,#fff,#eef6ff);
+      border:1px solid var(--line); border-radius:24px; padding:20px 24px;
+      box-shadow:var(--shadow); display:flex; justify-content:space-between;
+      gap:16px; align-items:center; margin-bottom:20px; flex-wrap:wrap;
     }
-
-    h1 { margin: 0; font-size: clamp(22px, 4vw, 38px); letter-spacing: -0.03em; }
-    h2 { margin: 0 0 14px; font-size: 20px; }
-
-    .subtitle { margin: 8px 0 0; color: var(--muted); font-size: 15px; }
+    h1 { margin:0; font-size:clamp(20px,4vw,36px); letter-spacing:-.03em; }
+    h2 { margin:0 0 14px; font-size:19px; }
+    .subtitle { margin:6px 0 0; color:var(--muted); font-size:14px; }
 
     .sync-status {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: #eff6ff;
-      color: #1e3a8a;
-      padding: 10px 14px;
-      border-radius: 16px;
-      font-size: 13px;
-      line-height: 1.5;
-      max-width: 360px;
+      display:flex; align-items:center; gap:8px;
+      background:#eff6ff; color:#1e3a8a;
+      padding:10px 14px; border-radius:16px; font-size:13px; line-height:1.5;
     }
+    .sync-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; background:#94a3b8; }
+    .sync-dot.ok { background:#22c55e; }
+    .sync-dot.err { background:#ef4444; }
+    .sync-dot.loading { background:#f59e0b; animation:pulse 1s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.4} }
 
-    .sync-dot {
-      width: 10px; height: 10px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      background: #94a3b8;
-    }
-    .sync-dot.ok { background: #22c55e; }
-    .sync-dot.err { background: #ef4444; }
-    .sync-dot.loading { background: #f59e0b; animation: pulse 1s infinite; }
+    .layout { display:grid; grid-template-columns:minmax(0,1fr) 340px; gap:20px; }
 
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-
-    .layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 340px;
-      gap: 20px;
-    }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 18px;
-      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
-      margin-bottom: 20px;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-    .form-grid.two { grid-template-columns: repeat(2, 1fr); }
-
-    label span { display: block; font-weight: 700; font-size: 13px; margin-bottom: 6px; }
-
-    input, select, button { font-family: inherit; font-size: 15px; }
-
-    input, select {
-      width: 100%;
-      border: 1px solid #cbd5e1;
-      border-radius: 12px;
-      padding: 10px 12px;
-      background: white;
-      color: var(--text);
-      -webkit-appearance: none;
-      appearance: none;
-    }
-
-    button {
-      border: 0;
-      border-radius: 12px;
-      padding: 11px 14px;
-      cursor: pointer;
-      font-weight: 700;
-      transition: 0.18s ease;
-      touch-action: manipulation;
-    }
-
-    button:hover { opacity: 0.88; transform: translateY(-1px); }
-    button:active { transform: translateY(0); }
-    button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-    .primary { width: 100%; background: var(--primary); color: white; min-height: 44px; }
-    .secondary { background: #e2e8f0; color: #0f172a; }
-
-    .message {
-      display: none;
-      margin: 12px 0;
-      border-radius: 14px;
-      padding: 11px 14px;
-      font-weight: 700;
-      line-height: 1.45;
-      font-size: 14px;
-    }
-    .message.show { display: block; }
-    .message.success { background: var(--free-bg); color: var(--free-text); }
-    .message.error { background: var(--busy-bg); color: var(--busy-text); }
-    .message.warn { background: var(--warn-bg); color: var(--warn-text); }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:20px; padding:18px; box-shadow:0 8px 22px rgba(15,23,42,.05); margin-bottom:20px; }
 
     /* ── SETUP BANNER ── */
     .setup-banner {
-      background: var(--warn-bg);
-      color: var(--warn-text);
-      border: 1px solid #fed7aa;
-      border-radius: 16px;
-      padding: 16px 18px;
-      margin-bottom: 20px;
-      font-size: 14px;
-      line-height: 1.7;
+      background:var(--warn-bg); color:var(--warn-text);
+      border:1px solid #fed7aa; border-radius:16px;
+      padding:16px 18px; margin-bottom:20px;
+      font-size:14px; line-height:1.8;
     }
-    .setup-banner strong { display: block; font-size: 15px; margin-bottom: 6px; }
-    .setup-banner code {
-      background: rgba(0,0,0,0.08);
-      border-radius: 6px;
-      padding: 2px 6px;
-      font-family: monospace;
-      font-size: 13px;
-      word-break: break-all;
+    .setup-banner strong { display:block; font-size:15px; margin-bottom:6px; }
+    .setup-banner code { background:rgba(0,0,0,.08); border-radius:5px; padding:2px 6px; font-family:monospace; font-size:12px; }
+    .setup-url-row { display:flex; gap:8px; margin-top:10px; }
+    .setup-url-row input { flex:1; border:1px solid #fdba74; border-radius:10px; padding:9px 12px; font-size:13px; font-family:inherit; }
+    .setup-url-row button { background:var(--warn-text); color:#fff; border:0; border-radius:10px; padding:9px 16px; font-weight:700; cursor:pointer; font-family:inherit; font-size:13px; }
+
+    /* ── FORMS ── */
+    label span { display:block; font-weight:700; font-size:13px; margin-bottom:5px; }
+    input[type=text], input[type=date], select {
+      width:100%; border:1px solid #cbd5e1; border-radius:11px;
+      padding:9px 11px; background:#fff; color:var(--text);
+      font-family:inherit; font-size:14px;
+      -webkit-appearance:none; appearance:none;
     }
-    .setup-banner input[type=text] {
-      margin-top: 10px;
-      border-color: #fdba74;
-      font-size: 13px;
+    button { border:0; border-radius:11px; padding:10px 14px; cursor:pointer; font-weight:700; font-family:inherit; font-size:14px; transition:.15s ease; touch-action:manipulation; }
+    button:hover { opacity:.88; transform:translateY(-1px); }
+    button:active { transform:translateY(0); }
+    button:disabled { opacity:.45; cursor:not-allowed; transform:none; }
+    .btn-primary { background:var(--primary); color:#fff; width:100%; min-height:44px; }
+    .btn-secondary { background:#e2e8f0; color:#0f172a; }
+
+    /* ── BOOKING TABS ── */
+    .tab-bar { display:flex; gap:4px; margin-bottom:14px; background:#f1f5f9; border-radius:12px; padding:4px; }
+    .tab-btn {
+      flex:1; border:0; border-radius:9px; padding:8px 6px;
+      font-size:12px; font-weight:700; cursor:pointer; font-family:inherit;
+      background:transparent; color:var(--muted); transition:.15s;
     }
-    .setup-banner button {
-      margin-top: 8px;
-      background: var(--warn-text);
-      color: white;
-      padding: 8px 16px;
+    .tab-btn.active { background:#fff; color:var(--primary); box-shadow:0 2px 6px rgba(0,0,0,.1); }
+    .tab-panel { display:none; }
+    .tab-panel.active { display:block; }
+
+    .field-row { display:grid; gap:10px; margin-bottom:10px; }
+    .field-row.cols2 { grid-template-columns:1fr 1fr; }
+    .field-row.cols3 { grid-template-columns:1fr 1fr 1fr; }
+    .field-row.cols4 { grid-template-columns:1fr 1fr 1fr 1fr; }
+
+    /* day-of-week checkboxes */
+    .dow-grid { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+    .dow-chip input { display:none; }
+    .dow-chip label {
+      display:block; padding:7px 12px; border-radius:10px;
+      border:1.5px solid var(--line); font-size:13px; font-weight:700;
+      cursor:pointer; user-select:none; transition:.12s;
+      color:var(--muted);
     }
+    .dow-chip input:checked + label { background:var(--primary-light); border-color:var(--primary); color:var(--primary); }
 
-    /* ── TABLE ── */
-    .table-wrap {
-      overflow-x: auto;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: white;
-    }
+    .message { display:none; margin:10px 0; border-radius:13px; padding:10px 13px; font-weight:700; line-height:1.45; font-size:13px; }
+    .message.show { display:block; }
+    .message.success { background:var(--free-bg); color:var(--free-text); }
+    .message.error { background:var(--busy-bg); color:var(--busy-text); }
+    .message.warn { background:var(--warn-bg); color:var(--warn-text); }
 
-    table { width: 100%; min-width: 820px; border-collapse: collapse; font-size: 13px; }
+    .actions-row { display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
+    .actions-row button { flex:1; font-size:13px; min-height:38px; }
 
-    th {
-      background: #eff4fb;
-      color: #1e293b;
-      padding: 12px;
-      border-bottom: 1px solid var(--line);
-      text-align: center;
-      white-space: nowrap;
-    }
-    th:first-child { text-align: right; width: 80px; }
-
-    td { padding: 7px; border-bottom: 1px solid #edf2f7; vertical-align: top; }
-
-    .hour-cell { font-weight: 800; color: #334155; white-space: nowrap; font-size: 13px; }
-    .date-small { display: block; color: var(--muted); font-size: 11px; font-weight: 400; margin-top: 3px; }
-
-    .slot-free { width: 100%; background: var(--free-bg); color: var(--free-text); min-height: 50px; font-size: 13px; }
-    .slot-busy { background: var(--busy-bg); color: var(--busy-text); border-radius: 12px; padding: 8px; min-height: 60px; }
-    .slot-busy strong { display: block; margin-bottom: 4px; font-size: 12px; }
-    .slot-busy small { display: block; line-height: 1.35; font-size: 12px; }
-
-    .delete-btn {
-      margin-top: 6px; padding: 0;
-      color: var(--busy-text); background: transparent;
-      text-decoration: underline; font-size: 11px;
-    }
+    /* ── DESKTOP TABLE ── */
+    .table-wrap { overflow-x:auto; border:1px solid var(--line); border-radius:18px; background:#fff; }
+    table { width:100%; min-width:820px; border-collapse:collapse; font-size:13px; }
+    th { background:#eff4fb; color:#1e293b; padding:11px; border-bottom:1px solid var(--line); text-align:center; white-space:nowrap; }
+    th:first-child { text-align:right; width:76px; }
+    td { padding:6px; border-bottom:1px solid #edf2f7; vertical-align:top; }
+    .hour-cell { font-weight:800; color:#334155; white-space:nowrap; font-size:13px; }
+    .date-small { display:block; color:var(--muted); font-size:11px; font-weight:400; margin-top:2px; }
+    .slot-free { width:100%; background:var(--free-bg); color:var(--free-text); min-height:46px; font-size:12px; border-radius:9px; }
+    .slot-busy { background:var(--busy-bg); color:var(--busy-text); border-radius:10px; padding:7px; min-height:54px; }
+    .slot-busy strong { display:block; margin-bottom:3px; font-size:11px; }
+    .slot-busy small { display:block; line-height:1.35; font-size:11px; }
+    .delete-btn { margin-top:5px; padding:0; color:var(--busy-text); background:transparent; text-decoration:underline; font-size:11px; }
 
     /* ── MOBILE ── */
-    .mobile-view { display: none; }
-
-    .week-nav {
-      display: flex; align-items: center;
-      justify-content: space-between; gap: 10px; margin-bottom: 14px;
-    }
-    .week-nav button { background: var(--primary-light); color: var(--primary); padding: 10px 16px; flex-shrink: 0; }
-    .week-nav span { font-weight: 700; font-size: 14px; text-align: center; }
-
-    .day-accordion { border: 1px solid var(--line); border-radius: 16px; overflow: hidden; margin-bottom: 10px; }
-
-    .day-header {
-      display: flex; align-items: center;
-      justify-content: space-between; padding: 13px 16px;
-      background: #eff4fb; cursor: pointer;
-      font-weight: 700; font-size: 15px;
-      user-select: none; -webkit-tap-highlight-color: transparent;
-    }
-    .day-header .day-badge { font-size: 12px; font-weight: 400; color: var(--muted); }
-    .day-chevron { font-size: 12px; }
-    .day-body { display: none; background: white; }
-    .day-body.open { display: block; }
-
-    .hour-row { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid #edf2f7; }
-    .hour-row:last-child { border-bottom: none; }
-    .hour-label { font-weight: 800; font-size: 14px; color: #334155; width: 54px; flex-shrink: 0; }
-    .hour-content { flex: 1; }
-
-    .mobile-slot-free {
-      background: var(--free-bg); color: var(--free-text);
-      border-radius: 10px; padding: 9px 12px;
-      font-size: 13px; font-weight: 700; width: 100%; text-align: right;
-    }
-    .mobile-slot-busy { background: var(--busy-bg); color: var(--busy-text); border-radius: 10px; padding: 9px 12px; }
-    .mobile-slot-busy strong { display: block; font-size: 13px; margin-bottom: 3px; }
-    .mobile-slot-busy small { font-size: 12px; }
-    .mobile-delete-btn { margin-top: 6px; padding: 0; background: transparent; color: var(--busy-text); text-decoration: underline; font-size: 12px; }
+    .mobile-view { display:none; }
+    .week-nav { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:14px; }
+    .week-nav button { background:var(--primary-light); color:var(--primary); padding:9px 14px; flex-shrink:0; font-size:13px; }
+    .week-nav span { font-weight:700; font-size:13px; text-align:center; }
+    .day-accordion { border:1px solid var(--line); border-radius:14px; overflow:hidden; margin-bottom:8px; }
+    .day-header { display:flex; align-items:center; justify-content:space-between; padding:12px 14px; background:#eff4fb; cursor:pointer; font-weight:700; font-size:14px; user-select:none; -webkit-tap-highlight-color:transparent; }
+    .day-badge { font-size:11px; font-weight:400; color:var(--muted); }
+    .day-body { display:none; background:#fff; }
+    .day-body.open { display:block; }
+    .hour-row { display:flex; align-items:center; gap:8px; padding:9px 13px; border-bottom:1px solid #edf2f7; }
+    .hour-row:last-child { border-bottom:none; }
+    .hour-label { font-weight:800; font-size:13px; color:#334155; width:50px; flex-shrink:0; }
+    .hour-content { flex:1; }
+    .mobile-slot-free { background:var(--free-bg); color:var(--free-text); border-radius:9px; padding:8px 11px; font-size:12px; font-weight:700; width:100%; text-align:right; }
+    .mobile-slot-busy { background:var(--busy-bg); color:var(--busy-text); border-radius:9px; padding:8px 11px; }
+    .mobile-slot-busy strong { display:block; font-size:12px; margin-bottom:2px; }
+    .mobile-slot-busy small { font-size:11px; }
+    .mobile-delete-btn { margin-top:5px; padding:0; background:transparent; color:var(--busy-text); text-decoration:underline; font-size:11px; }
 
     /* ── SIDEBAR ── */
-    .side-list { display: grid; gap: 8px; max-height: 480px; overflow: auto; }
-    .booking-item { border: 1px solid var(--line); border-radius: 14px; padding: 11px 12px; background: #fff; }
-    .booking-item strong { display: block; margin-bottom: 4px; font-size: 13px; }
-    .booking-item span { color: var(--muted); font-size: 13px; }
-
-    .actions-row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
-    .actions-row button { flex: 1; font-size: 13px; min-height: 40px; }
+    .side-list { display:grid; gap:7px; max-height:460px; overflow:auto; }
+    .booking-item { border:1px solid var(--line); border-radius:13px; padding:10px 12px; background:#fff; }
+    .booking-item strong { display:block; margin-bottom:3px; font-size:12px; }
+    .booking-item span { color:var(--muted); font-size:12px; }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 1060px) {
-      .layout { grid-template-columns: 1fr; }
-      .form-grid { grid-template-columns: repeat(2, 1fr); }
-      header { flex-direction: column; align-items: stretch; }
-      .sync-status { max-width: none; }
+    @media (max-width:1060px) {
+      .layout { grid-template-columns:1fr; }
+      header { flex-direction:column; align-items:stretch; }
+      .sync-status { max-width:none; }
     }
-    @media (max-width: 700px) {
-      .container { padding: 12px; }
-      .form-grid, .form-grid.two { grid-template-columns: 1fr; }
-      header, .card { border-radius: 16px; }
-      .desktop-view { display: none; }
-      .mobile-view { display: block; }
+    @media (max-width:700px) {
+      .container { padding:12px; }
+      .field-row.cols4, .field-row.cols3 { grid-template-columns:1fr 1fr; }
+      .field-row.cols2 { grid-template-columns:1fr; }
+      header, .card { border-radius:16px; }
+      .desktop-view { display:none; }
+      .mobile-view { display:block; }
     }
-    @media (min-width: 701px) {
-      .desktop-view { display: block; }
-      .mobile-view { display: none; }
-    }
+    @media (min-width:701px) { .desktop-view { display:block; } .mobile-view { display:none; } }
     @media print {
-      body { background: white; }
-      .controls, aside, .sync-status, .setup-banner, button, input, select { display: none !important; }
-      .layout { display: block; }
-      .mobile-view { display: none !important; }
-      .desktop-view { display: block !important; }
-      header, .card { box-shadow: none; border: 1px solid #ccc; }
-      table { min-width: 0; font-size: 11px; }
+      body { background:#fff; }
+      .controls,aside,.sync-status,.setup-banner,button,input,select { display:none !important; }
+      .layout { display:block; }
+      .mobile-view { display:none !important; }
+      .desktop-view { display:block !important; }
+      header,.card { box-shadow:none; border:1px solid #ccc; }
+      table { min-width:0; font-size:11px; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
+<div class="container">
 
-    <!-- Setup banner — hidden once URL is configured -->
-    <div class="setup-banner" id="setupBanner">
-      <strong>⚙️ נדרשת הגדרה חד-פעמית — חיבור ל-Google Sheets</strong>
-      1. פתח <a href="https://script.google.com" target="_blank">script.google.com</a> וצור פרויקט חדש<br>
-      2. הדבק את הקוד מהקובץ <code>apps_script_backend.gs</code><br>
-      3. לחץ על <strong>פרוס ← אפליקציית אינטרנט</strong> — הפעל בשם: אני, גישה: כולם<br>
-      4. העתק את ה-URL של האפליקציה והדבק כאן:
+  <div class="setup-banner" id="setupBanner" style="display:none">
+    <strong>⚙️ הגדרה חד-פעמית — חיבור ל-Google Sheets</strong>
+    1. פתח <a href="https://script.google.com" target="_blank">script.google.com</a> → פרויקט חדש<br>
+    2. הדבק את הקוד מ-<code>apps_script_backend.gs</code><br>
+    3. <strong>פרוס ← אפליקציית אינטרנט</strong> | הפעל בשם: אני | גישה: כולם<br>
+    4. העתק את ה-URL והדבק כאן:
+    <div class="setup-url-row">
       <input type="text" id="scriptUrlInput" placeholder="https://script.google.com/macros/s/.../exec" />
-      <button onclick="saveScriptUrl()">שמור וחבר</button>
-    </div>
-
-    <header>
-      <div>
-        <h1>שיבוץ שימוש בחדר 422</h1>
-        <p class="subtitle">ימים ראשון עד חמישי, בין השעות 08:00–19:00</p>
-      </div>
-      <div class="sync-status">
-        <span class="sync-dot" id="syncDot"></span>
-        <span id="syncLabel">לא מחובר ל-Google Sheets</span>
-      </div>
-    </header>
-
-    <div class="layout">
-      <main>
-        <section class="card controls">
-          <h2>שיבוץ חדר</h2>
-          <div class="form-grid">
-            <label>
-              <span>בחר/י שבוע לפי תאריך</span>
-              <input type="date" id="selectedDate" />
-            </label>
-            <label>
-              <span>שם המשתמש/ת</span>
-              <input type="text" id="bookerName" placeholder='לדוגמה: ד"ר כהן' autocomplete="off" />
-            </label>
-            <label>
-              <span>שעת שיבוץ לטווח</span>
-              <select id="selectedHour"></select>
-            </label>
-            <label>
-              <span>&nbsp;</span>
-              <button class="primary" id="rangeBookBtn">שבץ טווח תאריכים</button>
-            </label>
-          </div>
-          <div class="form-grid two">
-            <label><span>מתאריך</span><input type="date" id="rangeStart" /></label>
-            <label><span>עד תאריך</span><input type="date" id="rangeEnd" /></label>
-          </div>
-          <div id="message" class="message"></div>
-          <div class="actions-row">
-            <button class="secondary" id="refreshBtn">רענן מ-Sheets</button>
-            <button class="secondary" id="resetBtn">אפס לשיבוצים המקוריים</button>
-            <button class="secondary" onclick="window.print()">הדפס לוח</button>
-          </div>
-        </section>
-
-        <section class="card desktop-view">
-          <div class="table-wrap">
-            <table id="calendarTable"></table>
-          </div>
-        </section>
-
-        <section class="card mobile-view">
-          <div class="week-nav">
-            <button id="prevWeekBtn">→ שבוע קודם</button>
-            <span id="weekLabel"></span>
-            <button id="nextWeekBtn">שבוע הבא ←</button>
-          </div>
-          <div id="mobileCalendar"></div>
-        </section>
-      </main>
-
-      <aside>
-        <section class="card controls">
-          <h2>שאילתת זמינות</h2>
-          <label><span>תאריך</span><input type="date" id="queryDate" /></label>
-          <br />
-          <label><span>שעה</span><select id="queryHour"></select></label>
-          <br />
-          <button class="primary" id="checkBtn">בדוק זמינות</button>
-          <div id="queryResult" class="message"></div>
-        </section>
-
-        <section class="card">
-          <h2>שיבוצים קיימים</h2>
-          <div id="bookingsList" class="side-list"></div>
-        </section>
-      </aside>
+      <button onclick="saveScriptUrl()">חבר</button>
     </div>
   </div>
 
-  <script>
-    // ── CONFIGURATION ──────────────────────────────────────────────
-    const STORAGE_KEY = "room_422_bookings_v2";
-    const SCRIPT_URL_KEY = "room_422_script_url";
-    const DAYS_HE = ["ראשון", "שני", "שלישי", "רביעי", "חמישי"];
-    const HOURS = Array.from({ length: 12 }, (_, i) => `${String(i + 8).padStart(2, "0")}:00`);
+  <header>
+    <div>
+      <h1>שיבוץ שימוש בחדר 422</h1>
+      <p class="subtitle">ימים ראשון עד חמישי, בין השעות 08:00–19:00</p>
+    </div>
+    <div class="sync-status">
+      <span class="sync-dot" id="syncDot"></span>
+      <span id="syncLabel">מתחבר…</span>
+    </div>
+  </header>
 
-    const INITIAL_BOOKINGS = {
-      "2026-05-04_10:00": { name: "קורס דוקטורנטים", createdAt: "imported-from-sheet" },
-      "2026-05-04_11:00": { name: "פגישה - טקס חלוקת תעודות", createdAt: "imported-from-sheet" },
-      "2026-05-04_12:00": { name: "מוחמד", createdAt: "imported-from-sheet" },
-      "2026-05-04_13:00": { name: "תיאום הצגת רשות אקדמה", createdAt: "imported-from-sheet" },
-      "2026-05-04_14:00": { name: "המחקר ואני", createdAt: "imported-from-sheet" },
-      "2026-05-04_15:00": { name: "איתי קורס חדשנות", createdAt: "imported-from-sheet" },
-      "2026-05-04_16:00": { name: "איתי קורס חדשנות", createdAt: "imported-from-sheet" },
-      "2026-05-04_17:00": { name: "נריה מעורבות חברתית", createdAt: "imported-from-sheet" },
-      "2026-05-05_12:00": { name: "בן שחר קורס שנתי", createdAt: "imported-from-sheet" },
-      "2026-05-05_13:00": { name: "מוחמד", createdAt: "imported-from-sheet" },
-      "2026-05-05_16:00": { name: "נריה - מעורבות חברתית", createdAt: "imported-from-sheet" },
-      "2026-05-11_10:00": { name: "תכנית לימודים תשפז", createdAt: "imported-from-sheet" },
-      "2026-05-11_12:00": { name: "בן שחר קורס שנתי", createdAt: "imported-from-sheet" },
-      "2026-05-11_16:00": { name: "נריה - מעורבות חברתית", createdAt: "imported-from-sheet" },
-      "2026-05-11_17:00": { name: "נריה - מעורבות חברתית", createdAt: "imported-from-sheet" },
-      "2026-05-12_10:00": { name: "מפגש בנושא מלג", createdAt: "imported-from-sheet" },
-      "2026-05-13_10:00": { name: "קורס דוקטורנטים", createdAt: "imported-from-sheet" },
-      "2026-05-13_12:00": { name: "מירי מעורבות חברתית", createdAt: "imported-from-sheet" },
-      "2026-05-13_13:00": { name: "מירי מעורבות חברתית", createdAt: "imported-from-sheet" },
-      "2026-05-18_10:00": { name: "קורס דוקטורנטים", createdAt: "imported-from-sheet" },
-      "2026-05-18_12:00": { name: "בן שחר קורס שנתי", createdAt: "imported-from-sheet" },
-      "2026-05-18_16:00": { name: "נריה - מעורבות חברתית", createdAt: "imported-from-sheet" },
-      "2026-05-18_17:00": { name: "נריה - מעורבות חברתית", createdAt: "imported-from-sheet" },
-      "2026-05-19_14:00": { name: "תכנית מצטיינים", createdAt: "imported-from-sheet" },
-      "2026-05-21_09:00": { name: "ועדת משמעת", createdAt: "imported-from-sheet" },
-      "2026-05-25_09:00": { name: "ישיבת הנהלה", createdAt: "imported-from-sheet" },
-      "2026-05-25_10:00": { name: "מרכז לחקר הזקנה", createdAt: "imported-from-sheet" },
-      "2026-05-25_14:00": { name: "מפגש מרכז מסילה", createdAt: "imported-from-sheet" },
-      "2026-05-25_16:00": { name: "נריה - מעורבות חברתית", createdAt: "imported-from-sheet" },
-      "2026-05-25_17:00": { name: "נריה - מעורבות חברתית", createdAt: "imported-from-sheet" },
-      "2026-05-26_09:00": { name: "ועדת משמעת", createdAt: "imported-from-sheet" },
-      "2026-05-26_10:00": { name: "הדרכת מדריכים - עמי קרצמר", createdAt: "imported-from-sheet" },
-      "2026-05-26_11:00": { name: "הדרכת מדריכים - עמי קרצמר", createdAt: "imported-from-sheet" },
-      "2026-05-26_12:00": { name: "הדרכת מדריכים - עמי קרצמר", createdAt: "imported-from-sheet" },
-      "2026-05-27_09:00": { name: "שירי", createdAt: "imported-from-sheet" },
-      "2026-05-27_10:00": { name: "קורס בינלאומי זום - אשר בן אריה", createdAt: "imported-from-sheet" },
-      "2026-05-27_11:00": { name: "קורס בינלאומי זום - אשר בן אריה", createdAt: "imported-from-sheet" },
-      "2026-05-27_12:00": { name: "בן שחר קורס שנתי", createdAt: "imported-from-sheet" },
-      "2026-05-28_10:00": { name: "קורס בינלאומי זום - אשר בן אריה", createdAt: "imported-from-sheet" },
-      "2026-06-01_12:00": { name: "מפגש סטודנטים קורס ניו יורק", createdAt: "imported-from-sheet" }
-    };
+  <div class="layout">
+    <main>
+      <section class="card controls">
+        <h2>שיבוץ חדר</h2>
 
-    // ── STATE ──────────────────────────────────────────────────────
-    let bookings = {};
-    let openDays = new Set();
-    let scriptUrl = localStorage.getItem(SCRIPT_URL_KEY) || "";
-    let isSaving = false;
+        <!-- Name (always shown) -->
+        <div class="field-row" style="margin-bottom:14px">
+          <label><span>שם המשתמש/ת</span>
+            <input type="text" id="bookerName" placeholder='לדוגמה: ד"ר כהן' autocomplete="off" />
+          </label>
+        </div>
 
-    // ── HELPERS ────────────────────────────────────────────────────
+        <!-- Tabs -->
+        <div class="tab-bar">
+          <button class="tab-btn active" onclick="switchTab('single')">יום + שעות</button>
+          <button class="tab-btn" onclick="switchTab('range')">טווח תאריכים</button>
+          <button class="tab-btn" onclick="switchTab('recurring')">לפי יום בשבוע</button>
+        </div>
 
-    function toISODate(date) {
-      return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`;
-    }
-
-    function formatHebrewDate(ds) {
-      return new Date(`${ds}T12:00:00`).toLocaleDateString("he-IL", { day:"2-digit", month:"2-digit", year:"numeric" });
-    }
-
-    function getWeekDates(ds) {
-      const sel = new Date(`${ds}T12:00:00`);
-      const sun = new Date(sel);
-      sun.setDate(sel.getDate() - sel.getDay());
-      return DAYS_HE.map((dayName, i) => {
-        const d = new Date(sun);
-        d.setDate(sun.getDate() + i);
-        return { dayName, dateString: toISODate(d) };
-      });
-    }
-
-    function isWeekday(ds) { const d = new Date(`${ds}T12:00:00`).getDay(); return d >= 0 && d <= 4; }
-    function buildKey(date, hour) { return `${date}_${hour}`; }
-
-    function escapeHtml(t) {
-      return String(t).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;").replaceAll("'","&#039;");
-    }
-
-    // ── SYNC STATUS ────────────────────────────────────────────────
-
-    function setSyncStatus(state, label) {
-      const dot = document.getElementById("syncDot");
-      const lbl = document.getElementById("syncLabel");
-      dot.className = `sync-dot ${state}`;
-      lbl.textContent = label;
-    }
-
-    // ── SETUP BANNER ───────────────────────────────────────────────
-
-    function updateSetupBanner() {
-      const banner = document.getElementById("setupBanner");
-      if (scriptUrl) {
-        banner.style.display = "none";
-      } else {
-        banner.style.display = "block";
-        const input = document.getElementById("scriptUrlInput");
-        if (input) input.value = scriptUrl;
-      }
-    }
-
-    function saveScriptUrl() {
-      const input = document.getElementById("scriptUrlInput");
-      const url = input.value.trim();
-      if (!url.startsWith("https://script.google.com")) {
-        alert("URL לא תקין. ודא/י שהוא מתחיל ב-https://script.google.com");
-        return;
-      }
-      scriptUrl = url;
-      localStorage.setItem(SCRIPT_URL_KEY, scriptUrl);
-      updateSetupBanner();
-      loadFromSheets();
-    }
-
-    // ── SHEETS API ─────────────────────────────────────────────────
-    // Google Apps Script redirects fetch requests — use JSONP for GET
-    // and no-cors for POST (avoids preflight CORS blocking).
-
-    function fetchViaJsonp(url) {
-      return new Promise((resolve, reject) => {
-        const cbName = "__gs_cb_" + Date.now();
-        const script = document.createElement("script");
-        const timer = setTimeout(() => {
-          cleanup();
-          reject(new Error("timeout"));
-        }, 10000);
-
-        function cleanup() {
-          clearTimeout(timer);
-          delete window[cbName];
-          if (script.parentNode) script.parentNode.removeChild(script);
-        }
-
-        window[cbName] = (data) => { cleanup(); resolve(data); };
-        script.src = `${url}?callback=${cbName}`;
-        script.onerror = () => { cleanup(); reject(new Error("script error")); };
-        document.head.appendChild(script);
-      });
-    }
-
-    async function loadFromSheets() {
-      if (!scriptUrl) {
-        bookings = loadLocal();
-        renderCalendar();
-        return;
-      }
-      setSyncStatus("loading", "טוען מ-Google Sheets…");
-
-      // Try plain fetch first (works when served from same origin or CORS ok)
-      try {
-        const res = await fetch(scriptUrl, { redirect: "follow" });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
-        if (data && typeof data === "object" && !Array.isArray(data) && !data.error) {
-          bookings = data;
-          saveLocal();
-          setSyncStatus("ok", "מסונכרן עם Google Sheets ✓");
-          renderCalendar();
-          return;
-        }
-        throw new Error("bad data");
-      } catch (_) {
-        // Fallback: JSONP (bypasses CORS entirely)
-        try {
-          const data = await fetchViaJsonp(scriptUrl);
-          if (data && typeof data === "object" && !Array.isArray(data)) {
-            bookings = data;
-            saveLocal();
-            setSyncStatus("ok", "מסונכרן עם Google Sheets ✓");
-            renderCalendar();
-            return;
-          }
-          throw new Error("bad jsonp data");
-        } catch (e2) {
-          setSyncStatus("err", "שגיאת חיבור — מציג נתונים מקומיים");
-          bookings = loadLocal();
-          renderCalendar();
-        }
-      }
-    }
-
-    async function saveToSheets() {
-      if (!scriptUrl) return;
-      if (isSaving) return;
-      isSaving = true;
-      setSyncStatus("loading", "שומר…");
-      try {
-        // no-cors avoids preflight; response will be opaque but write succeeds
-        await fetch(scriptUrl, {
-          method: "POST",
-          mode: "no-cors",
-          body: JSON.stringify(bookings),
-          headers: { "Content-Type": "text/plain" }
-        });
-        setSyncStatus("ok", "נשמר ב-Google Sheets ✓");
-      } catch {
-        setSyncStatus("err", "שגיאה בשמירה — נשמר מקומית בלבד");
-      }
-      isSaving = false;
-    }
-
-    // ── LOCAL STORAGE ──────────────────────────────────────────────
-
-    function loadLocal() {
-      try {
-        const s = localStorage.getItem(STORAGE_KEY);
-        if (s) return JSON.parse(s);
-      } catch {}
-      return { ...INITIAL_BOOKINGS };
-    }
-
-    function saveLocal() {
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(bookings)); } catch {}
-    }
-
-    function persist() {
-      saveLocal();
-      saveToSheets();
-    }
-
-    // ── MESSAGES ───────────────────────────────────────────────────
-
-    function setMessage(id, type, text) {
-      const el = document.getElementById(id);
-      el.className = `message show ${type}`;
-      el.textContent = text;
-    }
-
-    function clearMessage(id) {
-      const el = document.getElementById(id);
-      el.className = "message";
-      el.textContent = "";
-    }
-
-    // ── SELECTS ────────────────────────────────────────────────────
-
-    function populateHourSelects() {
-      ["selectedHour","queryHour"].forEach(id => {
-        document.getElementById(id).innerHTML =
-          HOURS.map(h => `<option value="${h}">${h}</option>`).join("");
-      });
-    }
-
-    // ── CALENDAR ───────────────────────────────────────────────────
-
-    function renderCalendar() {
-      const ds = document.getElementById("selectedDate").value;
-      const weekDates = getWeekDates(ds);
-      const table = document.getElementById("calendarTable");
-
-      let html = `<thead><tr><th>שעה</th>`;
-      weekDates.forEach(d => {
-        html += `<th>${d.dayName}<span class="date-small">${formatHebrewDate(d.dateString)}</span></th>`;
-      });
-      html += `</tr></thead><tbody>`;
-      HOURS.forEach(hour => {
-        html += `<tr><td class="hour-cell">${hour}</td>`;
-        weekDates.forEach(day => {
-          const key = buildKey(day.dateString, hour);
-          const b = bookings[key];
-          html += `<td>`;
-          if (b) {
-            html += `<div class="slot-busy"><strong>תפוס</strong><small>${escapeHtml(b.name)}</small>` +
-              `<button class="delete-btn" onclick="deleteBooking('${day.dateString}','${hour}')">מחק שיבוץ</button></div>`;
-          } else {
-            html += `<button class="slot-free" onclick="bookSlot('${day.dateString}','${hour}')">פנוי — שבץ</button>`;
-          }
-          html += `</td>`;
-        });
-        html += `</tr>`;
-      });
-      html += `</tbody>`;
-      table.innerHTML = html;
-      renderMobileCalendar();
-      renderBookingsList();
-    }
-
-    function renderMobileCalendar() {
-      const ds = document.getElementById("selectedDate").value;
-      const weekDates = getWeekDates(ds);
-      document.getElementById("weekLabel").textContent =
-        `${formatHebrewDate(weekDates[0].dateString)} – ${formatHebrewDate(weekDates[4].dateString)}`;
-
-      let html = "";
-      weekDates.forEach(day => {
-        const busyCount = HOURS.filter(h => bookings[buildKey(day.dateString, h)]).length;
-        const isOpen = openDays.has(day.dateString);
-        html += `<div class="day-accordion">
-          <div class="day-header" onclick="toggleDay('${day.dateString}')">
-            <span>${day.dayName} <span class="day-badge">${formatHebrewDate(day.dateString)}${busyCount ? ` · ${busyCount} תפוסות` : ""}</span></span>
-            <span class="day-chevron">${isOpen ? "▲" : "▼"}</span>
+        <!-- Tab: single day + hour range -->
+        <div class="tab-panel active" id="tab-single">
+          <div class="field-row cols3">
+            <label><span>תאריך</span><input type="date" id="singleDate" /></label>
+            <label><span>משעה</span><select id="singleFrom"></select></label>
+            <label><span>עד שעה</span><select id="singleTo"></select></label>
           </div>
-          <div class="day-body${isOpen ? " open" : ""}">`;
-        HOURS.forEach(hour => {
-          const b = bookings[buildKey(day.dateString, hour)];
-          html += `<div class="hour-row"><span class="hour-label">${hour}</span><div class="hour-content">`;
-          if (b) {
-            html += `<div class="mobile-slot-busy"><strong>תפוס</strong><small>${escapeHtml(b.name)}</small>` +
-              `<button class="mobile-delete-btn" onclick="deleteBooking('${day.dateString}','${hour}')">מחק שיבוץ</button></div>`;
-          } else {
-            html += `<button class="mobile-slot-free" onclick="bookSlot('${day.dateString}','${hour}')">פנוי — שבץ</button>`;
-          }
-          html += `</div></div>`;
-        });
-        html += `</div></div>`;
+          <button class="btn-primary" onclick="bookSingle()">שבץ</button>
+        </div>
+
+        <!-- Tab: date range + hour range -->
+        <div class="tab-panel" id="tab-range">
+          <div class="field-row cols2">
+            <label><span>מתאריך</span><input type="date" id="rangeStart" /></label>
+            <label><span>עד תאריך</span><input type="date" id="rangeEnd" /></label>
+          </div>
+          <div class="field-row cols2">
+            <label><span>משעה</span><select id="rangeFrom"></select></label>
+            <label><span>עד שעה</span><select id="rangeTo"></select></label>
+          </div>
+          <button class="btn-primary" onclick="bookRange()">שבץ טווח</button>
+        </div>
+
+        <!-- Tab: recurring by day-of-week -->
+        <div class="tab-panel" id="tab-recurring">
+          <div style="margin-bottom:10px">
+            <label><span>ימים בשבוע</span></label>
+            <div class="dow-grid">
+              <span class="dow-chip"><input type="checkbox" id="dow0" value="0"><label for="dow0">ראשון</label></span>
+              <span class="dow-chip"><input type="checkbox" id="dow1" value="1"><label for="dow1">שני</label></span>
+              <span class="dow-chip"><input type="checkbox" id="dow2" value="2"><label for="dow2">שלישי</label></span>
+              <span class="dow-chip"><input type="checkbox" id="dow3" value="3"><label for="dow3">רביעי</label></span>
+              <span class="dow-chip"><input type="checkbox" id="dow4" value="4"><label for="dow4">חמישי</label></span>
+            </div>
+          </div>
+          <div class="field-row cols2">
+            <label><span>מתאריך</span><input type="date" id="recurStart" /></label>
+            <label><span>עד תאריך</span><input type="date" id="recurEnd" /></label>
+          </div>
+          <div class="field-row cols2">
+            <label><span>משעה</span><select id="recurFrom"></select></label>
+            <label><span>עד שעה</span><select id="recurTo"></select></label>
+          </div>
+          <button class="btn-primary" onclick="bookRecurring()">שבץ חוזר</button>
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <div class="actions-row">
+          <button class="btn-secondary" id="resetBtn">אפס לשיבוצים המקוריים</button>
+          <button class="btn-secondary" onclick="window.print()">הדפס לוח</button>
+        </div>
+      </section>
+
+      <!-- Week navigation (shared) -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+        <label style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px">
+          שבוע: <input type="date" id="selectedDate" style="width:auto;border-radius:10px;padding:7px 10px;font-size:13px;border:1px solid #cbd5e1" />
+        </label>
+        <button class="btn-secondary" style="font-size:13px;padding:7px 14px" onclick="shiftWeek(-1)">→ שבוע קודם</button>
+        <button class="btn-secondary" style="font-size:13px;padding:7px 14px" onclick="shiftWeek(1)">שבוע הבא ←</button>
+      </div>
+
+      <section class="card desktop-view">
+        <div class="table-wrap"><table id="calendarTable"></table></div>
+      </section>
+
+      <section class="card mobile-view">
+        <div class="week-nav">
+          <span id="weekLabel"></span>
+        </div>
+        <div id="mobileCalendar"></div>
+      </section>
+    </main>
+
+    <aside>
+      <section class="card controls">
+        <h2>שאילתת זמינות</h2>
+        <label><span>תאריך</span><input type="date" id="queryDate" /></label>
+        <br /><br />
+        <div class="field-row cols2">
+          <label><span>משעה</span><select id="queryFrom"></select></label>
+          <label><span>עד שעה</span><select id="queryTo"></select></label>
+        </div>
+        <button class="btn-primary" id="checkBtn">בדוק זמינות</button>
+        <div id="queryResult" class="message"></div>
+      </section>
+
+      <section class="card">
+        <h2>שיבוצים קיימים</h2>
+        <div id="bookingsList" class="side-list"></div>
+      </section>
+    </aside>
+  </div>
+</div>
+
+<script>
+  /* ── CONSTANTS ───────────────────────────────────────────────── */
+  const STORAGE_KEY  = "room_422_v3";
+  const SCRIPT_URL_KEY = "room_422_script_url";
+  const DAYS_HE = ["ראשון","שני","שלישי","רביעי","חמישי"];
+  const HOURS = Array.from({length:12},(_,i)=>`${String(i+8).padStart(2,"0")}:00`);
+
+  const INITIAL_BOOKINGS = {
+    "2026-05-04_10:00":{name:"קורס דוקטורנטים",createdAt:"imported"},
+    "2026-05-04_11:00":{name:"פגישה - טקס חלוקת תעודות",createdAt:"imported"},
+    "2026-05-04_12:00":{name:"מוחמד",createdAt:"imported"},
+    "2026-05-04_13:00":{name:"תיאום הצגת רשות אקדמה",createdAt:"imported"},
+    "2026-05-04_14:00":{name:"המחקר ואני",createdAt:"imported"},
+    "2026-05-04_15:00":{name:"איתי קורס חדשנות",createdAt:"imported"},
+    "2026-05-04_16:00":{name:"איתי קורס חדשנות",createdAt:"imported"},
+    "2026-05-04_17:00":{name:"נריה מעורבות חברתית",createdAt:"imported"},
+    "2026-05-05_12:00":{name:"בן שחר קורס שנתי",createdAt:"imported"},
+    "2026-05-05_13:00":{name:"מוחמד",createdAt:"imported"},
+    "2026-05-05_16:00":{name:"נריה - מעורבות חברתית",createdAt:"imported"},
+    "2026-05-11_10:00":{name:"תכנית לימודים תשפז",createdAt:"imported"},
+    "2026-05-11_12:00":{name:"בן שחר קורס שנתי",createdAt:"imported"},
+    "2026-05-11_16:00":{name:"נריה - מעורבות חברתית",createdAt:"imported"},
+    "2026-05-11_17:00":{name:"נריה - מעורבות חברתית",createdAt:"imported"},
+    "2026-05-12_10:00":{name:"מפגש בנושא מלג",createdAt:"imported"},
+    "2026-05-13_10:00":{name:"קורס דוקטורנטים",createdAt:"imported"},
+    "2026-05-13_12:00":{name:"מירי מעורבות חברתית",createdAt:"imported"},
+    "2026-05-13_13:00":{name:"מירי מעורבות חברתית",createdAt:"imported"},
+    "2026-05-18_10:00":{name:"קורס דוקטורנטים",createdAt:"imported"},
+    "2026-05-18_12:00":{name:"בן שחר קורס שנתי",createdAt:"imported"},
+    "2026-05-18_16:00":{name:"נריה - מעורבות חברתית",createdAt:"imported"},
+    "2026-05-18_17:00":{name:"נריה - מעורבות חברתית",createdAt:"imported"},
+    "2026-05-19_14:00":{name:"תכנית מצטיינים",createdAt:"imported"},
+    "2026-05-21_09:00":{name:"ועדת משמעת",createdAt:"imported"},
+    "2026-05-25_09:00":{name:"ישיבת הנהלה",createdAt:"imported"},
+    "2026-05-25_10:00":{name:"מרכז לחקר הזקנה",createdAt:"imported"},
+    "2026-05-25_14:00":{name:"מפגש מרכז מסילה",createdAt:"imported"},
+    "2026-05-25_16:00":{name:"נריה - מעורבות חברתית",createdAt:"imported"},
+    "2026-05-25_17:00":{name:"נריה - מעורבות חברתית",createdAt:"imported"},
+    "2026-05-26_09:00":{name:"ועדת משמעת",createdAt:"imported"},
+    "2026-05-26_10:00":{name:"הדרכת מדריכים - עמי קרצמר",createdAt:"imported"},
+    "2026-05-26_11:00":{name:"הדרכת מדריכים - עמי קרצמר",createdAt:"imported"},
+    "2026-05-26_12:00":{name:"הדרכת מדריכים - עמי קרצמר",createdAt:"imported"},
+    "2026-05-27_09:00":{name:"שירי",createdAt:"imported"},
+    "2026-05-27_10:00":{name:"קורס בינלאומי זום - אשר בן אריה",createdAt:"imported"},
+    "2026-05-27_11:00":{name:"קורס בינלאומי זום - אשר בן אריה",createdAt:"imported"},
+    "2026-05-27_12:00":{name:"בן שחר קורס שנתי",createdAt:"imported"},
+    "2026-05-28_10:00":{name:"קורס בינלאומי זום - אשר בן אריה",createdAt:"imported"},
+    "2026-06-01_12:00":{name:"מפגש סטודנטים קורס ניו יורק",createdAt:"imported"}
+  };
+
+  /* ── STATE ───────────────────────────────────────────────────── */
+  let bookings = {};
+  let openDays = new Set();
+  let scriptUrl = localStorage.getItem(SCRIPT_URL_KEY) || "";
+  let activeTab = "single";
+
+  /* ── HELPERS ─────────────────────────────────────────────────── */
+  function toISODate(d) {
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+  }
+  function fmtDate(ds) {
+    return new Date(`${ds}T12:00:00`).toLocaleDateString("he-IL",{day:"2-digit",month:"2-digit",year:"numeric"});
+  }
+  function getWeekDates(ds) {
+    const sel=new Date(`${ds}T12:00:00`), sun=new Date(sel);
+    sun.setDate(sel.getDate()-sel.getDay());
+    return DAYS_HE.map((dayName,i)=>{const d=new Date(sun);d.setDate(sun.getDate()+i);return{dayName,dateString:toISODate(d)};});
+  }
+  function isWeekday(ds){const d=new Date(`${ds}T12:00:00`).getDay();return d>=0&&d<=4;}
+  function key(date,hour){return `${date}_${hour}`;}
+  function esc(t){return String(t).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");}
+
+  // Hour range from fromHour to toHour inclusive
+  function hoursInRange(from,to){
+    const fi=HOURS.indexOf(from), ti=HOURS.indexOf(to);
+    if(fi<0||ti<0||ti<fi) return null; // invalid
+    return HOURS.slice(fi,ti+1);
+  }
+
+  /* ── TABS ────────────────────────────────────────────────────── */
+  function switchTab(name) {
+    activeTab = name;
+    document.querySelectorAll(".tab-btn").forEach((b,i)=>{
+      b.classList.toggle("active", ["single","range","recurring"][i]===name);
+    });
+    document.querySelectorAll(".tab-panel").forEach(p=>{
+      p.classList.toggle("active", p.id===`tab-${name}`);
+    });
+    clearMessage("message");
+  }
+
+  /* ── SYNC STATUS ─────────────────────────────────────────────── */
+  function setSyncStatus(state,label){
+    document.getElementById("syncDot").className=`sync-dot ${state}`;
+    document.getElementById("syncLabel").textContent=label;
+  }
+
+  /* ── SETUP BANNER ────────────────────────────────────────────── */
+  function updateSetupBanner(){
+    document.getElementById("setupBanner").style.display = scriptUrl ? "none" : "block";
+  }
+  function saveScriptUrl(){
+    const url=document.getElementById("scriptUrlInput").value.trim();
+    if(!url.startsWith("https://script.google.com")){
+      alert("URL לא תקין — חייב להתחיל ב-https://script.google.com");return;
+    }
+    scriptUrl=url;
+    localStorage.setItem(SCRIPT_URL_KEY,scriptUrl);
+    updateSetupBanner();
+    loadFromSheets();
+  }
+
+  /* ── JSONP HELPER ────────────────────────────────────────────── */
+  function jsonpFetch(url){
+    return new Promise((resolve,reject)=>{
+      const cb="__gs_"+Date.now();
+      const s=document.createElement("script");
+      const timer=setTimeout(()=>{cleanup();reject(new Error("timeout"));},12000);
+      function cleanup(){clearTimeout(timer);delete window[cb];s.parentNode&&s.parentNode.removeChild(s);}
+      window[cb]=(data)=>{cleanup();resolve(data);};
+      s.src=`${url}${url.includes("?")?"&":"?"}callback=${cb}`;
+      s.onerror=()=>{cleanup();reject(new Error("load error"));};
+      document.head.appendChild(s);
+    });
+  }
+
+  /* ── PERSISTENCE ─────────────────────────────────────────────── */
+  function loadLocal(){
+    try{const s=localStorage.getItem(STORAGE_KEY);if(s)return JSON.parse(s);}catch{}
+    return{...INITIAL_BOOKINGS};
+  }
+  function saveLocal(){
+    try{localStorage.setItem(STORAGE_KEY,JSON.stringify(bookings));}catch{}
+  }
+
+  async function loadFromSheets(){
+    if(!scriptUrl){
+      bookings=loadLocal();
+      renderAll();
+      return;
+    }
+    setSyncStatus("loading","טוען מ-Google Sheets…");
+    try{
+      const data=await jsonpFetch(scriptUrl);
+      if(data&&typeof data==="object"&&!Array.isArray(data)&&!data.error&&Object.keys(data).length>0){
+        bookings=data;
+        saveLocal();
+        setSyncStatus("ok","מסונכרן ✓");
+      } else {
+        // Sheets is empty or error — keep local data, don't wipe
+        bookings=loadLocal();
+        setSyncStatus("ok","מסונכרן ✓ (ללא נתונים ב-Sheets — נטען מקומית)");
+      }
+    }catch(e){
+      setSyncStatus("err","לא מחובר — נתונים מקומיים");
+      bookings=loadLocal();
+    }
+    renderAll();
+  }
+
+  async function saveToSheets(){
+    if(!scriptUrl) return;
+    setSyncStatus("loading","שומר…");
+    try{
+      const encoded=encodeURIComponent(JSON.stringify(bookings));
+      const saveUrl=`${scriptUrl}?action=save&data=${encoded}`;
+      await jsonpFetch(saveUrl);
+      setSyncStatus("ok","נשמר ב-Google Sheets ✓");
+    }catch{
+      setSyncStatus("err","שגיאה בשמירה — נשמר מקומית");
+    }
+  }
+
+  function persist(){
+    saveLocal();
+    saveToSheets();
+  }
+
+  /* ── MESSAGES ────────────────────────────────────────────────── */
+  function setMsg(id,type,text){const el=document.getElementById(id);el.className=`message show ${type}`;el.textContent=text;}
+  function clearMessage(id){const el=document.getElementById(id);el.className="message";el.textContent="";}
+
+  /* ── POPULATE SELECTS ────────────────────────────────────────── */
+  function populateSelects(){
+    const ids=["singleFrom","singleTo","rangeFrom","rangeTo","recurFrom","recurTo","queryFrom","queryTo"];
+    ids.forEach(id=>{
+      const s=document.getElementById(id);
+      s.innerHTML=HOURS.map(h=>`<option value="${h}">${h}</option>`).join("");
+    });
+    // default "to" selects to 10:00 (second hour)
+    ["singleTo","rangeTo","recurTo","queryTo"].forEach(id=>{
+      document.getElementById(id).value="09:00";
+    });
+  }
+
+  /* ── RENDER ──────────────────────────────────────────────────── */
+  function renderAll(){renderCalendar();renderMobile();renderList();}
+
+  function renderCalendar(){
+    const ds=document.getElementById("selectedDate").value;
+    const wk=getWeekDates(ds);
+    let html=`<thead><tr><th>שעה</th>`;
+    wk.forEach(d=>html+=`<th>${d.dayName}<span class="date-small">${fmtDate(d.dateString)}</span></th>`);
+    html+=`</tr></thead><tbody>`;
+    HOURS.forEach(hour=>{
+      html+=`<tr><td class="hour-cell">${hour}</td>`;
+      wk.forEach(day=>{
+        const b=bookings[key(day.dateString,hour)];
+        html+=`<td>`;
+        if(b) html+=`<div class="slot-busy"><strong>תפוס</strong><small>${esc(b.name)}</small><button class="delete-btn" onclick="del('${day.dateString}','${hour}')">מחק</button></div>`;
+        else  html+=`<button class="slot-free" onclick="quickBook('${day.dateString}','${hour}')">פנוי</button>`;
+        html+=`</td>`;
       });
-      document.getElementById("mobileCalendar").innerHTML = html;
+      html+=`</tr>`;
+    });
+    html+=`</tbody>`;
+    document.getElementById("calendarTable").innerHTML=html;
+  }
+
+  function renderMobile(){
+    const ds=document.getElementById("selectedDate").value;
+    const wk=getWeekDates(ds);
+    document.getElementById("weekLabel").textContent=
+      `${fmtDate(wk[0].dateString)} – ${fmtDate(wk[4].dateString)}`;
+    let html="";
+    wk.forEach(day=>{
+      const busy=HOURS.filter(h=>bookings[key(day.dateString,h)]).length;
+      const open=openDays.has(day.dateString);
+      html+=`<div class="day-accordion">
+        <div class="day-header" onclick="toggleDay('${day.dateString}')">
+          <span>${day.dayName} <span class="day-badge">${fmtDate(day.dateString)}${busy?` · ${busy} תפוסות`:""}</span></span>
+          <span>${open?"▲":"▼"}</span>
+        </div>
+        <div class="day-body${open?" open":""}">`;
+      HOURS.forEach(hour=>{
+        const b=bookings[key(day.dateString,hour)];
+        html+=`<div class="hour-row"><span class="hour-label">${hour}</span><div class="hour-content">`;
+        if(b) html+=`<div class="mobile-slot-busy"><strong>תפוס</strong><small>${esc(b.name)}</small><button class="mobile-delete-btn" onclick="del('${day.dateString}','${hour}')">מחק</button></div>`;
+        else  html+=`<button class="mobile-slot-free" onclick="quickBook('${day.dateString}','${hour}')">פנוי</button>`;
+        html+=`</div></div>`;
+      });
+      html+=`</div></div>`;
+    });
+    document.getElementById("mobileCalendar").innerHTML=html;
+  }
+
+  function renderList(){
+    const list=document.getElementById("bookingsList");
+    const items=Object.entries(bookings)
+      .map(([k,v])=>{const[date,hour]=k.split("_");return{date,hour,...v};})
+      .sort((a,b)=>`${a.date}_${a.hour}`.localeCompare(`${b.date}_${b.hour}`));
+    if(!items.length){list.innerHTML=`<p style="color:var(--muted);margin:0">אין שיבוצים.</p>`;return;}
+    list.innerHTML=items.map(i=>`
+      <div class="booking-item">
+        <strong>${fmtDate(i.date)} | ${i.hour}</strong>
+        <span>${esc(i.name)}</span>
+      </div>`).join("");
+  }
+
+  function toggleDay(ds){openDays.has(ds)?openDays.delete(ds):openDays.add(ds);renderMobile();}
+  function shiftWeek(d){
+    const inp=document.getElementById("selectedDate");
+    const dt=new Date(`${inp.value}T12:00:00`);
+    dt.setDate(dt.getDate()+d*7);
+    inp.value=toISODate(dt);
+    openDays.clear();
+    renderAll();
+  }
+
+  /* ── BOOKING ACTIONS ─────────────────────────────────────────── */
+  function getName(){return document.getElementById("bookerName").value.trim()||"משתמש/ת ללא שם";}
+
+  // Click on table cell — quick-book single hour using current "from" for that tab
+  function quickBook(date,hour){
+    document.getElementById("singleDate").value=date;
+    document.getElementById("singleFrom").value=hour;
+    document.getElementById("singleTo").value=hour;
+    switchTab("single");
+    bookSingle();
+  }
+
+  function bookSingle(){
+    const date=document.getElementById("singleDate").value;
+    const from=document.getElementById("singleFrom").value;
+    const to=document.getElementById("singleTo").value;
+    if(!date){setMsg("message","error","נא לבחור תאריך.");return;}
+    if(!isWeekday(date)){setMsg("message","error","לא ניתן לשבץ בימי שישי/שבת.");return;}
+    const hrs=hoursInRange(from,to);
+    if(!hrs){setMsg("message","error","שעת הסיום חייבת להיות אחרי שעת ההתחלה.");return;}
+    const conflicts=hrs.filter(h=>bookings[key(date,h)]);
+    if(conflicts.length){setMsg("message","error",`${conflicts.length} שעות תפוסות בתאריך זה (${conflicts.join(", ")}).`);return;}
+    const name=getName();
+    hrs.forEach(h=>{bookings[key(date,h)]={name,createdAt:new Date().toISOString()};});
+    persist();
+    setMsg("message","success",`שובצו ${hrs.length} שעות ל-${name} ב-${fmtDate(date)}.`);
+    renderAll();
+  }
+
+  function bookRange(){
+    const from=document.getElementById("rangeFrom").value;
+    const to=document.getElementById("rangeTo").value;
+    const start=document.getElementById("rangeStart").value;
+    const end=document.getElementById("rangeEnd").value;
+    if(!start||!end){setMsg("message","error","נא למלא תאריך התחלה וסיום.");return;}
+    const hrs=hoursInRange(from,to);
+    if(!hrs){setMsg("message","error","שעת הסיום חייבת להיות אחרי שעת ההתחלה.");return;}
+    if(new Date(`${end}T12:00:00`)<new Date(`${start}T12:00:00`)){setMsg("message","error","תאריך הסיום לפני ההתחלה.");return;}
+    const dates=[];
+    const cur=new Date(`${start}T12:00:00`);
+    while(cur<=new Date(`${end}T12:00:00`)){const ds=toISODate(cur);if(isWeekday(ds))dates.push(ds);cur.setDate(cur.getDate()+1);}
+    const conflicts=[];
+    dates.forEach(d=>hrs.forEach(h=>{if(bookings[key(d,h)])conflicts.push(`${fmtDate(d)} ${h}`);}));
+    if(conflicts.length){setMsg("message","error",`נמצאו ${conflicts.length} מועדים תפוסים.`);return;}
+    const name=getName();
+    dates.forEach(d=>hrs.forEach(h=>{bookings[key(d,h)]={name,createdAt:new Date().toISOString()};}));
+    persist();
+    setMsg("message","success",`שובצו ${dates.length*hrs.length} שעות ל-${name}.`);
+    renderAll();
+  }
+
+  function bookRecurring(){
+    const selectedDows=[...document.querySelectorAll(".dow-chip input:checked")].map(c=>+c.value);
+    if(!selectedDows.length){setMsg("message","error","נא לסמן לפחות יום אחד בשבוע.");return;}
+    const from=document.getElementById("recurFrom").value;
+    const to=document.getElementById("recurTo").value;
+    const start=document.getElementById("recurStart").value;
+    const end=document.getElementById("recurEnd").value;
+    if(!start||!end){setMsg("message","error","נא למלא תאריך התחלה וסיום.");return;}
+    const hrs=hoursInRange(from,to);
+    if(!hrs){setMsg("message","error","שעת הסיום חייבת להיות אחרי שעת ההתחלה.");return;}
+    if(new Date(`${end}T12:00:00`)<new Date(`${start}T12:00:00`)){setMsg("message","error","תאריך הסיום לפני ההתחלה.");return;}
+    const dates=[];
+    const cur=new Date(`${start}T12:00:00`);
+    while(cur<=new Date(`${end}T12:00:00`)){
+      const ds=toISODate(cur);
+      if(selectedDows.includes(cur.getDay()))dates.push(ds);
+      cur.setDate(cur.getDate()+1);
     }
+    const conflicts=[];
+    dates.forEach(d=>hrs.forEach(h=>{if(bookings[key(d,h)])conflicts.push(`${fmtDate(d)} ${h}`);}));
+    if(conflicts.length){setMsg("message","error",`נמצאו ${conflicts.length} מועדים תפוסים.`);return;}
+    const name=getName();
+    dates.forEach(d=>hrs.forEach(h=>{bookings[key(d,h)]={name,createdAt:new Date().toISOString()};}));
+    persist();
+    setMsg("message","success",`שובצו ${dates.length*hrs.length} שעות (${dates.length} ימים × ${hrs.length} שעות) ל-${name}.`);
+    renderAll();
+  }
 
-    function toggleDay(ds) {
-      openDays.has(ds) ? openDays.delete(ds) : openDays.add(ds);
-      renderMobileCalendar();
+  function del(date,hour){
+    delete bookings[key(date,hour)];
+    persist();
+    setMsg("message","success","השיבוץ נמחק.");
+    renderAll();
+  }
+
+  function checkAvailability(){
+    const qd=document.getElementById("queryDate").value;
+    const qf=document.getElementById("queryFrom").value;
+    const qt=document.getElementById("queryTo").value;
+    if(!qd){setMsg("queryResult","warn","נא לבחור תאריך.");return;}
+    if(!isWeekday(qd)){setMsg("queryResult","error","החדר אינו פעיל בימי שישי/שבת.");return;}
+    const hrs=hoursInRange(qf,qt);
+    if(!hrs){setMsg("queryResult","error","שעת הסיום חייבת להיות אחרי שעת ההתחלה.");return;}
+    const busy=hrs.filter(h=>bookings[key(qd,h)]);
+    if(busy.length){
+      const details=busy.map(h=>`${h}: ${bookings[key(qd,h)].name}`).join("\n");
+      setMsg("queryResult","error",`${busy.length} שעות תפוסות ב-${fmtDate(qd)}:\n${details}`);
+    } else {
+      setMsg("queryResult","success",`החדר פנוי ב-${fmtDate(qd)} בין ${qf}–${qt} ✓`);
     }
+  }
 
-    function shiftWeek(delta) {
-      const input = document.getElementById("selectedDate");
-      const d = new Date(`${input.value}T12:00:00`);
-      d.setDate(d.getDate() + delta * 7);
-      input.value = toISODate(d);
-      openDays.clear();
-      renderCalendar();
-    }
+  function resetBookings(){
+    if(!confirm("לאפס לשיבוצים המקוריים?")) return;
+    bookings={...INITIAL_BOOKINGS};
+    persist();
+    openDays.clear();
+    clearMessage("queryResult");
+    setMsg("message","success","אופס לשיבוצים המקוריים.");
+    renderAll();
+  }
 
-    function renderBookingsList() {
-      const list = document.getElementById("bookingsList");
-      const items = Object.entries(bookings)
-        .map(([key, v]) => { const [date, hour] = key.split("_"); return { date, hour, ...v }; })
-        .sort((a,b) => `${a.date}_${a.hour}`.localeCompare(`${b.date}_${b.hour}`));
-      if (!items.length) { list.innerHTML = `<p style="color:var(--muted);margin:0;">אין עדיין שיבוצים.</p>`; return; }
-      list.innerHTML = items.map(i => `
-        <div class="booking-item">
-          <strong>${formatHebrewDate(i.date)} | ${i.hour}</strong>
-          <span>${escapeHtml(i.name)}</span>
-        </div>`).join("");
-    }
+  /* ── INIT ────────────────────────────────────────────────────── */
+  function init(){
+    const today=toISODate(new Date());
+    document.getElementById("selectedDate").value=today;
+    ["singleDate","rangeStart","rangeEnd","recurStart","recurEnd","queryDate"].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.value=today;
+    });
+    populateSelects();
+    updateSetupBanner();
+    if(!scriptUrl) setSyncStatus("err","לא מחובר — הגדר URL");
+    document.getElementById("selectedDate").addEventListener("change",()=>{openDays.clear();renderAll();});
+    document.getElementById("resetBtn").addEventListener("click",resetBookings);
+    document.getElementById("checkBtn").addEventListener("click",checkAvailability);
+    loadFromSheets();
+  }
 
-    // ── ACTIONS ────────────────────────────────────────────────────
-
-    function bookSlot(date, hour) {
-      if (!isWeekday(date)) { setMessage("message","error","לא ניתן לשבץ בימי שישי או שבת."); return; }
-      const key = buildKey(date, hour);
-      if (bookings[key]) { setMessage("message","error","החדר כבר משובץ במועד זה."); return; }
-      const name = document.getElementById("bookerName").value.trim() || "משתמש/ת ללא שם";
-      bookings[key] = { name, createdAt: new Date().toISOString() };
-      persist();
-      setMessage("message","success",`השיבוץ בוצע בהצלחה עבור ${name}.`);
-      renderCalendar();
-    }
-
-    function bookRange() {
-      const rangeStart = document.getElementById("rangeStart").value;
-      const rangeEnd = document.getElementById("rangeEnd").value;
-      const selectedHour = document.getElementById("selectedHour").value;
-      if (!rangeStart || !rangeEnd) { setMessage("message","error","נא למלא תאריך התחלה וסיום."); return; }
-      const start = new Date(`${rangeStart}T12:00:00`);
-      const end = new Date(`${rangeEnd}T12:00:00`);
-      if (end < start) { setMessage("message","error","תאריך הסיום חייב להיות אחרי תאריך ההתחלה."); return; }
-      const dates = [];
-      const cur = new Date(start);
-      while (cur <= end) { const ds = toISODate(cur); if (isWeekday(ds)) dates.push(ds); cur.setDate(cur.getDate()+1); }
-      const conflicts = dates.filter(d => bookings[buildKey(d, selectedHour)]);
-      if (conflicts.length) { setMessage("message","error",`נמצאו ${conflicts.length} מועדים תפוסים בטווח.`); return; }
-      const name = document.getElementById("bookerName").value.trim() || "משתמש/ת ללא שם";
-      dates.forEach(d => { bookings[buildKey(d, selectedHour)] = { name, createdAt: new Date().toISOString() }; });
-      persist();
-      setMessage("message","success",`בוצעו ${dates.length} שיבוצים בהצלחה.`);
-      renderCalendar();
-    }
-
-    function deleteBooking(date, hour) {
-      delete bookings[buildKey(date, hour)];
-      persist();
-      setMessage("message","success","השיבוץ נמחק.");
-      renderCalendar();
-    }
-
-    function checkAvailability() {
-      const qd = document.getElementById("queryDate").value;
-      const qh = document.getElementById("queryHour").value;
-      if (!qd) { setMessage("queryResult","warn","נא לבחור תאריך."); return; }
-      if (!isWeekday(qd)) { setMessage("queryResult","error","החדר אינו פעיל בימי שישי או שבת."); return; }
-      const b = bookings[buildKey(qd, qh)];
-      if (b) {
-        setMessage("queryResult","error",`החדר תפוס ב-${formatHebrewDate(qd)} ${qh}.\nמשובץ ל: ${b.name}.`);
-      } else {
-        setMessage("queryResult","success",`החדר פנוי ב-${formatHebrewDate(qd)} ${qh}.`);
-      }
-    }
-
-    function resetBookings() {
-      if (!confirm("לאפס את כל השינויים ולחזור לשיבוצים המקוריים?")) return;
-      bookings = { ...INITIAL_BOOKINGS };
-      persist();
-      openDays.clear();
-      clearMessage("queryResult");
-      setMessage("message","success","המערכת אופסה לשיבוצים המקוריים.");
-      renderCalendar();
-    }
-
-    // ── INIT ───────────────────────────────────────────────────────
-
-    function init() {
-      const today = toISODate(new Date());
-      document.getElementById("selectedDate").value = today;
-      document.getElementById("rangeStart").value = today;
-      document.getElementById("rangeEnd").value = today;
-      document.getElementById("queryDate").value = today;
-      populateHourSelects();
-      updateSetupBanner();
-
-      document.getElementById("selectedDate").addEventListener("change", () => { openDays.clear(); renderCalendar(); });
-      document.getElementById("rangeBookBtn").addEventListener("click", bookRange);
-      document.getElementById("checkBtn").addEventListener("click", checkAvailability);
-      document.getElementById("resetBtn").addEventListener("click", resetBookings);
-      document.getElementById("refreshBtn").addEventListener("click", loadFromSheets);
-      document.getElementById("prevWeekBtn").addEventListener("click", () => shiftWeek(-1));
-      document.getElementById("nextWeekBtn").addEventListener("click", () => shiftWeek(1));
-
-      if (scriptUrl) {
-        setSyncStatus("loading", "מתחבר ל-Google Sheets…");
-      } else {
-        setSyncStatus("err", "לא מחובר — הגדר URL של Apps Script");
-      }
-      loadFromSheets();
-    }
-
-    init();
-  </script>
+  init();
+</script>
 </body>
 </html>
