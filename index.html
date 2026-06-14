@@ -132,7 +132,7 @@
 <body>
 <div class="container">
 
-  <div class="setup-banner" id="setupBanner">
+  <div class="setup-banner" id="setupBanner" style="display:none">
     <strong>⚙️ הגדרה חד-פעמית — Firebase Realtime Database (חינמי)</strong>
     <ol>
       <li>כנס ל-<a href="https://console.firebase.google.com" target="_blank">console.firebase.google.com</a> → "Add project" (שם חופשי)</li>
@@ -274,6 +274,7 @@
 const STORAGE_KEY   = "room_422_v4";
 const FB_URL_KEY    = "room_422_firebase_url";
 const DB_PATH       = "/room422/bookings";
+const DEFAULT_FB_URL = "https://new-67d5d-default-rtdb.firebaseio.com";
 const DAYS_HE       = ["ראשון","שני","שלישי","רביעי","חמישי"];
 const HOURS         = Array.from({length:12},(_,i)=>`${String(i+8).padStart(2,"0")}:00`);
 
@@ -323,7 +324,7 @@ const INITIAL_BOOKINGS = {
 /* ── STATE ──────────────────────────────────────────────────── */
 let bookings = {};
 let openDays = new Set();
-let firebaseUrl = localStorage.getItem(FB_URL_KEY) || "";
+let firebaseUrl = localStorage.getItem(FB_URL_KEY) || DEFAULT_FB_URL;
 
 /* ── HELPERS ────────────────────────────────────────────────── */
 function toISODate(d){return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;}
