@@ -11,6 +11,7 @@
       --free-bg:#e9f9ef; --free-text:#166534;
       --busy-bg:#fff1f2; --busy-text:#9f1239;
       --warn-bg:#fff7ed; --warn-text:#9a3412;
+      --course-bg:#eef2ff; --course-text:#3730a3; --course-line:#c7d2fe;
       --shadow:0 14px 40px rgba(15,23,42,.08);
     }
     *{box-sizing:border-box;}
@@ -20,7 +21,9 @@
     header{background:linear-gradient(135deg,#fff,#eef6ff);border:1px solid var(--line);border-radius:24px;padding:20px 24px;box-shadow:var(--shadow);display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:20px;flex-wrap:wrap;}
     h1{margin:0;font-size:clamp(20px,4vw,36px);letter-spacing:-.03em;}
     h2{margin:0 0 14px;font-size:18px;}
+    h3{margin:0 0 10px;font-size:15px;}
     .subtitle{margin:6px 0 0;color:var(--muted);font-size:14px;}
+    .header-side{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
 
     .sync-status{display:flex;align-items:center;gap:8px;background:#eff6ff;color:#1e3a8a;padding:10px 14px;border-radius:16px;font-size:13px;line-height:1.5;}
     .sync-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;background:#94a3b8;}
@@ -29,6 +32,10 @@
     .sync-dot.loading{background:#f59e0b;animation:pulse 1s infinite;}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
+    .auth-box{display:flex;align-items:center;gap:8px;font-size:13px;}
+    .auth-box .who{background:var(--course-bg);color:var(--course-text);padding:9px 12px;border-radius:12px;font-weight:700;}
+    .btn-admin{background:#0f172a;color:#fff;font-size:13px;}
+
     .layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;}
     .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 8px 22px rgba(15,23,42,.05);margin-bottom:20px;}
 
@@ -36,20 +43,24 @@
     .setup-banner{background:var(--warn-bg);color:var(--warn-text);border:1px solid #fed7aa;border-radius:16px;padding:16px 18px;margin-bottom:20px;font-size:14px;line-height:1.8;}
     .setup-banner strong{display:block;font-size:15px;margin-bottom:8px;}
     .setup-banner ol{margin:0 0 10px 18px;padding:0;}
-    .setup-banner code{background:rgba(0,0,0,.08);border-radius:5px;padding:2px 6px;font-family:monospace;font-size:12px;}
+    .setup-banner code,.modal code{background:rgba(0,0,0,.08);border-radius:5px;padding:2px 6px;font-family:monospace;font-size:12px;}
     .setup-url-row{display:flex;gap:8px;margin-top:10px;}
     .setup-url-row input{flex:1;border:1px solid #fdba74;border-radius:10px;padding:9px 12px;font-size:13px;font-family:inherit;}
     .setup-url-row button{background:var(--warn-text);color:#fff;border:0;border-radius:10px;padding:9px 16px;font-weight:700;cursor:pointer;font-family:inherit;font-size:13px;white-space:nowrap;}
 
     /* forms */
     label span{display:block;font-weight:700;font-size:13px;margin-bottom:5px;}
-    input[type=text],input[type=date],select{width:100%;border:1px solid #cbd5e1;border-radius:11px;padding:9px 11px;background:#fff;color:var(--text);font-family:inherit;font-size:14px;-webkit-appearance:none;appearance:none;}
+    input[type=text],input[type=date],input[type=password],select,textarea{width:100%;border:1px solid #cbd5e1;border-radius:11px;padding:9px 11px;background:#fff;color:var(--text);font-family:inherit;font-size:14px;-webkit-appearance:none;appearance:none;}
+    textarea{min-height:60px;resize:vertical;}
+    input.ltr{direction:ltr;text-align:left;}
     button{border:0;border-radius:11px;padding:10px 14px;cursor:pointer;font-weight:700;font-family:inherit;font-size:14px;transition:.15s ease;touch-action:manipulation;}
     button:hover{opacity:.88;transform:translateY(-1px);}
     button:active{transform:translateY(0);}
     button:disabled{opacity:.45;cursor:not-allowed;transform:none;}
     .btn-primary{background:var(--primary);color:#fff;width:100%;min-height:44px;}
     .btn-secondary{background:#e2e8f0;color:#0f172a;}
+    .btn-danger{background:var(--busy-bg);color:var(--busy-text);}
+    .btn-sm{padding:6px 10px;font-size:12px;border-radius:9px;}
 
     /* tabs */
     .tab-bar{display:flex;gap:4px;margin-bottom:14px;background:#f1f5f9;border-radius:12px;padding:4px;}
@@ -61,6 +72,7 @@
     .field-row{display:grid;gap:10px;margin-bottom:10px;}
     .field-row.cols2{grid-template-columns:1fr 1fr;}
     .field-row.cols3{grid-template-columns:1fr 1fr 1fr;}
+    .field-row.cols4{grid-template-columns:repeat(4,1fr);}
 
     /* day checkboxes */
     .dow-grid{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
@@ -91,6 +103,14 @@
     .slot-busy small{display:block;line-height:1.35;font-size:11px;word-break:break-word;}
     .delete-btn{margin-top:5px;padding:0;color:var(--busy-text);background:transparent;text-decoration:underline;font-size:11px;}
 
+    .slot-course{background:var(--course-bg);color:var(--course-text);border:1px solid var(--course-line);border-radius:10px;padding:7px;min-height:46px;margin-bottom:4px;}
+    .slot-course strong{display:block;margin-bottom:3px;font-size:11px;}
+    .slot-course small{display:block;line-height:1.35;font-size:11px;word-break:break-word;}
+    .slot-cancelled{border:1px dashed #cbd5e1;color:var(--muted);border-radius:9px;padding:5px 7px;font-size:11px;margin-bottom:4px;text-decoration:line-through;}
+    .clickable{cursor:pointer;}
+    .clickable:hover{filter:brightness(.96);}
+    .conflict-note{color:var(--busy-text);font-size:11px;font-weight:700;margin-top:3px;}
+
     /* mobile */
     .mobile-view{display:none;}
     .week-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;}
@@ -116,17 +136,55 @@
     .booking-item{border:1px solid var(--line);border-radius:13px;padding:10px 12px;background:#fff;}
     .booking-item strong{display:block;margin-bottom:3px;font-size:12px;}
     .booking-item span{color:var(--muted);font-size:12px;}
+    .booking-item.course{border-color:var(--course-line);background:var(--course-bg);}
+    .booking-item.course strong{color:var(--course-text);}
 
     /* week selector row */
     .week-selector{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
     .week-selector label{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;}
     .week-selector input[type=date]{width:auto;border-radius:10px;padding:7px 10px;font-size:13px;border:1px solid #cbd5e1;}
     .week-selector button{font-size:13px;padding:7px 14px;}
+    .legend{display:flex;gap:12px;font-size:12px;color:var(--muted);margin-inline-start:auto;flex-wrap:wrap;}
+    .legend i{display:inline-block;width:12px;height:12px;border-radius:4px;vertical-align:-2px;margin-inline-end:4px;}
+
+    /* admin panel */
+    .admin-panel{border:2px solid var(--course-line);}
+    .admin-panel .panel-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+    .admin-panel .panel-head h2{margin:0;}
+    .badge{display:inline-block;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:700;background:var(--course-bg);color:var(--course-text);white-space:nowrap;}
+    .badge.annual{background:#dcfce7;color:#166534;}
+    .badge.semA{background:#e0f2fe;color:#075985;}
+    .badge.semB{background:#fae8ff;color:#86198f;}
+    .badge.summer{background:#fef9c3;color:#854d0e;}
+    .badge.cancel{background:#f1f5f9;color:var(--muted);}
+    .badge.moved{background:var(--warn-bg);color:var(--warn-text);}
+    .subtle{color:var(--muted);font-size:12px;}
+    .divider{border:0;border-top:1px solid var(--line);margin:16px 0;}
+    .list-tools{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+    .list-tools input,.list-tools select{width:auto;flex:1;min-width:140px;}
+    .course-row{border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:8px;background:#fff;}
+    .course-row-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap;}
+    .course-row-head .title{font-weight:800;font-size:14px;}
+    .course-row-head .meta{color:var(--muted);font-size:12px;margin-top:4px;line-height:1.6;}
+    .row-btns{display:flex;gap:6px;flex-wrap:wrap;}
+    .occ-list{margin-top:10px;border-top:1px solid var(--line);padding-top:8px;max-height:320px;overflow:auto;}
+    .occ-item{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 4px;border-bottom:1px solid #f1f5f9;font-size:12px;flex-wrap:wrap;}
+    .occ-item.is-cancelled .occ-when{text-decoration:line-through;color:var(--muted);}
+    .admin-item{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:6px;font-size:13px;}
+
+    /* modal */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:50;}
+    .modal-backdrop.show{display:flex;}
+    .modal{background:#fff;border-radius:20px;max-width:460px;width:100%;max-height:90vh;overflow:auto;padding:20px;box-shadow:0 30px 80px rgba(15,23,42,.3);font-size:14px;line-height:1.6;}
+    .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+    .modal-head h2{margin:0;}
+    .modal-close{background:transparent;font-size:20px;padding:4px 8px;color:var(--muted);}
+    .modal ol{padding-inline-start:18px;margin:6px 0 12px;}
 
     @media(max-width:1060px){.layout{grid-template-columns:1fr;}header{flex-direction:column;align-items:stretch;}.sync-status{max-width:none;}}
-    @media(max-width:700px){.container{padding:12px;}.field-row.cols3,.field-row.cols2{grid-template-columns:1fr;}header,.card{border-radius:16px;}.desktop-view{display:none;}.mobile-view{display:block;}}
+    @media(max-width:700px){.container{padding:12px;}.field-row.cols3,.field-row.cols2,.field-row.cols4{grid-template-columns:1fr;}header,.card{border-radius:16px;}.desktop-view{display:none;}.mobile-view{display:block;}}
     @media(min-width:701px){.desktop-view{display:block;}.mobile-view{display:none;}}
-    @media print{body{background:#fff;}.controls,aside,.sync-status,.setup-banner,button,input,select{display:none!important;}.layout{display:block;}.mobile-view{display:none!important;}.desktop-view{display:block!important;}header,.card{box-shadow:none;border:1px solid #ccc;}table{min-width:0;font-size:11px;}}
+    @media print{body{background:#fff;}.controls,aside,.sync-status,.setup-banner,.admin-panel,.auth-box,.modal-backdrop,button,input,select{display:none!important;}.layout{display:block;}.mobile-view{display:none!important;}.desktop-view{display:block!important;}header,.card{box-shadow:none;border:1px solid #ccc;}table{min-width:0;font-size:11px;}}
   </style>
 </head>
 <body>
@@ -153,11 +211,132 @@
       <h1>שיבוץ שימוש בחדר 422</h1>
       <p class="subtitle">ימים ראשון עד חמישי, בין השעות 08:00–19:00</p>
     </div>
-    <div class="sync-status">
-      <span class="sync-dot" id="syncDot"></span>
-      <span id="syncLabel">מתחבר…</span>
+    <div class="header-side">
+      <div class="sync-status">
+        <span class="sync-dot" id="syncDot"></span>
+        <span id="syncLabel">מתחבר…</span>
+      </div>
+      <div class="auth-box" id="authBox"></div>
     </div>
   </header>
+
+  <!-- ═══════════ ADMIN PANEL ═══════════ -->
+  <section class="card admin-panel" id="adminPanel" hidden>
+    <div class="panel-head">
+      <h2>🛠️ ניהול קורסים</h2>
+      <span class="subtle" id="adminHello"></span>
+    </div>
+
+    <div class="tab-bar" id="adminTabs">
+      <button class="tab-btn active" data-atab="courses">קורסים</button>
+      <button class="tab-btn" data-atab="terms">שנה וסמסטרים</button>
+      <button class="tab-btn" data-atab="admins" id="adminsTabBtn">משתמשי ניהול</button>
+      <button class="tab-btn" data-atab="account">החשבון שלי</button>
+    </div>
+
+    <!-- courses -->
+    <div class="tab-panel active" id="atab-courses">
+      <h3 id="courseFormTitle">הוספת קורס חדש</h3>
+      <div class="field-row cols2">
+        <label><span>שם הקורס *</span><input type="text" id="cName" placeholder="לדוגמה: סמינר דוקטורנטים" /></label>
+        <label><span>מרצה / אחראי</span><input type="text" id="cLecturer" placeholder='לדוגמה: ד"ר כהן' /></label>
+      </div>
+      <div class="field-row cols3">
+        <label><span>סוג הקורס</span>
+          <select id="cType">
+            <option value="annual">שנתי</option>
+            <option value="semA">סמסטר א'</option>
+            <option value="semB">סמסטר ב'</option>
+            <option value="summer">סמסטר קיץ</option>
+            <option value="custom">תאריכים מותאמים</option>
+          </select>
+        </label>
+        <label><span>מתאריך</span><input type="date" id="cStart" /></label>
+        <label><span>עד תאריך</span><input type="date" id="cEnd" /></label>
+      </div>
+      <label><span>ימי המפגש</span></label>
+      <div class="dow-grid" id="cDays">
+        <span class="dow-chip"><input type="checkbox" id="cdow0" value="0"><label for="cdow0">ראשון</label></span>
+        <span class="dow-chip"><input type="checkbox" id="cdow1" value="1"><label for="cdow1">שני</label></span>
+        <span class="dow-chip"><input type="checkbox" id="cdow2" value="2"><label for="cdow2">שלישי</label></span>
+        <span class="dow-chip"><input type="checkbox" id="cdow3" value="3"><label for="cdow3">רביעי</label></span>
+        <span class="dow-chip"><input type="checkbox" id="cdow4" value="4"><label for="cdow4">חמישי</label></span>
+      </div>
+      <div class="field-row cols2">
+        <label><span>שעת התחלה</span><select id="cFrom"></select></label>
+        <label><span>שעת סיום</span><select id="cTo"></select></label>
+      </div>
+      <div class="field-row">
+        <label><span>הערות</span><textarea id="cNotes" placeholder="אופציונלי"></textarea></label>
+      </div>
+      <div class="actions-row">
+        <button class="btn-primary" id="courseSaveBtn" style="flex:2">הוסף קורס</button>
+        <button class="btn-secondary" id="courseCancelEditBtn" hidden>ביטול עריכה</button>
+      </div>
+      <div id="courseMsg" class="message"></div>
+
+      <hr class="divider" />
+      <h3>קורסים קיימים</h3>
+      <div class="list-tools">
+        <input type="text" id="courseSearch" placeholder="חיפוש לפי שם או מרצה…" />
+        <select id="courseFilter">
+          <option value="">כל הסוגים</option>
+          <option value="annual">שנתי</option>
+          <option value="semA">סמסטר א'</option>
+          <option value="semB">סמסטר ב'</option>
+          <option value="summer">סמסטר קיץ</option>
+          <option value="custom">מותאם</option>
+        </select>
+      </div>
+      <div id="adminCourseList"></div>
+    </div>
+
+    <!-- terms -->
+    <div class="tab-panel" id="atab-terms">
+      <p class="subtle" style="margin-top:0">התאריכים כאן ממולאים אוטומטית בטופס הקורס לפי הסוג שנבחר. שינוי כאן לא משנה קורסים שכבר נשמרו.</p>
+      <div id="termsFields"></div>
+      <button class="btn-primary" id="termsSaveBtn">שמור תאריכים</button>
+      <div id="termsMsg" class="message"></div>
+      <hr class="divider" />
+      <h3>שיבוצים חד-פעמיים</h3>
+      <p class="subtle">מחזיר את השיבוצים החד-פעמיים לרשימה המקורית שנטענה במערכת. קורסים לא מושפעים.</p>
+      <button class="btn-danger" id="resetBtn">אפס לשיבוצים המקוריים</button>
+    </div>
+
+    <!-- admins -->
+    <div class="tab-panel" id="atab-admins">
+      <div id="adminsList"></div>
+      <hr class="divider" />
+      <h3>הוספת משתמש ניהול</h3>
+      <div class="field-row cols2">
+        <label><span>שם משתמש (אותיות באנגלית/ספרות)</span><input type="text" class="ltr" id="naUser" autocomplete="off" placeholder="dana" /></label>
+        <label><span>שם לתצוגה</span><input type="text" id="naName" placeholder="דנה לוי" /></label>
+      </div>
+      <div class="field-row cols2">
+        <label><span>סיסמה (לפחות 6 תווים)</span><input type="password" id="naPass" autocomplete="new-password" /></label>
+        <label><span>הרשאה</span>
+          <select id="naRole">
+            <option value="admin">מנהל קורסים</option>
+            <option value="super">מנהל ראשי (יכול להוסיף מנהלים)</option>
+          </select>
+        </label>
+      </div>
+      <button class="btn-primary" id="addAdminBtn">צור משתמש</button>
+      <div id="adminsMsg" class="message"></div>
+    </div>
+
+    <!-- account -->
+    <div class="tab-panel" id="atab-account">
+      <h3>שינוי סיסמה</h3>
+      <div class="field-row cols3">
+        <label><span>סיסמה נוכחית</span><input type="password" id="pwOld" autocomplete="current-password" /></label>
+        <label><span>סיסמה חדשה</span><input type="password" id="pwNew" autocomplete="new-password" /></label>
+        <label><span>אימות סיסמה חדשה</span><input type="password" id="pwNew2" autocomplete="new-password" /></label>
+      </div>
+      <button class="btn-primary" id="changePwBtn">עדכן סיסמה</button>
+      <div id="accountMsg" class="message"></div>
+    </div>
+  </section>
 
   <div class="layout">
     <main>
@@ -170,7 +349,7 @@
           </label>
         </div>
 
-        <div class="tab-bar">
+        <div class="tab-bar" id="bookTabs">
           <button class="tab-btn active" onclick="switchTab('single')">יום + שעות</button>
           <button class="tab-btn" onclick="switchTab('range')">טווח תאריכים</button>
           <button class="tab-btn" onclick="switchTab('recurring')">לפי יום בשבוע</button>
@@ -223,7 +402,6 @@
         <div id="message" class="message"></div>
 
         <div class="actions-row">
-          <button class="btn-secondary" id="resetBtn">אפס לשיבוצים המקוריים</button>
           <button class="btn-secondary" onclick="window.print()">הדפס לוח</button>
         </div>
       </section>
@@ -232,6 +410,11 @@
         <label>שבוע: <input type="date" id="selectedDate" /></label>
         <button class="btn-secondary" onclick="shiftWeek(-1)">→ שבוע קודם</button>
         <button class="btn-secondary" onclick="shiftWeek(1)">שבוע הבא ←</button>
+        <div class="legend">
+          <span><i style="background:var(--course-bg);border:1px solid var(--course-line)"></i>קורס</span>
+          <span><i style="background:var(--busy-bg)"></i>שיבוץ חד-פעמי</span>
+          <span><i style="background:var(--free-bg)"></i>פנוי</span>
+        </div>
       </div>
 
       <section class="card desktop-view">
@@ -262,6 +445,11 @@
       </section>
 
       <section class="card">
+        <h2>קורסים קבועים</h2>
+        <div id="coursesPublicList" class="side-list"></div>
+      </section>
+
+      <section class="card">
         <h2>שיבוצים קיימים</h2>
         <div id="bookingsList" class="side-list"></div>
       </section>
@@ -269,14 +457,39 @@
   </div>
 </div>
 
+<div class="modal-backdrop" id="modal">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <h2 id="modalTitle"></h2>
+      <button class="modal-close" onclick="closeModal()" aria-label="סגור">✕</button>
+    </div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
 <script>
 /* ── CONFIG ─────────────────────────────────────────────────── */
+// מפתח ה-API של פרויקט ה-Firebase (Project settings → General → Web API Key).
+// המפתח הזה ציבורי מטבעו ואין בעיה שיופיע בקוד. ההגנה האמיתית היא חוקי ה-Database.
+const FIREBASE_API_KEY = "";
+
 const STORAGE_KEY   = "room_422_v4";
 const FB_URL_KEY    = "room_422_firebase_url";
-const DB_PATH       = "/room422/bookings";
+const API_KEY_KEY   = "room_422_api_key";
+const SESSION_KEY   = "room_422_admin_session";
+const ROOT          = "/room422";
+const ADMIN_EMAIL_DOMAIN = "room422.app";
 const DEFAULT_FB_URL = "https://new-67d5d-default-rtdb.firebaseio.com";
 const DAYS_HE       = ["ראשון","שני","שלישי","רביעי","חמישי"];
-const HOURS         = Array.from({length:12},(_,i)=>`${String(i+8).padStart(2,"0")}:00`);
+const HOURS         = Array.from({length:12},(_,i)=>`${String(i+8).padStart(2,"0")}:00`);   // 08:00–19:00 (תחילת משבצת)
+const END_HOURS     = Array.from({length:12},(_,i)=>`${String(i+9).padStart(2,"0")}:00`);   // 09:00–20:00 (סיום)
+const COURSE_TYPES  = {annual:"שנתי",semA:"סמסטר א'",semB:"סמסטר ב'",summer:"סמסטר קיץ",custom:"מותאם"};
+const DEFAULT_TERMS = {
+  annual:{start:"2026-10-18",end:"2027-06-30"},
+  semA:  {start:"2026-10-18",end:"2027-01-29"},
+  semB:  {start:"2027-03-07",end:"2027-06-30"},
+  summer:{start:"2027-07-04",end:"2027-08-27"}
+};
 
 const INITIAL_BOOKINGS = {
   "2026-05-04_10:00":{name:"קורס דוקטורנטים",createdAt:"imported"},
@@ -323,12 +536,22 @@ const INITIAL_BOOKINGS = {
 
 /* ── STATE ──────────────────────────────────────────────────── */
 let bookings = {};
+let courses  = {};
+let admins   = {};
+let terms    = JSON.parse(JSON.stringify(DEFAULT_TERMS));
 let openDays = new Set();
 let firebaseUrl = localStorage.getItem(FB_URL_KEY) || DEFAULT_FB_URL;
+let session  = loadSession();          // {uid,username,idToken,refreshToken,expiresAt}
+let courseSlots = {};                  // slotKey -> [occurrence]   (מפגשים פעילים)
+let cancelledSlots = {};               // slotKey -> [occurrence]   (מפגשים שבוטלו)
+let editingCourseId = null;
+let expandedCourses = new Set();
+let adminsLoaded = false;
 
 /* ── HELPERS ────────────────────────────────────────────────── */
 function toISODate(d){return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;}
 function fmtDate(ds){return new Date(`${ds}T12:00:00`).toLocaleDateString("he-IL",{day:"2-digit",month:"2-digit",year:"numeric"});}
+function dayName(ds){return ["ראשון","שני","שלישי","רביעי","חמישי","שישי","שבת"][new Date(`${ds}T12:00:00`).getDay()];}
 function getWeekDates(ds){
   const sel=new Date(`${ds}T12:00:00`),sun=new Date(sel);
   sun.setDate(sel.getDate()-sel.getDay());
@@ -336,14 +559,30 @@ function getWeekDates(ds){
 }
 function isWeekday(ds){const d=new Date(`${ds}T12:00:00`).getDay();return d>=0&&d<=4;}
 function slotKey(date,hour){return`${date}_${hour}`;}
-function esc(t){return String(t).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");}
+function esc(t){return String(t??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");}
 function hoursInRange(from,to){const fi=HOURS.indexOf(from),ti=HOURS.indexOf(to);if(fi<0||ti<fi)return null;return HOURS.slice(fi,ti+1);}
+function slotsBetween(from,to){return HOURS.filter(h=>h>=from&&h<to);}   // סיום לא כולל
+function eachDate(start,end,fn){
+  const cur=new Date(`${start}T12:00:00`),last=new Date(`${end}T12:00:00`);
+  let guard=0;
+  while(cur<=last&&guard++<1000){fn(toISODate(cur),cur.getDay());cur.setDate(cur.getDate()+1);}
+}
+function safeId(id){return /^[A-Za-z0-9_-]+$/.test(id);}
+function newId(){return "c_"+Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
+function asArray(v){return Array.isArray(v)?v.filter(x=>x!==null&&x!==undefined):(v&&typeof v==="object"?Object.values(v):[]);}
+function courseDays(c){return asArray(c.days).map(Number);}
+function daysText(c){return courseDays(c).sort().map(d=>DAYS_HE[d]).join(", ");}
 
 /* ── TABS ───────────────────────────────────────────────────── */
 function switchTab(name){
-  document.querySelectorAll(".tab-btn").forEach((b,i)=>b.classList.toggle("active",["single","range","recurring"][i]===name));
-  document.querySelectorAll(".tab-panel").forEach(p=>p.classList.toggle("active",p.id===`tab-${name}`));
+  document.querySelectorAll("#bookTabs .tab-btn").forEach((b,i)=>b.classList.toggle("active",["single","range","recurring"][i]===name));
+  document.querySelectorAll("main .controls .tab-panel").forEach(p=>p.classList.toggle("active",p.id===`tab-${name}`));
   clearMsg("message");
+}
+function switchAdminTab(name){
+  document.querySelectorAll("#adminTabs .tab-btn").forEach(b=>b.classList.toggle("active",b.dataset.atab===name));
+  document.querySelectorAll("#adminPanel > .tab-panel").forEach(p=>p.classList.toggle("active",p.id===`atab-${name}`));
+  if(name==="terms") fillTermsFields();
 }
 
 /* ── SYNC STATUS ────────────────────────────────────────────── */
@@ -358,15 +597,34 @@ function updateSetupBanner(){
 }
 function saveFirebaseUrl(){
   const url=document.getElementById("firebaseUrlInput").value.trim().replace(/\/$/,"");
-  if(!url.includes("firebaseio.com")){alert("URL לא תקין — צריך להכיל firebaseio.com");return;}
+  if(!url.includes("firebaseio.com")&&!url.includes("firebasedatabase.app")){alert("URL לא תקין — צריך להכיל firebaseio.com");return;}
   firebaseUrl=url;
   localStorage.setItem(FB_URL_KEY,firebaseUrl);
   updateSetupBanner();
   loadFromFirebase();
 }
 
-/* ── FIREBASE API ───────────────────────────────────────────── */
-function dbUrl(){return`${firebaseUrl}${DB_PATH}.json`;}
+/* ── FIREBASE DATABASE API ──────────────────────────────────── */
+function fbUrl(path,token){return`${firebaseUrl}${ROOT}${path}.json${token?`?auth=${encodeURIComponent(token)}`:""}`;}
+function enc(k){return encodeURIComponent(k);}
+
+async function fbGet(path){
+  const r=await fetch(fbUrl(path));
+  if(!r.ok) throw new Error(`HTTP ${r.status}`);
+  return r.json();
+}
+async function fbSend(method,path,body,needAuth){
+  if(!firebaseUrl) throw new Error("Firebase לא מוגדר");
+  const token=needAuth?await getIdToken():null;
+  const r=await fetch(fbUrl(path,token),{
+    method,
+    headers:{"Content-Type":"application/json"},
+    body:body===undefined?undefined:JSON.stringify(body)
+  });
+  if(r.status===401||r.status===403) throw new Error("אין הרשאה לפעולה הזאת (ייתכן שהמשתמש אינו מוגדר כמנהל).");
+  if(!r.ok) throw new Error(`שגיאת שרת (HTTP ${r.status})`);
+  return r.json();
+}
 
 async function loadFromFirebase(){
   if(!firebaseUrl){
@@ -377,17 +635,16 @@ async function loadFromFirebase(){
   }
   setSyncStatus("loading","טוען…");
   try{
-    const res=await fetch(dbUrl());
-    if(!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data=await res.json();
+    const data=await fbGet("/bookings");
     if(data&&typeof data==="object"&&!Array.isArray(data)&&Object.keys(data).length>0){
       bookings=data;
       saveLocal();
     } else {
       // DB is empty — use local, then push to DB so it's seeded
       bookings=loadLocal();
-      await pushToFirebase();
+      await pushAllBookings();
     }
+    await loadAdminData();
     setSyncStatus("ok","מסונכרן עם Firebase ✓");
   }catch(e){
     setSyncStatus("err",`שגיאת חיבור: ${e.message}`);
@@ -396,16 +653,36 @@ async function loadFromFirebase(){
   renderAll();
 }
 
-async function pushToFirebase(){
+// קורסים, מנהלים והגדרות (קריאה פתוחה לכולם)
+async function loadAdminData(){
+  const [c,a,s]=await Promise.all([
+    fbGet("/courses").catch(()=>null),
+    fbGet("/admins").catch(()=>null),
+    fbGet("/settings").catch(()=>null)
+  ]);
+  courses=(c&&typeof c==="object")?c:{};
+  admins=(a&&typeof a==="object")?a:{};
+  adminsLoaded=true;
+  if(s&&s.terms) terms={...JSON.parse(JSON.stringify(DEFAULT_TERMS)),...s.terms};
+  if(session&&!admins[session.uid]) logout(true);
+}
+
+async function refreshData(){
+  if(!firebaseUrl||document.hidden) return;
+  try{
+    const b=await fbGet("/bookings");
+    if(b&&typeof b==="object") {bookings=b;saveLocal();}
+    await loadAdminData();
+    setSyncStatus("ok","מסונכרן עם Firebase ✓");
+    renderAll();
+  }catch(e){/* שקט — ננסה שוב בפעם הבאה */}
+}
+
+async function pushAllBookings(){
   if(!firebaseUrl) return;
   setSyncStatus("loading","שומר…");
   try{
-    const res=await fetch(dbUrl(),{
-      method:"PUT",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify(bookings)
-    });
-    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    await fbSend("PUT","/bookings",bookings,false);
     setSyncStatus("ok","נשמר ב-Firebase ✓");
   }catch(e){
     setSyncStatus("err",`שגיאה בשמירה: ${e.message}`);
@@ -419,24 +696,255 @@ function loadLocal(){
 }
 function saveLocal(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(bookings));}catch{}}
 
-function persist(){
-  saveLocal();
-  pushToFirebase();
+/* ── AUTH (Firebase Authentication דרך REST) ────────────────── */
+function getApiKey(){return FIREBASE_API_KEY||localStorage.getItem(API_KEY_KEY)||"";}
+function usernameToEmail(u){return`${u.trim().toLowerCase()}@${ADMIN_EMAIL_DOMAIN}`;}
+function validUsername(u){return /^[a-z0-9._-]{3,30}$/.test(u);}
+
+function loadSession(){try{return JSON.parse(localStorage.getItem(SESSION_KEY))||null;}catch{return null;}}
+function saveSession(){try{session?localStorage.setItem(SESSION_KEY,JSON.stringify(session)):localStorage.removeItem(SESSION_KEY);}catch{}}
+
+function authErr(raw){
+  const s=String(raw||"");
+  if(s.includes("API key")||s.includes("API_KEY")) return "מפתח ה-API של Firebase שגוי.";
+  const code=s.split(/[ :]/)[0];
+  const map={
+    EMAIL_NOT_FOUND:"שם משתמש או סיסמה שגויים.",
+    INVALID_PASSWORD:"שם משתמש או סיסמה שגויים.",
+    INVALID_LOGIN_CREDENTIALS:"שם משתמש או סיסמה שגויים.",
+    INVALID_EMAIL:"שם משתמש לא תקין.",
+    USER_DISABLED:"המשתמש חסום.",
+    EMAIL_EXISTS:"שם המשתמש כבר קיים.",
+    WEAK_PASSWORD:"הסיסמה חלשה מדי — לפחות 6 תווים.",
+    MISSING_PASSWORD:"נא להזין סיסמה.",
+    OPERATION_NOT_ALLOWED:"כניסה עם סיסמה לא הופעלה ב-Firebase (Authentication → Sign-in method → Email/Password).",
+    CONFIGURATION_NOT_FOUND:"שירות Authentication לא הופעל בפרויקט ה-Firebase.",
+    TOO_MANY_ATTEMPTS_TRY_LATER:"יותר מדי ניסיונות. נסה שוב בעוד כמה דקות.",
+    INVALID_ID_TOKEN:"פג תוקף ההתחברות — התחבר מחדש.",
+    TOKEN_EXPIRED:"פג תוקף ההתחברות — התחבר מחדש.",
+    CREDENTIAL_TOO_OLD_LOGIN_AGAIN:"יש להתחבר מחדש לפני שינוי סיסמה."
+  };
+  return map[code]||`שגיאת התחברות: ${s}`;
+}
+
+async function authCall(endpoint,body){
+  const key=getApiKey();
+  if(!key) throw new Error("חסר מפתח API של Firebase.");
+  let r;
+  try{
+    r=await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:${endpoint}?key=${encodeURIComponent(key)}`,{
+      method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)
+    });
+  }catch(e){throw new Error("אין חיבור לשרת ההתחברות.");}
+  const data=await r.json().catch(()=>({}));
+  if(!r.ok) throw new Error(authErr(data?.error?.message||`HTTP ${r.status}`));
+  return data;
+}
+
+function sessionFrom(data,username){
+  return{uid:data.localId,username,idToken:data.idToken,refreshToken:data.refreshToken,expiresAt:Date.now()+(+data.expiresIn||3600)*1000};
+}
+
+async function getIdToken(){
+  if(!session) throw new Error("יש להתחבר כמנהל.");
+  if(Date.now()<session.expiresAt-60000) return session.idToken;
+  const r=await fetch(`https://securetoken.googleapis.com/v1/token?key=${encodeURIComponent(getApiKey())}`,{
+    method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},
+    body:`grant_type=refresh_token&refresh_token=${encodeURIComponent(session.refreshToken)}`
+  }).catch(()=>null);
+  const d=r?await r.json().catch(()=>({})):{};
+  if(!r||!r.ok){logout(true);throw new Error("פג תוקף ההתחברות — יש להתחבר מחדש.");}
+  session.idToken=d.id_token;session.refreshToken=d.refresh_token;
+  session.expiresAt=Date.now()+(+d.expires_in||3600)*1000;
+  saveSession();
+  return session.idToken;
+}
+
+function isAdmin(){return !!(session&&admins[session.uid]);}
+function isSuper(){return isAdmin()&&admins[session.uid].role==="super";}
+
+async function login(){
+  const u=document.getElementById("loginUser").value.trim().toLowerCase();
+  const p=document.getElementById("loginPass").value;
+  if(!u||!p){setMsg("loginMsg","error","נא למלא שם משתמש וסיסמה.");return;}
+  const btn=document.getElementById("loginBtn");btn.disabled=true;
+  try{
+    const data=await authCall("signInWithPassword",{email:usernameToEmail(u),password:p,returnSecureToken:true});
+    await loadAdminData().catch(()=>{});
+    if(!admins[data.localId]) throw new Error("המשתמש קיים אך אינו מוגדר כמנהל במערכת.");
+    session=sessionFrom(data,u);
+    saveSession();
+    closeModal();
+    renderAll();
+    switchAdminTab("courses");
+    document.getElementById("adminPanel").scrollIntoView({behavior:"smooth"});
+  }catch(e){
+    setMsg("loginMsg","error",e.message);
+  }finally{btn.disabled=false;}
+}
+
+async function firstSetup(){
+  const u=document.getElementById("fsUser").value.trim().toLowerCase();
+  const n=document.getElementById("fsName").value.trim();
+  const p=document.getElementById("fsPass").value;
+  const p2=document.getElementById("fsPass2").value;
+  if(!validUsername(u)){setMsg("loginMsg","error","שם משתמש: 3–30 תווים, אותיות קטנות באנגלית, ספרות, נקודה, קו או קו תחתון.");return;}
+  if(p.length<6){setMsg("loginMsg","error","הסיסמה חייבת להכיל לפחות 6 תווים.");return;}
+  if(p!==p2){setMsg("loginMsg","error","הסיסמאות אינן תואמות.");return;}
+  const btn=document.getElementById("fsBtn");btn.disabled=true;
+  try{
+    const data=await authCall("signUp",{email:usernameToEmail(u),password:p,returnSecureToken:true});
+    session=sessionFrom(data,u);saveSession();
+    await fbSend("PUT",`/admins/${enc(session.uid)}`,{username:u,displayName:n||u,role:"super",createdAt:new Date().toISOString()},true);
+    await loadAdminData();
+    closeModal();
+    renderAll();
+  }catch(e){
+    setMsg("loginMsg","error",e.message);
+  }finally{btn.disabled=false;}
+}
+
+function logout(silent){
+  session=null;saveSession();
+  editingCourseId=null;
+  if(!silent) renderAll();
+}
+
+function saveApiKey(){
+  const k=document.getElementById("apiKeyInput").value.trim();
+  if(!/^AIza[\w-]{20,}$/.test(k)){setMsg("loginMsg","error","מפתח לא תקין — מתחיל ב-AIza…");return;}
+  localStorage.setItem(API_KEY_KEY,k);
+  openLogin();
+}
+
+/* ── MODAL ──────────────────────────────────────────────────── */
+function openModal(title,html){
+  document.getElementById("modalTitle").textContent=title;
+  document.getElementById("modalBody").innerHTML=html;
+  document.getElementById("modal").classList.add("show");
+}
+function closeModal(){document.getElementById("modal").classList.remove("show");}
+
+function openLogin(){
+  if(!getApiKey()){
+    openModal("הגדרת כניסת מנהלים",`
+      <p>כדי להפעיל כניסה עם שם משתמש וסיסמה צריך את מפתח ה-API של פרויקט ה-Firebase (פעם אחת):</p>
+      <ol>
+        <li>ב-Firebase Console: ⚙️ <strong>Project settings → General</strong></li>
+        <li>העתק את <strong>Web API Key</strong> (מתחיל ב-<code>AIza</code>)</li>
+      </ol>
+      <label><span>Web API Key</span><input type="text" class="ltr" id="apiKeyInput" placeholder="AIza..." /></label>
+      <div class="actions-row"><button class="btn-primary" onclick="saveApiKey()">שמור</button></div>
+      <p class="subtle">כדי שלא יידרש בכל מחשב, אפשר להדביק אותו גם בקוד (FIREBASE_API_KEY בתחילת הסקריפט).</p>
+      <div id="loginMsg" class="message"></div>`);
+    return;
+  }
+  if(adminsLoaded&&Object.keys(admins).length===0){
+    openModal("הגדרה ראשונית — מנהל ראשי",`
+      <p>עדיין לא הוגדרו מנהלים. צור עכשיו את המשתמש הראשי — הוא יוכל להוסיף מנהלים נוספים.</p>
+      <div class="field-row cols2">
+        <label><span>שם משתמש</span><input type="text" class="ltr" id="fsUser" autocomplete="off" placeholder="admin" /></label>
+        <label><span>שם לתצוגה</span><input type="text" id="fsName" placeholder="שם מלא" /></label>
+      </div>
+      <div class="field-row cols2">
+        <label><span>סיסמה</span><input type="password" id="fsPass" autocomplete="new-password" /></label>
+        <label><span>אימות סיסמה</span><input type="password" id="fsPass2" autocomplete="new-password" /></label>
+      </div>
+      <button class="btn-primary" id="fsBtn" onclick="firstSetup()">צור מנהל ראשי</button>
+      <div id="loginMsg" class="message"></div>`);
+    return;
+  }
+  openModal("כניסת מנהלים",`
+    <div class="field-row">
+      <label><span>שם משתמש</span><input type="text" class="ltr" id="loginUser" autocomplete="username" /></label>
+      <label><span>סיסמה</span><input type="password" id="loginPass" autocomplete="current-password" /></label>
+    </div>
+    <button class="btn-primary" id="loginBtn" onclick="login()">כניסה</button>
+    <div id="loginMsg" class="message"></div>`);
+  const pass=document.getElementById("loginPass");
+  pass.addEventListener("keydown",e=>{if(e.key==="Enter")login();});
+  document.getElementById("loginUser").focus();
 }
 
 /* ── MESSAGES ───────────────────────────────────────────────── */
-function setMsg(id,type,text){const el=document.getElementById(id);el.className=`message show ${type}`;el.textContent=text;}
-function clearMsg(id){const el=document.getElementById(id);el.className="message";el.textContent="";}
+function setMsg(id,type,text){const el=document.getElementById(id);if(!el)return;el.className=`message show ${type}`;el.textContent=text;}
+function clearMsg(id){const el=document.getElementById(id);if(!el)return;el.className="message";el.textContent="";}
 
 /* ── SELECTS ────────────────────────────────────────────────── */
 function populateSelects(){
-  ["singleFrom","singleTo","rangeFrom","rangeTo","recurFrom","recurTo","queryFrom","queryTo"].forEach(id=>{
+  ["singleFrom","singleTo","rangeFrom","rangeTo","recurFrom","recurTo","queryFrom","queryTo","cFrom"].forEach(id=>{
     document.getElementById(id).innerHTML=HOURS.map(h=>`<option value="${h}">${h}</option>`).join("");
   });
+  document.getElementById("cTo").innerHTML=END_HOURS.map(h=>`<option value="${h}">${h}</option>`).join("");
+  document.getElementById("cTo").value="10:00";
+}
+function hourOptions(list,sel){return list.map(h=>`<option value="${h}"${h===sel?" selected":""}>${h}</option>`).join("");}
+
+/* ── COURSE EXPANSION ───────────────────────────────────────── */
+// כל קורס נשמר כתבנית (ימים + שעות + טווח תאריכים) ומפגשים בודדים נשמרים כחריגים:
+//   exceptions[תאריך]=true          → המפגש בוטל
+//   overrides[תאריך]={date,from,to} → המפגש הוזז / שעותיו שונו
+function courseOccurrences(id,c){
+  const out=[];
+  if(!c||!c.startDate||!c.endDate||!c.from||!c.to) return out;
+  const days=courseDays(c);
+  eachDate(c.startDate,c.endDate,(ds,dow)=>{
+    if(!days.includes(dow)) return;
+    const ov=c.overrides&&c.overrides[ds];
+    out.push({
+      courseId:id, origDate:ds,
+      date:(ov&&ov.date)||ds, from:(ov&&ov.from)||c.from, to:(ov&&ov.to)||c.to,
+      cancelled:!!(c.exceptions&&c.exceptions[ds]), moved:!!ov
+    });
+  });
+  return out;
+}
+function rebuildCourseIndex(){
+  courseSlots={};cancelledSlots={};
+  Object.entries(courses).forEach(([id,c])=>{
+    if(!safeId(id)) return;
+    courseOccurrences(id,c).forEach(o=>{
+      const target=o.cancelled?cancelledSlots:courseSlots;
+      slotsBetween(o.from,o.to).forEach(h=>{(target[slotKey(o.date,h)]??=[]).push(o);});
+    });
+  });
+}
+// מי תופס את המשבצת (לבדיקת התנגשויות). skip = {courseId, origDate?}
+function slotTakenBy(key,skip){
+  const out=[];
+  if(bookings[key]) out.push(`שיבוץ: ${bookings[key].name}`);
+  (courseSlots[key]||[]).forEach(o=>{
+    if(skip&&o.courseId===skip.courseId&&(!skip.origDate||o.origDate===skip.origDate)) return;
+    out.push(`קורס: ${courses[o.courseId]?.name||""}`);
+  });
+  return out;
 }
 
 /* ── RENDER ─────────────────────────────────────────────────── */
-function renderAll(){renderCalendar();renderMobile();renderList();}
+function renderAll(){
+  rebuildCourseIndex();
+  renderCalendar();renderMobile();renderList();renderCoursesPublic();
+  renderAuthBox();renderAdmin();
+}
+
+function cellHtml(date,hour,mobile){
+  const key=slotKey(date,hour);
+  const b=bookings[key];
+  const occs=courseSlots[key]||[];
+  const canc=isAdmin()?(cancelledSlots[key]||[]):[];
+  const admin=isAdmin();
+  let h="";
+  occs.forEach(o=>{
+    const c=courses[o.courseId];
+    const click=admin?` clickable" onclick="openOccurrence('${o.courseId}','${o.origDate}')" title="לחץ לניהול המפגש`:"";
+    h+=`<div class="slot-course${click}"><strong>${esc(COURSE_TYPES[c.type]?`קורס ${COURSE_TYPES[c.type]}`:"קורס")}${o.moved?" · מועד חלופי":""}</strong><small>${esc(c.name)}${c.lecturer?` · ${esc(c.lecturer)}`:""}</small></div>`;
+  });
+  if(b) h+=`<div class="${mobile?"mobile-slot-busy":"slot-busy"}"><strong>תפוס</strong><small>${esc(b.name)}</small><button class="${mobile?"mobile-delete-btn":"delete-btn"}" onclick="del('${date}','${hour}')">מחק</button></div>`;
+  if(occs.length+(b?1:0)>1) h+=`<div class="conflict-note">⚠ התנגשות</div>`;
+  canc.forEach(o=>{h+=`<div class="slot-cancelled clickable" onclick="openOccurrence('${o.courseId}','${o.origDate}')" title="מפגש שבוטל — לחץ לשחזור">${esc(courses[o.courseId].name)}</div>`;});
+  if(!occs.length&&!b) h+=`<button class="${mobile?"mobile-slot-free":"slot-free"}" onclick="quickBook('${date}','${hour}')">פנוי</button>`;
+  return h;
+}
 
 function renderCalendar(){
   const ds=document.getElementById("selectedDate").value;
@@ -446,13 +954,7 @@ function renderCalendar(){
   html+=`</tr></thead><tbody>`;
   HOURS.forEach(hour=>{
     html+=`<tr><td class="hour-cell">${hour}</td>`;
-    wk.forEach(day=>{
-      const b=bookings[slotKey(day.dateString,hour)];
-      html+=`<td>`;
-      if(b) html+=`<div class="slot-busy"><strong>תפוס</strong><small>${esc(b.name)}</small><button class="delete-btn" onclick="del('${day.dateString}','${hour}')">מחק</button></div>`;
-      else  html+=`<button class="slot-free" onclick="quickBook('${day.dateString}','${hour}')">פנוי</button>`;
-      html+=`</td>`;
-    });
+    wk.forEach(day=>{html+=`<td>${cellHtml(day.dateString,hour,false)}</td>`;});
     html+=`</tr>`;
   });
   document.getElementById("calendarTable").innerHTML=html+`</tbody>`;
@@ -464,7 +966,7 @@ function renderMobile(){
   document.getElementById("weekLabel").textContent=`${fmtDate(wk[0].dateString)} – ${fmtDate(wk[4].dateString)}`;
   let html="";
   wk.forEach(day=>{
-    const busy=HOURS.filter(h=>bookings[slotKey(day.dateString,h)]).length;
+    const busy=HOURS.filter(h=>{const k=slotKey(day.dateString,h);return bookings[k]||courseSlots[k];}).length;
     const open=openDays.has(day.dateString);
     html+=`<div class="day-accordion">
       <div class="day-header" onclick="toggleDay('${day.dateString}')">
@@ -473,11 +975,7 @@ function renderMobile(){
       </div>
       <div class="day-body${open?" open":""}">`;
     HOURS.forEach(hour=>{
-      const b=bookings[slotKey(day.dateString,hour)];
-      html+=`<div class="hour-row"><span class="hour-label">${hour}</span><div class="hour-content">`;
-      if(b) html+=`<div class="mobile-slot-busy"><strong>תפוס</strong><small>${esc(b.name)}</small><button class="mobile-delete-btn" onclick="del('${day.dateString}','${hour}')">מחק</button></div>`;
-      else  html+=`<button class="mobile-slot-free" onclick="quickBook('${day.dateString}','${hour}')">פנוי</button>`;
-      html+=`</div></div>`;
+      html+=`<div class="hour-row"><span class="hour-label">${hour}</span><div class="hour-content">${cellHtml(day.dateString,hour,true)}</div></div>`;
     });
     html+=`</div></div>`;
   });
@@ -491,6 +989,389 @@ function renderList(){
     .sort((a,b)=>`${a.date}_${a.hour}`.localeCompare(`${b.date}_${b.hour}`));
   if(!items.length){list.innerHTML=`<p style="color:var(--muted);margin:0">אין שיבוצים.</p>`;return;}
   list.innerHTML=items.map(i=>`<div class="booking-item"><strong>${fmtDate(i.date)} | ${i.hour}</strong><span>${esc(i.name)}</span></div>`).join("");
+}
+
+function sortedCourses(){
+  return Object.entries(courses).filter(([id])=>safeId(id))
+    .sort((a,b)=>(a[1].startDate||"").localeCompare(b[1].startDate||"")||(a[1].name||"").localeCompare(b[1].name||"","he"));
+}
+
+function renderCoursesPublic(){
+  const el=document.getElementById("coursesPublicList");
+  const today=toISODate(new Date());
+  const items=sortedCourses().filter(([,c])=>(c.endDate||"")>=today);
+  if(!items.length){el.innerHTML=`<p style="color:var(--muted);margin:0">אין קורסים פעילים.</p>`;return;}
+  el.innerHTML=items.map(([,c])=>`<div class="booking-item course">
+      <strong>${esc(c.name)} <span class="badge ${esc(c.type)}">${esc(COURSE_TYPES[c.type]||"")}</span></strong>
+      <span>${esc(daysText(c))} · ${esc(c.from)}–${esc(c.to)}${c.lecturer?` · ${esc(c.lecturer)}`:""}<br>${fmtDate(c.startDate)} – ${fmtDate(c.endDate)}</span>
+    </div>`).join("");
+}
+
+function renderAuthBox(){
+  const box=document.getElementById("authBox");
+  if(isAdmin()){
+    const a=admins[session.uid];
+    box.innerHTML=`<span class="who">👤 ${esc(a.displayName||a.username)}</span><button class="btn-secondary" onclick="logout()">יציאה</button>`;
+  } else {
+    box.innerHTML=`<button class="btn-admin" onclick="openLogin()">🔒 כניסת מנהלים</button>`;
+  }
+}
+
+/* ── ADMIN PANEL RENDER ─────────────────────────────────────── */
+function renderAdmin(){
+  const panel=document.getElementById("adminPanel");
+  if(!isAdmin()){panel.hidden=true;return;}
+  panel.hidden=false;
+  const me=admins[session.uid];
+  document.getElementById("adminHello").textContent=`מחובר/ת כ-${me.username}${me.role==="super"?" · מנהל ראשי":""}`;
+  document.getElementById("adminsTabBtn").hidden=!isSuper();
+  if(!isSuper()&&document.getElementById("atab-admins").classList.contains("active")) switchAdminTab("courses");
+  renderAdminCourses();
+  renderAdminsList();
+}
+
+function occStatusHtml(o){
+  if(o.cancelled) return `<span class="badge cancel">בוטל</span>`;
+  if(o.moved) return `<span class="badge moved">הוזז</span>`;
+  return "";
+}
+
+function renderAdminCourses(){
+  const el=document.getElementById("adminCourseList");
+  const q=document.getElementById("courseSearch").value.trim().toLowerCase();
+  const f=document.getElementById("courseFilter").value;
+  const items=sortedCourses().filter(([,c])=>(!f||c.type===f)&&(!q||`${c.name} ${c.lecturer||""}`.toLowerCase().includes(q)));
+  if(!items.length){el.innerHTML=`<p class="subtle">${Object.keys(courses).length?"לא נמצאו קורסים תואמים.":"עדיין אין קורסים. הוסף קורס בטופס למעלה."}</p>`;return;}
+  el.innerHTML=items.map(([id,c])=>{
+    const occ=courseOccurrences(id,c);
+    const cancelled=occ.filter(o=>o.cancelled).length, moved=occ.filter(o=>o.moved&&!o.cancelled).length;
+    const open=expandedCourses.has(id);
+    let h=`<div class="course-row">
+      <div class="course-row-head">
+        <div>
+          <div class="title">${esc(c.name)} <span class="badge ${esc(c.type)}">${esc(COURSE_TYPES[c.type]||"")}</span></div>
+          <div class="meta">
+            ${c.lecturer?`${esc(c.lecturer)} · `:""}${esc(daysText(c))} · ${esc(c.from)}–${esc(c.to)}<br>
+            ${fmtDate(c.startDate)} – ${fmtDate(c.endDate)} · ${occ.length-cancelled} מפגשים${cancelled?` · ${cancelled} בוטלו`:""}${moved?` · ${moved} הוזזו`:""}
+            ${c.notes?`<br>📝 ${esc(c.notes)}`:""}
+          </div>
+        </div>
+        <div class="row-btns">
+          <button class="btn-secondary btn-sm" onclick="toggleCourseOcc('${id}')">${open?"הסתר מפגשים":"מפגשים"}</button>
+          <button class="btn-secondary btn-sm" onclick="editCourse('${id}')">עריכה</button>
+          <button class="btn-danger btn-sm" onclick="deleteCourse('${id}')">מחיקה</button>
+        </div>
+      </div>`;
+    if(open){
+      h+=`<div class="occ-list">`+(occ.length?occ.map(o=>{
+        const when=`${dayName(o.date)} ${fmtDate(o.date)} · ${o.from}–${o.to}`;
+        const orig=o.moved?` <span class="subtle">(במקום ${fmtDate(o.origDate)})</span>`:"";
+        return `<div class="occ-item${o.cancelled?" is-cancelled":""}">
+          <span><span class="occ-when">${when}</span>${orig} ${occStatusHtml(o)}</span>
+          <span class="row-btns">
+            ${o.cancelled
+              ?`<button class="btn-secondary btn-sm" onclick="restoreOcc('${id}','${o.origDate}')">שחזר</button>`
+              :`<button class="btn-secondary btn-sm" onclick="openOccurrence('${id}','${o.origDate}')">שינוי מועד</button>
+                <button class="btn-danger btn-sm" onclick="cancelOcc('${id}','${o.origDate}')">ביטול מפגש</button>`}
+          </span>
+        </div>`;}).join(""):`<p class="subtle">אין מפגשים בטווח התאריכים.</p>`)+`</div>`;
+    }
+    return h+`</div>`;
+  }).join("");
+}
+
+function renderAdminsList(){
+  if(!isSuper()) return;
+  const el=document.getElementById("adminsList");
+  const items=Object.entries(admins).sort((a,b)=>(a[1].username||"").localeCompare(b[1].username||""));
+  el.innerHTML=items.map(([uid,a])=>`<div class="admin-item">
+      <span><strong>${esc(a.displayName||a.username)}</strong> <span class="subtle" dir="ltr">${esc(a.username)}</span>
+        <span class="badge">${a.role==="super"?"מנהל ראשי":"מנהל קורסים"}</span></span>
+      ${uid===session.uid?`<span class="subtle">(את/ה)</span>`:`<button class="btn-danger btn-sm" onclick="removeAdmin('${esc(uid)}')">הסר הרשאה</button>`}
+    </div>`).join("");
+}
+
+function fillTermsFields(){
+  const labels={annual:"שנה שנתית (קורסים שנתיים)",semA:"סמסטר א'",semB:"סמסטר ב'",summer:"סמסטר קיץ"};
+  document.getElementById("termsFields").innerHTML=Object.keys(labels).map(k=>`
+    <div class="field-row cols3" style="align-items:end">
+      <div style="font-weight:700;font-size:13px;padding-bottom:10px">${labels[k]}</div>
+      <label><span>התחלה</span><input type="date" id="term_${k}_start" value="${esc(terms[k]?.start||"")}" /></label>
+      <label><span>סיום</span><input type="date" id="term_${k}_end" value="${esc(terms[k]?.end||"")}" /></label>
+    </div>`).join("");
+}
+
+/* ── COURSE ACTIONS (מנהלים) ────────────────────────────────── */
+function applyTermDates(){
+  const t=document.getElementById("cType").value;
+  if(t!=="custom"&&terms[t]){
+    document.getElementById("cStart").value=terms[t].start||"";
+    document.getElementById("cEnd").value=terms[t].end||"";
+  }
+}
+
+function resetCourseForm(){
+  editingCourseId=null;
+  ["cName","cLecturer","cNotes"].forEach(id=>document.getElementById(id).value="");
+  document.querySelectorAll("#cDays input").forEach(i=>i.checked=false);
+  document.getElementById("cType").value="annual";
+  document.getElementById("cFrom").value="08:00";
+  document.getElementById("cTo").value="10:00";
+  applyTermDates();
+  document.getElementById("courseFormTitle").textContent="הוספת קורס חדש";
+  document.getElementById("courseSaveBtn").textContent="הוסף קורס";
+  document.getElementById("courseCancelEditBtn").hidden=true;
+}
+
+function editCourse(id){
+  const c=courses[id];if(!c)return;
+  closeModal();
+  switchAdminTab("courses");
+  editingCourseId=id;
+  document.getElementById("cName").value=c.name||"";
+  document.getElementById("cLecturer").value=c.lecturer||"";
+  document.getElementById("cNotes").value=c.notes||"";
+  document.getElementById("cType").value=c.type||"custom";
+  document.getElementById("cStart").value=c.startDate||"";
+  document.getElementById("cEnd").value=c.endDate||"";
+  document.getElementById("cFrom").value=c.from||"08:00";
+  document.getElementById("cTo").value=c.to||"10:00";
+  const days=courseDays(c);
+  document.querySelectorAll("#cDays input").forEach(i=>i.checked=days.includes(+i.value));
+  document.getElementById("courseFormTitle").textContent=`עריכת קורס: ${c.name}`;
+  document.getElementById("courseSaveBtn").textContent="שמור שינויים";
+  document.getElementById("courseCancelEditBtn").hidden=false;
+  clearMsg("courseMsg");
+  document.getElementById("atab-courses").scrollIntoView({behavior:"smooth"});
+}
+
+async function saveCourse(){
+  const name=document.getElementById("cName").value.trim();
+  const lecturer=document.getElementById("cLecturer").value.trim();
+  const notes=document.getElementById("cNotes").value.trim();
+  const type=document.getElementById("cType").value;
+  const startDate=document.getElementById("cStart").value;
+  const endDate=document.getElementById("cEnd").value;
+  const from=document.getElementById("cFrom").value;
+  const to=document.getElementById("cTo").value;
+  const days=[...document.querySelectorAll("#cDays input:checked")].map(i=>+i.value);
+
+  if(!name){setMsg("courseMsg","error","נא להזין שם קורס.");return;}
+  if(!days.length){setMsg("courseMsg","error","נא לסמן לפחות יום מפגש אחד.");return;}
+  if(!startDate||!endDate){setMsg("courseMsg","error","נא למלא תאריכי התחלה וסיום.");return;}
+  if(endDate<startDate){setMsg("courseMsg","error","תאריך הסיום לפני תאריך ההתחלה.");return;}
+  if(to<=from){setMsg("courseMsg","error","שעת הסיום חייבת להיות אחרי שעת ההתחלה.");return;}
+
+  const id=editingCourseId||newId();
+  const prev=editingCourseId?courses[id]:null;
+  const now=new Date().toISOString();
+  const course={
+    name,lecturer,notes,type,startDate,endDate,from,to,days,
+    exceptions:prev?.exceptions||null, overrides:prev?.overrides||null,
+    createdAt:prev?.createdAt||now, createdBy:prev?.createdBy||session.username,
+    updatedAt:now, updatedBy:session.username
+  };
+  const occ=courseOccurrences(id,course).filter(o=>!o.cancelled);
+  if(!occ.length){setMsg("courseMsg","error","אין אף מפגש בטווח התאריכים והימים שנבחרו.");return;}
+
+  // בדיקת התנגשויות
+  const conflicts=[];
+  occ.forEach(o=>slotsBetween(o.from,o.to).forEach(h=>{
+    const t=slotTakenBy(slotKey(o.date,h),{courseId:id});
+    if(t.length) conflicts.push(`${fmtDate(o.date)} ${h} — ${t.join(", ")}`);
+  }));
+  if(conflicts.length&&!confirm(`נמצאו ${conflicts.length} התנגשויות:\n${conflicts.slice(0,8).join("\n")}${conflicts.length>8?"\n…":""}\n\nלשמור את הקורס בכל זאת?`)) return;
+
+  const btn=document.getElementById("courseSaveBtn");btn.disabled=true;
+  try{
+    await fbSend("PUT",`/courses/${enc(id)}`,course,true);
+    courses[id]=course;
+    const wasEdit=!!editingCourseId;
+    resetCourseForm();
+    renderAll();
+    setMsg("courseMsg","success",`${wasEdit?"הקורס עודכן":"הקורס נוסף"}: ${name} (${occ.length} מפגשים).`);
+  }catch(e){
+    setMsg("courseMsg","error",e.message);
+  }finally{btn.disabled=false;}
+}
+
+async function deleteCourse(id){
+  const c=courses[id];if(!c)return;
+  if(!confirm(`למחוק את הקורס "${c.name}" וכל המפגשים שלו?`)) return;
+  try{
+    await fbSend("DELETE",`/courses/${enc(id)}`,undefined,true);
+    delete courses[id];
+    if(editingCourseId===id) resetCourseForm();
+    closeModal();
+    renderAll();
+    setMsg("courseMsg","success",`הקורס "${c.name}" נמחק.`);
+  }catch(e){alert(e.message);}
+}
+
+function toggleCourseOcc(id){expandedCourses.has(id)?expandedCourses.delete(id):expandedCourses.add(id);renderAdminCourses();}
+
+async function cancelOcc(id,orig){
+  const c=courses[id];if(!c)return;
+  if(!confirm(`לבטל את המפגש של "${c.name}" בתאריך ${fmtDate(orig)}?`)) return;
+  try{
+    await fbSend("PUT",`/courses/${enc(id)}/exceptions/${enc(orig)}`,true,true);
+    (c.exceptions??={})[orig]=true;
+    closeModal();renderAll();
+  }catch(e){alert(e.message);}
+}
+
+async function restoreOcc(id,orig){
+  const c=courses[id];if(!c)return;
+  try{
+    await fbSend("DELETE",`/courses/${enc(id)}/exceptions/${enc(orig)}`,undefined,true);
+    if(c.exceptions) delete c.exceptions[orig];
+    closeModal();renderAll();
+  }catch(e){alert(e.message);}
+}
+
+async function moveOcc(id,orig){
+  const c=courses[id];if(!c)return;
+  const date=document.getElementById("occDate").value;
+  const from=document.getElementById("occFrom").value;
+  const to=document.getElementById("occTo").value;
+  if(!date){setMsg("occMsg","error","נא לבחור תאריך.");return;}
+  if(!isWeekday(date)){setMsg("occMsg","error","החדר פעיל רק בימים א'–ה'.");return;}
+  if(to<=from){setMsg("occMsg","error","שעת הסיום חייבת להיות אחרי שעת ההתחלה.");return;}
+  const isOriginal=date===orig&&from===c.from&&to===c.to;
+  if(!isOriginal){
+    const conflicts=[];
+    slotsBetween(from,to).forEach(h=>{const t=slotTakenBy(slotKey(date,h),{courseId:id,origDate:orig});if(t.length)conflicts.push(`${h} — ${t.join(", ")}`);});
+    if(conflicts.length&&!confirm(`המועד החדש מתנגש עם:\n${conflicts.join("\n")}\n\nלשמור בכל זאת?`)) return;
+  }
+  try{
+    if(isOriginal){
+      await fbSend("DELETE",`/courses/${enc(id)}/overrides/${enc(orig)}`,undefined,true);
+      if(c.overrides) delete c.overrides[orig];
+    } else {
+      const ov={date,from,to};
+      await fbSend("PUT",`/courses/${enc(id)}/overrides/${enc(orig)}`,ov,true);
+      (c.overrides??={})[orig]=ov;
+    }
+    closeModal();renderAll();
+  }catch(e){setMsg("occMsg","error",e.message);}
+}
+
+async function resetOcc(id,orig){
+  const c=courses[id];if(!c)return;
+  try{
+    await fbSend("DELETE",`/courses/${enc(id)}/overrides/${enc(orig)}`,undefined,true);
+    if(c.overrides) delete c.overrides[orig];
+    closeModal();renderAll();
+  }catch(e){alert(e.message);}
+}
+
+function openOccurrence(id,orig){
+  if(!isAdmin()) return;
+  const c=courses[id];if(!c)return;
+  const o=courseOccurrences(id,c).find(x=>x.origDate===orig);if(!o)return;
+  let html=`<p style="margin-top:0"><strong>${esc(c.name)}</strong> <span class="badge ${esc(c.type)}">${esc(COURSE_TYPES[c.type]||"")}</span>${c.lecturer?`<br>${esc(c.lecturer)}`:""}</p>
+    <p>מפגש מקורי: ${dayName(orig)} ${fmtDate(orig)} · ${esc(c.from)}–${esc(c.to)}
+    ${o.moved?`<br><strong>מועד נוכחי:</strong> ${dayName(o.date)} ${fmtDate(o.date)} · ${o.from}–${o.to}`:""}
+    ${o.cancelled?`<br><span class="badge cancel">המפגש בוטל</span>`:""}</p>`;
+  if(o.cancelled){
+    html+=`<button class="btn-primary" onclick="restoreOcc('${id}','${orig}')">שחזר את המפגש</button>`;
+  } else {
+    html+=`<h3>שינוי מועד / שעות למפגש זה בלבד</h3>
+      <div class="field-row cols3">
+        <label><span>תאריך</span><input type="date" id="occDate" value="${o.date}" /></label>
+        <label><span>משעה</span><select id="occFrom">${hourOptions(HOURS,o.from)}</select></label>
+        <label><span>עד שעה</span><select id="occTo">${hourOptions(END_HOURS,o.to)}</select></label>
+      </div>
+      <button class="btn-primary" onclick="moveOcc('${id}','${orig}')">שמור שינוי למפגש</button>
+      <div id="occMsg" class="message"></div>
+      <div class="actions-row">
+        ${o.moved?`<button class="btn-secondary" onclick="resetOcc('${id}','${orig}')">החזר למועד המקורי</button>`:""}
+        <button class="btn-danger" onclick="cancelOcc('${id}','${orig}')">בטל את המפגש הזה</button>
+      </div>`;
+  }
+  html+=`<hr class="divider" />
+    <div class="actions-row">
+      <button class="btn-secondary" onclick="editCourse('${id}')">עריכת הקורס כולו</button>
+      <button class="btn-danger" onclick="deleteCourse('${id}')">מחיקת הקורס כולו</button>
+    </div>`;
+  openModal("ניהול מפגש",html);
+}
+
+async function saveTerms(){
+  const next={};
+  for(const k of Object.keys(DEFAULT_TERMS)){
+    const s=document.getElementById(`term_${k}_start`).value, e=document.getElementById(`term_${k}_end`).value;
+    if(s&&e&&e<s){setMsg("termsMsg","error",`בתקופה "${k}" תאריך הסיום לפני ההתחלה.`);return;}
+    next[k]={start:s,end:e};
+  }
+  try{
+    await fbSend("PUT","/settings/terms",next,true);
+    terms=next;
+    if(!editingCourseId) applyTermDates();
+    setMsg("termsMsg","success","התאריכים נשמרו.");
+  }catch(e){setMsg("termsMsg","error",e.message);}
+}
+
+/* ── ADMIN USERS (מנהל ראשי) ────────────────────────────────── */
+async function addAdmin(){
+  if(!isSuper()) return;
+  const u=document.getElementById("naUser").value.trim().toLowerCase();
+  const n=document.getElementById("naName").value.trim();
+  const p=document.getElementById("naPass").value;
+  const role=document.getElementById("naRole").value;
+  if(!validUsername(u)){setMsg("adminsMsg","error","שם משתמש: 3–30 תווים, אותיות קטנות באנגלית, ספרות, נקודה, קו או קו תחתון.");return;}
+  if(p.length<6){setMsg("adminsMsg","error","הסיסמה חייבת להכיל לפחות 6 תווים.");return;}
+  const btn=document.getElementById("addAdminBtn");btn.disabled=true;
+  try{
+    let uid;
+    try{
+      const data=await authCall("signUp",{email:usernameToEmail(u),password:p,returnSecureToken:true});
+      uid=data.localId;
+    }catch(e){
+      // משתמש שהוסר בעבר — נחבר אותו מחדש אם הסיסמה תואמת
+      if(!e.message.includes("כבר קיים")) throw e;
+      const data=await authCall("signInWithPassword",{email:usernameToEmail(u),password:p,returnSecureToken:true})
+        .catch(()=>{throw new Error("שם המשתמש כבר קיים. כדי להחזיר משתמש שהוסר, הזן את הסיסמה הקודמת שלו.");});
+      uid=data.localId;
+      if(admins[uid]) throw new Error("המשתמש כבר מוגדר כמנהל.");
+    }
+    const rec={username:u,displayName:n||u,role,createdAt:new Date().toISOString(),createdBy:session.username};
+    await fbSend("PUT",`/admins/${enc(uid)}`,rec,true);
+    admins[uid]=rec;
+    ["naUser","naName","naPass"].forEach(id=>document.getElementById(id).value="");
+    renderAdminsList();
+    setMsg("adminsMsg","success",`המשתמש ${u} נוצר. העבר לו את שם המשתמש והסיסמה.`);
+  }catch(e){
+    setMsg("adminsMsg","error",e.message);
+  }finally{btn.disabled=false;}
+}
+
+async function removeAdmin(uid){
+  const a=admins[uid];if(!a||uid===session.uid)return;
+  if(!confirm(`להסיר את הרשאות הניהול של ${a.username}?`)) return;
+  try{
+    await fbSend("DELETE",`/admins/${enc(uid)}`,undefined,true);
+    delete admins[uid];
+    renderAdminsList();
+    setMsg("adminsMsg","success",`ההרשאות של ${a.username} הוסרו.`);
+  }catch(e){setMsg("adminsMsg","error",e.message);}
+}
+
+async function changePassword(){
+  const oldP=document.getElementById("pwOld").value;
+  const p=document.getElementById("pwNew").value, p2=document.getElementById("pwNew2").value;
+  if(p.length<6){setMsg("accountMsg","error","הסיסמה החדשה חייבת להכיל לפחות 6 תווים.");return;}
+  if(p!==p2){setMsg("accountMsg","error","הסיסמאות החדשות אינן תואמות.");return;}
+  const btn=document.getElementById("changePwBtn");btn.disabled=true;
+  try{
+    const fresh=await authCall("signInWithPassword",{email:usernameToEmail(session.username),password:oldP,returnSecureToken:true})
+      .catch(()=>{throw new Error("הסיסמה הנוכחית שגויה.");});
+    const data=await authCall("update",{idToken:fresh.idToken,password:p,returnSecureToken:true});
+    session=sessionFrom({...data,localId:session.uid},session.username);saveSession();
+    ["pwOld","pwNew","pwNew2"].forEach(id=>document.getElementById(id).value="");
+    setMsg("accountMsg","success","הסיסמה עודכנה.");
+  }catch(e){setMsg("accountMsg","error",e.message);}
+  finally{btn.disabled=false;}
 }
 
 function toggleDay(ds){openDays.has(ds)?openDays.delete(ds):openDays.add(ds);renderMobile();}
@@ -514,18 +1395,27 @@ function quickBook(date,hour){
   bookSingle();
 }
 
-function doBook(slots){
+async function doBook(slots){
   // slots: [{date,hour}]
-  const conflicts=slots.filter(s=>bookings[slotKey(s.date,s.hour)]);
+  const conflicts=slots.filter(s=>{const k=slotKey(s.date,s.hour);return bookings[k]||courseSlots[k];});
   if(conflicts.length){
-    setMsg("message","error",`${conflicts.length} מועדים תפוסים:\n`+conflicts.slice(0,5).map(s=>`${fmtDate(s.date)} ${s.hour}`).join(", ")+(conflicts.length>5?"…":""));
+    setMsg("message","error",`${conflicts.length} מועדים תפוסים:\n`+conflicts.slice(0,5).map(s=>{
+      const k=slotKey(s.date,s.hour);const by=bookings[k]?.name||courses[courseSlots[k][0].courseId]?.name||"";
+      return `${fmtDate(s.date)} ${s.hour} (${by})`;}).join(", ")+(conflicts.length>5?"…":""));
     return false;
   }
   const name=getName();
-  slots.forEach(s=>{bookings[slotKey(s.date,s.hour)]={name,createdAt:new Date().toISOString()};});
-  persist();
+  const patch={};
+  slots.forEach(s=>{patch[slotKey(s.date,s.hour)]={name,createdAt:new Date().toISOString()};});
+  Object.assign(bookings,patch);
+  saveLocal();
   setMsg("message","success",`שובצו ${slots.length} שעות ל-${name}.`);
   renderAll();
+  if(firebaseUrl){
+    setSyncStatus("loading","שומר…");
+    try{await fbSend("PATCH","/bookings",patch,false);setSyncStatus("ok","נשמר ב-Firebase ✓");}
+    catch(e){setSyncStatus("err",`שגיאה בשמירה: ${e.message}`);}
+  }
   return true;
 }
 
@@ -548,20 +1438,15 @@ function bookRange(){
   if(!start||!end){setMsg("message","error","נא למלא תאריך התחלה וסיום.");return;}
   const hrs=hoursInRange(from,to);
   if(!hrs){setMsg("message","error","שעת הסיום חייבת להיות כמו שעת ההתחלה או אחריה.");return;}
-  if(new Date(`${end}T12:00:00`)<new Date(`${start}T12:00:00`)){setMsg("message","error","תאריך הסיום לפני ההתחלה.");return;}
+  if(end<start){setMsg("message","error","תאריך הסיום לפני ההתחלה.");return;}
   const slots=[];
-  const cur=new Date(`${start}T12:00:00`);
-  while(cur<=new Date(`${end}T12:00:00`)){
-    const ds=toISODate(cur);
-    if(isWeekday(ds)) hrs.forEach(h=>slots.push({date:ds,hour:h}));
-    cur.setDate(cur.getDate()+1);
-  }
+  eachDate(start,end,ds=>{if(isWeekday(ds)) hrs.forEach(h=>slots.push({date:ds,hour:h}));});
   if(!slots.length){setMsg("message","warn","לא נמצאו ימי עבודה בטווח.");return;}
   doBook(slots);
 }
 
 function bookRecurring(){
-  const dows=[...document.querySelectorAll(".dow-chip input:checked")].map(c=>+c.value);
+  const dows=[...document.querySelectorAll("#tab-recurring .dow-chip input:checked")].map(c=>+c.value);
   if(!dows.length){setMsg("message","error","נא לסמן לפחות יום אחד.");return;}
   const from=document.getElementById("recurFrom").value;
   const to=document.getElementById("recurTo").value;
@@ -570,25 +1455,24 @@ function bookRecurring(){
   if(!start||!end){setMsg("message","error","נא למלא תאריך התחלה וסיום.");return;}
   const hrs=hoursInRange(from,to);
   if(!hrs){setMsg("message","error","שעת הסיום חייבת להיות כמו שעת ההתחלה או אחריה.");return;}
-  if(new Date(`${end}T12:00:00`)<new Date(`${start}T12:00:00`)){setMsg("message","error","תאריך הסיום לפני ההתחלה.");return;}
+  if(end<start){setMsg("message","error","תאריך הסיום לפני ההתחלה.");return;}
   const slots=[];
-  const cur=new Date(`${start}T12:00:00`);
-  while(cur<=new Date(`${end}T12:00:00`)){
-    if(dows.includes(cur.getDay())){
-      const ds=toISODate(cur);
-      hrs.forEach(h=>slots.push({date:ds,hour:h}));
-    }
-    cur.setDate(cur.getDate()+1);
-  }
+  eachDate(start,end,(ds,dow)=>{if(dows.includes(dow)) hrs.forEach(h=>slots.push({date:ds,hour:h}));});
   if(!slots.length){setMsg("message","warn","לא נמצאו תאריכים מתאימים.");return;}
   doBook(slots);
 }
 
-function del(date,hour){
-  delete bookings[slotKey(date,hour)];
-  persist();
+async function del(date,hour){
+  const key=slotKey(date,hour);
+  delete bookings[key];
+  saveLocal();
   setMsg("message","success","השיבוץ נמחק.");
   renderAll();
+  if(firebaseUrl){
+    setSyncStatus("loading","שומר…");
+    try{await fbSend("DELETE",`/bookings/${enc(key)}`,undefined,false);setSyncStatus("ok","נשמר ב-Firebase ✓");}
+    catch(e){setSyncStatus("err",`שגיאה בשמירה: ${e.message}`);}
+  }
 }
 
 function checkAvailability(){
@@ -599,21 +1483,22 @@ function checkAvailability(){
   if(!isWeekday(qd)){setMsg("queryResult","error","החדר אינו פעיל בימי שישי/שבת.");return;}
   const hrs=hoursInRange(qf,qt);
   if(!hrs){setMsg("queryResult","error","שעת הסיום חייבת להיות כמו שעת ההתחלה או אחריה.");return;}
-  const busy=hrs.filter(h=>bookings[slotKey(qd,h)]);
+  const busy=hrs.map(h=>({h,by:slotTakenBy(slotKey(qd,h))})).filter(x=>x.by.length);
   if(busy.length){
-    setMsg("queryResult","error",`${busy.length} שעות תפוסות ב-${fmtDate(qd)}:\n`+busy.map(h=>`${h}: ${bookings[slotKey(qd,h)].name}`).join("\n"));
+    setMsg("queryResult","error",`${busy.length} שעות תפוסות ב-${fmtDate(qd)}:\n`+busy.map(x=>`${x.h}: ${x.by.join(", ")}`).join("\n"));
   } else {
     setMsg("queryResult","success",`החדר פנוי ב-${fmtDate(qd)} בין ${qf}–${qt} ✓`);
   }
 }
 
 function resetBookings(){
-  if(!confirm("לאפס לשיבוצים המקוריים? פעולה זו תדרוס את כל השינויים.")) return;
+  if(!confirm("לאפס את השיבוצים החד-פעמיים לרשימה המקורית? פעולה זו תדרוס את כל השינויים בשיבוצים (הקורסים לא יושפעו).")) return;
   bookings={...INITIAL_BOOKINGS};
-  persist();
+  saveLocal();
+  pushAllBookings();
   openDays.clear();
   clearMsg("queryResult");
-  setMsg("message","success","אופס לשיבוצים המקוריים.");
+  setMsg("termsMsg","success","השיבוצים אופסו לרשימה המקורית.");
   renderAll();
 }
 
@@ -625,12 +1510,26 @@ function init(){
     const el=document.getElementById(id);if(el)el.value=today;
   });
   populateSelects();
+  resetCourseForm();
   updateSetupBanner();
   document.getElementById("selectedDate").addEventListener("change",()=>{openDays.clear();renderAll();});
   document.getElementById("resetBtn").addEventListener("click",resetBookings);
   document.getElementById("checkBtn").addEventListener("click",checkAvailability);
-  if(firebaseUrl) document.getElementById("firebaseUrlInput") && (document.getElementById("firebaseUrlInput").value=firebaseUrl);
+  document.getElementById("cType").addEventListener("change",applyTermDates);
+  document.getElementById("courseSaveBtn").addEventListener("click",saveCourse);
+  document.getElementById("courseCancelEditBtn").addEventListener("click",()=>{resetCourseForm();clearMsg("courseMsg");});
+  document.getElementById("courseSearch").addEventListener("input",renderAdminCourses);
+  document.getElementById("courseFilter").addEventListener("change",renderAdminCourses);
+  document.getElementById("termsSaveBtn").addEventListener("click",saveTerms);
+  document.getElementById("addAdminBtn").addEventListener("click",addAdmin);
+  document.getElementById("changePwBtn").addEventListener("click",changePassword);
+  document.querySelectorAll("#adminTabs .tab-btn").forEach(b=>b.addEventListener("click",()=>switchAdminTab(b.dataset.atab)));
+  document.getElementById("modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal();});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
+  if(firebaseUrl) document.getElementById("firebaseUrlInput").value=firebaseUrl;
   loadFromFirebase();
+  setInterval(refreshData,60000);
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden)refreshData();});
 }
 
 init();
