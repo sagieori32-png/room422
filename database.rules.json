@@ -1,0 +1,23 @@
+{
+  "rules": {
+    "room422": {
+      ".read": true,
+
+      "bookings": {
+        ".write": true
+      },
+
+      "courses": {
+        ".write": "auth != null && root.child('room422/admins').child(auth.uid).exists()"
+      },
+
+      "settings": {
+        ".write": "auth != null && root.child('room422/admins').child(auth.uid).exists()"
+      },
+
+      "admins": {
+        ".write": "auth != null && (!data.exists() || root.child('room422/admins').child(auth.uid).child('role').val() === 'super')"
+      }
+    }
+  }
+}
