@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>הזמנת חדרי הדרכה — מדעי הרוח</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4f6fa; --card:#fff; --text:#16202f; --muted:#64748b; --line:#dfe5ee; --line-soft:#eef2f7;
+    --primary:#1d4ed8; --primary-dark:#1e3a8a; --primary-light:#e0e9ff;
+    --free:#f2faf5; --free-strong:#16a34a; --free-text:#166534; --free-hover:#dcf3e4;
+    --busy:#ffe4e8; --busy-line:#e11d48; --busy-text:#9f1239;
+    --mine:#dbe7ff; --mine-line:#1d4ed8; --mine-text:#1e3a8a;
+    --block:#e8ebf0; --block-line:#64748b; --block-text:#334155;
+    --warn-bg:#fff7ed; --warn-text:#9a3412;
+    --past:#f6f7f9;
+    --row:22px; --gutter:52px;
+    --radius:16px; --shadow:0 10px 30px rgba(15,23,42,.07);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{font-family:"Heebo",Arial,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.45}
+  [hidden]{display:none!important}
+  .container{max-width:1320px;margin:0 auto;padding:18px}
+  h1{margin:0;font-size:clamp(19px,3.2vw,28px);letter-spacing:-.02em}
+  h2{margin:0 0 12px;font-size:17px}
+  h3{margin:0 0 8px;font-size:15px}
+  a{color:var(--primary)}
+  .muted{color:var(--muted)}
+  .small{font-size:12px}
+
+  /* buttons & inputs */
+  button{font-family:inherit;font-size:14px;font-weight:700;border:0;border-radius:11px;padding:9px 14px;cursor:pointer;transition:.12s ease;touch-action:manipulation;color:inherit;background:none}
+  button:disabled{opacity:.45;cursor:not-allowed}
+  .btn{background:#e7ecf3;color:#0f172a}
+  .btn:hover:not(:disabled){background:#dbe2ec}
+  .btn-primary{background:var(--primary);color:#fff}
+  .btn-primary:hover:not(:disabled){background:var(--primary-dark)}
+  .btn-danger{background:#ffe4e8;color:var(--busy-text)}
+  .btn-danger:hover:not(:disabled){background:#fecdd5}
+  .btn-ghost{background:transparent;color:var(--primary);padding:6px 8px}
+  .btn-sm{padding:6px 10px;font-size:12.5px;border-radius:9px}
+  .btn-block{width:100%;min-height:42px}
+  label.f{display:block}
+  label.f>span{display:block;font-weight:700;font-size:12.5px;margin-bottom:4px}
+  label.f>span em{font-style:normal;color:var(--busy-line)}
+  input[type=text],input[type=date],input[type=password],input[type=email],input[type=tel],select,textarea{
+    width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:8px 10px;background:#fff;color:var(--text);font-family:inherit;font-size:14px;min-height:38px}
+  textarea{min-height:56px;resize:vertical}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--primary-light);border-color:var(--primary)}
+  .ltr{direction:ltr;text-align:left}
+  .row{display:grid;gap:10px;margin-bottom:10px}
+  .c2{grid-template-columns:1fr 1fr}.c3{grid-template-columns:1fr 1fr 1fr}.c4{grid-template-columns:repeat(4,1fr)}
+  .chk{display:flex;align-items:center;gap:7px;font-weight:500;cursor:pointer;user-select:none}
+  .chk input{width:17px;height:17px;accent-color:var(--primary)}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+
+  /* header */
+  header.top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+  header.top .sub{margin:3px 0 0;color:var(--muted);font-size:13px}
+  .top-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .user-chip{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);padding:7px 11px;border-radius:11px;font-weight:700;font-size:13px}
+  .user-chip .role{font-weight:500;color:var(--muted);font-size:11.5px}
+
+  /* nav */
+  .nav{display:flex;gap:4px;background:#e9eef5;border-radius:13px;padding:4px;margin-bottom:14px;overflow-x:auto}
+  .nav button{flex:1;white-space:nowrap;color:var(--muted);font-size:13.5px;padding:9px 12px;border-radius:10px}
+  .nav button.active{background:#fff;color:var(--primary);box-shadow:0 2px 6px rgba(15,23,42,.08)}
+
+  /* segmented */
+  .seg{display:inline-flex;background:#e9eef5;border-radius:11px;padding:3px;gap:2px;flex-wrap:wrap}
+  .seg button{padding:7px 12px;font-size:13px;color:var(--muted);border-radius:9px}
+  .seg button.active{background:#fff;color:var(--primary);box-shadow:0 1px 4px rgba(15,23,42,.1)}
+
+  /* calendar toolbar */
+  .cal-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  .week-nav{display:flex;align-items:center;gap:6px}
+  .week-nav .label{font-weight:800;font-size:14px;min-width:150px;text-align:center}
+  .week-nav input[type=date]{width:auto;min-height:34px;padding:5px 8px;font-size:13px}
+  .legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-inline-start:auto}
+  .legend i{display:inline-block;width:13px;height:13px;border-radius:4px;vertical-align:-2px;margin-inline-end:4px;border:1px solid transparent}
+  .lg-free{background:var(--free);border-color:#bfe5cc!important}
+  .lg-busy{background:var(--busy);border-color:var(--busy-line)!important}
+  .lg-mine{background:var(--mine);border-color:var(--mine-line)!important}
+  .lg-block{background:repeating-linear-gradient(45deg,var(--block),var(--block) 3px,#f6f7f9 3px,#f6f7f9 6px);border-color:var(--block-line)!important}
+
+  .mobile-days{display:none;gap:6px;overflow-x:auto;margin-bottom:10px;padding-bottom:2px}
+  .mobile-days button{flex:1;min-width:58px;background:#fff;border:1px solid var(--line);border-radius:11px;padding:7px 4px;font-size:12.5px;line-height:1.25}
+  .mobile-days button small{display:block;font-weight:500;color:var(--muted);font-size:11px}
+  .mobile-days button.active{background:var(--primary);border-color:var(--primary);color:#fff}
+  .mobile-days button.active small{color:#dbeafe}
+  .mobile-days button.today:not(.active){border-color:var(--primary)}
+
+  /* calendar grid */
+  .grid-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:#fff}
+  .grid{display:grid;min-width:100%}
+  .gh{background:#f1f4f9;border-bottom:1px solid var(--line);text-align:center;padding:8px 4px;font-weight:800;font-size:13px}
+  .gh small{display:block;font-weight:500;color:var(--muted);font-size:11.5px}
+  .gh.today{color:var(--primary);background:#e8efff}
+  .gh.day{border-inline-start:2px solid var(--line)}
+  .gh.room-sub{border-radius:0;padding:5px 2px;font-size:11.5px;font-weight:700;color:var(--muted);background:#f7f9fc;border-bottom:1px solid var(--line)}
+  .gh.room-sub:hover{color:var(--primary);background:#eef3ff}
+  .gh.room-sub.day-start{border-inline-start:2px solid var(--line)}
+  .gutter{position:relative;border-inline-end:1px solid var(--line);background:#fafbfd}
+  .gutter span{position:absolute;inset-inline:0;transform:translateY(-50%);text-align:center;font-size:11px;color:var(--muted);font-weight:700}
+  .gutter span:first-child{transform:none;top:2px!important}
+  .lane{position:relative;background-color:var(--free);cursor:pointer;border-inline-start:1px solid var(--line-soft);
+    background-image:linear-gradient(to bottom,#d9e2ec 1px,transparent 1px),linear-gradient(to bottom,#ebf0f5 1px,transparent 1px);
+    background-size:100% calc(var(--row)*2),100% var(--row)}
+  .lane.day-start{border-inline-start:2px solid var(--line)}
+  .lane.past{background-color:var(--past);cursor:default}
+  .lane .ghost{position:absolute;inset-inline:3px;height:var(--row);border-radius:6px;background:var(--free-hover);border:1px dashed var(--free-strong);color:var(--free-text);font-size:11px;font-weight:700;display:none;align-items:center;justify-content:center;pointer-events:none}
+  .lane:not(.past):hover .ghost.on{display:flex}
+  .ev{position:absolute;inset-inline:3px;border-radius:7px;padding:2px 6px;overflow:hidden;font-size:11.5px;line-height:1.3;border-inline-start:3px solid;cursor:pointer;z-index:2;box-shadow:0 1px 2px rgba(15,23,42,.08)}
+  .ev:hover{filter:brightness(.96);z-index:3}
+  .ev b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11.5px}
+  .ev span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.85;font-size:11px}
+  .ev span.tm{direction:ltr;text-align:right;font-size:10.5px;letter-spacing:-.01em}
+  .grid.multi .ev{inset-inline:2px;padding:2px 4px}
+  .ev-busy{background:var(--busy);border-color:var(--busy-line);color:var(--busy-text)}
+  .ev-mine{background:var(--mine);border-color:var(--mine-line);color:var(--mine-text)}
+  .ev-block{background:repeating-linear-gradient(45deg,var(--block),var(--block) 6px,#f3f5f8 6px,#f3f5f8 12px);border-color:var(--block-line);color:var(--block-text)}
+  .lane.past .ev{opacity:.6}
+  .cal-hint{margin:8px 2px 0;color:var(--muted);font-size:12px}
+
+  /* availability */
+  .avail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+  .room-card{border:1.5px solid var(--line);border-radius:14px;padding:14px;background:#fff}
+  .room-card.free{border-color:#9ad8b0;background:#f7fdf9}
+  .room-card.busy{border-color:#f4a7b6;background:#fff8f9}
+  .room-card.block{border-color:#cbd5e1;background:#f8fafc}
+  .room-card .rc-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .room-card .rc-name{font-size:18px;font-weight:800}
+  .status{display:inline-block;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:800}
+  .status.free{background:#dcfce7;color:var(--free-text)}
+  .status.busy{background:#ffe4e8;color:var(--busy-text)}
+  .status.block{background:#e2e8f0;color:var(--block-text)}
+  .daybar{display:flex;height:16px;border-radius:5px;overflow:hidden;margin:8px 0 3px;border:1px solid var(--line)}
+  .daybar i{flex:1;background:var(--free)}
+  .daybar i.b{background:#fda4b4}.daybar i.m{background:#93b4f5}.daybar i.k{background:#b8c2cf}
+  .daybar i.sel{box-shadow:inset 0 -3px 0 var(--primary)}
+  .daybar-scale{display:flex;justify-content:space-between;font-size:10px;color:var(--muted)}
+  .conf-list{margin:8px 0 0;padding:0;list-style:none;font-size:12.5px}
+  .conf-list li{padding:4px 0;border-top:1px dashed var(--line)}
+
+  /* search */
+  .filters{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;align-items:end}
+  .filters .wide{grid-column:span 2}
+  .filter-checks{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px}
+  .results-meta{margin:14px 2px 8px;color:var(--muted);font-size:13px}
+  .bk{border:1px solid var(--line);border-radius:13px;padding:12px 14px;margin-bottom:8px;background:#fff;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-inline-start:4px solid var(--busy-line)}
+  .bk.mine{border-inline-start-color:var(--mine-line)}
+  .bk.block{border-inline-start-color:var(--block-line);background:#fafbfc}
+  .bk-title{font-weight:800;font-size:14.5px}
+  .bk-meta{color:var(--muted);font-size:12.5px;margin-top:3px;line-height:1.6}
+  .bk-actions{display:flex;gap:6px;align-items:flex-start;flex-wrap:wrap}
+  .badge{display:inline-block;border-radius:999px;padding:1px 8px;font-size:11px;font-weight:800;background:#eef2f7;color:#334155;vertical-align:1px;white-space:nowrap}
+  .badge.room{background:#e0e9ff;color:var(--primary-dark)}
+  .badge.mine{background:var(--mine);color:var(--mine-text)}
+  .badge.block{background:var(--block);color:var(--block-text)}
+  .badge.rep{background:#fef3c7;color:#92400e}
+  .empty{padding:26px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:13px;background:#fff}
+
+  /* admin */
+  .admin-cols{display:grid;grid-template-columns:1.2fr 1fr;gap:14px}
+  table.t{width:100%;border-collapse:collapse;font-size:13px}
+  table.t th{text-align:right;background:#f1f4f9;padding:8px;font-size:12px;color:#334155}
+  table.t td{padding:8px;border-bottom:1px solid var(--line-soft);vertical-align:middle}
+
+  /* modal */
+  .modal-bg{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:flex-start;justify-content:center;padding:28px 14px;z-index:50;overflow:auto}
+  .modal-bg.show{display:flex}
+  .modal{background:#fff;border-radius:18px;width:100%;max-width:600px;padding:18px 20px 20px;box-shadow:0 30px 80px rgba(15,23,42,.3)}
+  .modal.narrow{max-width:430px}
+  .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px}
+  .modal-head h2{margin:0}
+  .x{font-size:20px;color:var(--muted);padding:2px 8px}
+  .sect{border-top:1px solid var(--line-soft);padding-top:12px;margin-top:4px}
+  .sect-title{font-size:12px;font-weight:800;color:var(--muted);margin-bottom:8px;letter-spacing:.02em}
+  .dow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .dow label{cursor:pointer}
+  .dow input{position:absolute;opacity:0;pointer-events:none}
+  .dow span{display:block;padding:6px 12px;border-radius:9px;border:1.5px solid var(--line);font-weight:700;font-size:13px;color:var(--muted);user-select:none}
+  .dow input:checked+span{background:var(--primary-light);border-color:var(--primary);color:var(--primary)}
+  .dow input:focus-visible+span{outline:2px solid var(--primary)}
+  .check-box{border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.55;margin:10px 0;white-space:pre-line}
+  .check-box.ok{background:#e9f9ef;color:var(--free-text)}
+  .check-box.bad{background:#fff1f3;color:var(--busy-text)}
+  .check-box.warn{background:var(--warn-bg);color:var(--warn-text)}
+  .check-box .alt{margin-top:6px}
+  .detail-grid{display:grid;grid-template-columns:110px 1fr;gap:6px 10px;font-size:13.5px;margin-bottom:14px}
+  .detail-grid dt{color:var(--muted);font-weight:700}
+  .detail-grid dd{margin:0}
+  .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .actions .btn-primary{flex:1}
+  .msg{display:none;border-radius:11px;padding:9px 12px;font-weight:700;font-size:13px;margin-top:10px;white-space:pre-line}
+  .msg.show{display:block}
+  .msg.error{background:#fff1f3;color:var(--busy-text)}
+  .msg.success{background:#e9f9ef;color:var(--free-text)}
+  .msg.warn{background:var(--warn-bg);color:var(--warn-text)}
+
+  /* gate */
+  .gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+  .gate .card{max-width:420px;width:100%;padding:24px}
+  .gate h1{font-size:22px;margin-bottom:4px}
+  .gate .rooms-line{color:var(--muted);margin:0 0 18px;font-size:13px}
+
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:#0f172a;color:#fff;padding:10px 16px;border-radius:12px;font-weight:700;font-size:13.5px;opacity:0;pointer-events:none;transition:.2s;z-index:60;max-width:90vw;text-align:center}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .toast.warn{background:#9a3412}
+  .sync{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px}
+  .dot{width:8px;height:8px;border-radius:50%;background:#94a3b8}
+  .dot.ok{background:#22c55e}.dot.err{background:#ef4444}.dot.loading{background:#f59e0b}
+
+  .fab{display:none}
+
+  @media (max-width:960px){
+    .admin-cols{grid-template-columns:1fr}
+    .filters{grid-template-columns:repeat(2,1fr)}
+    .filters .wide{grid-column:span 2}
+    .avail-grid{grid-template-columns:1fr}
+  }
+  @media (max-width:760px){
+    .container{padding:12px}
+    .c2,.c3,.c4{grid-template-columns:1fr}
+    .row.keep2{grid-template-columns:1fr 1fr}
+    .mobile-days{display:flex}
+    .legend{margin-inline-start:0;width:100%}
+    .week-nav .label{min-width:0;flex:1}
+    .week-nav{width:100%}
+    .cal-toolbar .seg{width:100%}
+    .cal-toolbar .seg button{flex:1}
+    .top-actions .btn-new{display:none}
+    .fab{display:block;position:fixed;bottom:18px;left:18px;z-index:40;border-radius:999px;padding:13px 18px;box-shadow:0 10px 25px rgba(29,78,216,.35)}
+    .detail-grid{grid-template-columns:90px 1fr}
+    .modal{padding:16px}
+    .modal-bg{padding:12px 8px}
+    .user-chip .role{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ═════════ LOGIN GATE ═════════ -->
+<div class="gate" id="gate">
+  <div class="card">
+    <h1>הזמנת חדרי הדרכה</h1>
+    <p class="rooms-line">מדעי הרוח · חדרים 42502 · 42503 · 42504</p>
+    <div id="gateBody"><p class="muted">טוען…</p></div>
+  </div>
+</div>
+
+<!-- ═════════ APP ═════════ -->
+<div id="app" hidden>
+<div class="container">
+  <header class="top">
+    <div>
+      <h1>הזמנת חדרי הדרכה — מדעי הרוח</h1>
+      <p class="sub">חדרים 42502 · 42503 · 42504 · להדרכות פרטניות וקבוצות קטנות עד 4 משתתפים · א'–ה' 08:00–20:00</p>
+    </div>
+    <div class="top-actions">
+      <span class="sync"><span class="dot" id="syncDot"></span><span id="syncLabel"></span></span>
+      <button class="btn-primary btn-new" onclick="openBookingForm()">+ הזמנה חדשה</button>
+      <button class="user-chip" onclick="openAccount()" title="החשבון שלי"><span>👤</span><span id="meName"></span><span class="role" id="meRole"></span></button>
+      <button class="btn" onclick="logout()">יציאה</button>
+    </div>
+  </header>
+
+  <nav class="nav" id="nav">
+    <button data-view="calendar" class="active">📅 יומן</button>
+    <button data-view="avail">🔎 בדיקת זמינות</button>
+    <button data-view="search">📋 חיפוש הזמנות</button>
+    <button data-view="admin" id="navAdmin" hidden>⚙️ ניהול</button>
+  </nav>
+
+  <!-- CALENDAR -->
+  <section id="view-calendar" class="card">
+    <div class="cal-toolbar">
+      <div class="seg" id="roomSeg"></div>
+      <div class="week-nav">
+        <button class="btn btn-sm" onclick="shiftWeek(-1)" aria-label="שבוע קודם">→</button>
+        <span class="label" id="weekLabel"></span>
+        <button class="btn btn-sm" onclick="shiftWeek(1)" aria-label="שבוע הבא">←</button>
+        <button class="btn btn-sm" onclick="goToday()">היום</button>
+        <input type="date" id="weekPicker" aria-label="מעבר לתאריך" />
+      </div>
+      <div class="legend">
+        <span><i class="lg-free"></i>פנוי</span>
+        <span><i class="lg-busy"></i>תפוס</span>
+        <span><i class="lg-mine"></i>ההזמנות שלי</span>
+        <span><i class="lg-block"></i>חסום לשימוש</span>
+      </div>
+    </div>
+    <div class="mobile-days" id="mobileDays"></div>
+    <div class="grid-wrap"><div id="grid"></div></div>
+    <p class="cal-hint">לחיצה על משבצת פנויה פותחת הזמנה חדשה · לחיצה על הזמנה מציגה פרטים, עריכה וביטול</p>
+  </section>
+
+  <!-- AVAILABILITY -->
+  <section id="view-avail" class="card" hidden>
+    <h2>בדיקת זמינות</h2>
+    <div class="row c4">
+      <label class="f"><span>תאריך</span><input type="date" id="a_date" /></label>
+      <label class="f"><span>משעה</span><select id="a_from"></select></label>
+      <label class="f"><span>עד שעה</span><select id="a_to"></select></label>
+      <div class="f" style="align-self:end"><button class="btn-primary btn-block" onclick="renderAvail()">בדוק זמינות</button></div>
+    </div>
+    <div id="availMsg" class="msg"></div>
+    <div id="availResults" class="avail-grid"></div>
+  </section>
+
+  <!-- SEARCH -->
+  <section id="view-search" class="card" hidden>
+    <h2>חיפוש וסינון הזמנות</h2>
+    <div class="filters">
+      <label class="f"><span>חדר</span><select id="s_room"><option value="">כל החדרים</option></select></label>
+      <label class="f"><span>מתאריך</span><input type="date" id="s_from" /></label>
+      <label class="f"><span>עד תאריך</span><input type="date" id="s_to" /></label>
+      <label class="f"><span>שם פעילות</span><input type="text" id="s_title" placeholder="חיפוש…" /></label>
+      <label class="f"><span>שם מזמין / יחידה</span><input type="text" id="s_org" placeholder="חיפוש…" /></label>
+      <div class="f" style="align-self:end"><button class="btn btn-block" onclick="clearSearch()">ניקוי</button></div>
+    </div>
+    <div class="filter-checks">
+      <label class="chk"><input type="checkbox" id="s_mine" /> רק ההזמנות שלי</label>
+      <label class="chk"><input type="checkbox" id="s_past" /> כולל הזמנות שהסתיימו</label>
+      <label class="chk"><input type="checkbox" id="s_blocks" checked /> כולל חסימות</label>
+    </div>
+    <div class="results-meta" id="searchMeta"></div>
+    <div id="searchResults"></div>
+  </section>
+
+  <!-- ADMIN -->
+  <section id="view-admin" hidden>
+    <div class="admin-cols">
+      <div class="card">
+        <h2>משתמשים מורשים</h2>
+        <div style="overflow-x:auto"><table class="t" id="usersTable"></table></div>
+        <div class="sect" style="margin-top:14px">
+          <h3>הוספת משתמש</h3>
+          <div class="row c2">
+            <label class="f"><span>שם משתמש <em>*</em></span><input type="text" class="ltr" id="u_user" autocomplete="off" placeholder="dana.levi" /></label>
+            <label class="f"><span>סיסמה ראשונית <em>*</em></span><input type="text" class="ltr" id="u_pass" autocomplete="off" placeholder="לפחות 6 תווים" /></label>
+          </div>
+          <div class="row c2">
+            <label class="f"><span>שם מלא <em>*</em></span><input type="text" id="u_name" /></label>
+            <label class="f"><span>יחידה ארגונית</span><input type="text" id="u_unit" /></label>
+          </div>
+          <div class="row c3">
+            <label class="f"><span>טלפון</span><input type="tel" class="ltr" id="u_phone" /></label>
+            <label class="f"><span>דוא"ל</span><input type="email" class="ltr" id="u_email" /></label>
+            <label class="f"><span>הרשאה</span><select id="u_role"><option value="user">משתמש</option><option value="admin">מנהל</option></select></label>
+          </div>
+          <button class="btn-primary btn-block" id="addUserBtn" onclick="addUser()">צור משתמש</button>
+          <div id="usersMsg" class="msg"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>חסימת חדרים</h2>
+        <p class="muted small" style="margin-top:-6px">חסימה מסמנת חדר כלא זמין (תחזוקה, אירוע, שימוש קבוע של המחלקה). אפשר לחסום מועד בודד או באופן חוזר.</p>
+        <button class="btn-primary btn-block" onclick="openBookingForm({kind:'block'})">+ חסימה חדשה</button>
+        <div id="blocksList" style="margin-top:12px"></div>
+      </div>
+    </div>
+  </section>
+</div>
+<button class="btn-primary fab" onclick="openBookingForm()">+ הזמנה</button>
+</div>
+
+<div class="modal-bg" id="modalBg"><div class="modal" id="modal" role="dialog" aria-modal="true">
+  <div class="modal-head"><h2 id="modalTitle"></h2><button class="x" onclick="closeModal()" aria-label="סגור">✕</button></div>
+  <div id="modalBody"></div>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═════════ CONFIG ═════════ */
+const CONFIG = {
+  dbUrl:  "https://new-67d5d-default-rtdb.firebaseio.com",
+  apiKey: "AIzaSyDQzSJ-yBY-pEV0mGDeuJZaBWeR5TgETFs",
+  root:   "/humrooms",
+  emailDomain: "hum-rooms.app"      // שם משתמש "dana" נשמר ב-Firebase כ- dana@hum-rooms.app
+};
+const ROOMS = ["42502","42503","42504"];
+const CAPACITY = 4;
+const DAY_NAMES = ["ראשון","שני","שלישי","רביעי","חמישי","שישי","שבת"];
+const WORK_DAYS = [0,1,2,3,4];
+const DAY_START = 8*60, DAY_END = 20*60, STEP = 30;
+const ROW = 22;                                   // גובה משבצת חצי שעה בפיקסלים (תואם ל- --row)
+const SESSION_KEY = "humrooms_session_v1";
+const REPEAT_LABEL = {once:"חד-פעמי", weekly:"שבועי", biweekly:"אחת לשבועיים"};
+
+/* ═════════ STATE ═════════ */
+const S = {
+  session:null, me:null, bookings:{}, users:{}, idx:{}, dayEvents:{},
+  view:"calendar", room:"all", weekDate:null, mobileDay:null, form:null, loadedAt:0
+};
+
+/* ═════════ HELPERS ═════════ */
+const $ = id => document.getElementById(id);
+const pad = n => String(n).padStart(2,"0");
+function iso(d){return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;}
+function today(){return iso(new Date());}
+function dt(ds){return new Date(`${ds}T12:00:00`);}
+function dow(ds){return dt(ds).getDay();}
+function addDays(ds,n){const d=dt(ds);d.setDate(d.getDate()+n);return iso(d);}
+function sundayOf(ds){return addDays(ds,-dow(ds));}
+function weekDates(ds){const s=sundayOf(ds);return WORK_DAYS.map(i=>addDays(s,i));}
+function weeksBetween(a,b){return Math.round((dt(b)-dt(a))/(7*864e5));}
+function fmt(ds){const d=dt(ds);return `${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()}`;}
+function fmtShort(ds){const d=dt(ds);return `${d.getDate()}.${d.getMonth()+1}`;}
+function dayLong(ds){return `יום ${DAY_NAMES[dow(ds)]} ${fmt(ds)}`;}
+function toMin(t){const[h,m]=t.split(":").map(Number);return h*60+m;}
+function fromMin(m){return `${pad(Math.floor(m/60))}:${pad(m%60)}`;}
+function slotTimes(from,to){const out=[];for(let m=Math.max(toMin(from),DAY_START);m<Math.min(toMin(to),DAY_END);m+=STEP)out.push(fromMin(m).replace(":",""));return out;}
+function eachDate(a,b,fn){let d=a,g=0;while(d<=b&&g++<800){fn(d,dow(d));d=addDays(d,1);}}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function asArr(v){return Array.isArray(v)?v.filter(x=>x!=null):(v&&typeof v==="object"?Object.values(v):[]);}
+function safeId(id){return /^[A-Za-z0-9_-]{1,40}$/.test(id);}
+function newId(){return "b"+Date.now().toString(36)+Math.random().toString(36).slice(2,8);}
+function isMobile(){return window.matchMedia("(max-width:760px)").matches;}
+const START_TIMES = []; for(let m=DAY_START;m<DAY_END;m+=STEP) START_TIMES.push(fromMin(m));
+const END_TIMES = [];   for(let m=DAY_START+STEP;m<=DAY_END;m+=STEP) END_TIMES.push(fromMin(m));
+function timeOptions(list,sel){return list.map(t=>`<option${t===sel?" selected":""}>${t}</option>`).join("");}
+function clean(o){if(o&&typeof o==="object"&&!Array.isArray(o)){const r={};for(const[k,v]of Object.entries(o)){const c=clean(v);if(c!==null&&c!==undefined&&c!=="")r[k]=c;}return Object.keys(r).length?r:null;}return o;}
+
+/* ═════════ BOOKINGS MODEL ═════════ */
+// כל הזמנה נשמרת כסדרה: startDate–endDate, ימים בשבוע, שעות, ותדירות (once/weekly/biweekly).
+// מפגש שבוטל נרשם ב-exceptions[תאריך]=true. בנוסף כל משבצת חצי-שעה תפוסה נרשמת ב-slots/חדר/תאריך/שעה
+// — חוקי ה-Database מונעים כתיבה למשבצת שכבר תפוסה, כך שהזמנה כפולה נחסמת גם בשרת.
+function validBooking(b){
+  return b&&ROOMS.includes(b.room)&&/^\d{4}-\d\d-\d\d$/.test(b.startDate||"")&&/^\d{4}-\d\d-\d\d$/.test(b.endDate||"")
+    &&/^\d\d:\d\d$/.test(b.from||"")&&/^\d\d:\d\d$/.test(b.to||"");
+}
+function occDates(b){
+  const out=[];if(!validBooking(b))return out;
+  const days=asArr(b.days).map(Number), anchor=sundayOf(b.startDate);
+  eachDate(b.startDate,b.endDate,(d,w)=>{
+    if(!days.includes(w))return;
+    if(b.repeat==="biweekly"&&weeksBetween(anchor,sundayOf(d))%2!==0)return;
+    if(b.exceptions&&b.exceptions[d])return;
+    out.push(d);
+  });
+  return out;
+}
+function slotPaths(b,dates){
+  const out=[];(dates||occDates(b)).forEach(d=>slotTimes(b.from,b.to).forEach(t=>out.push(`slots/${b.room}/${d}/${t}`)));
+  return out;
+}
+function buildIndex(){
+  S.idx={};S.dayEvents={};
+  for(const[id,b]of Object.entries(S.bookings)){
+    if(!safeId(id)||!validBooking(b))continue;
+    occDates(b).forEach(d=>{
+      (S.dayEvents[`${b.room}|${d}`]??=[]).push(id);
+      slotTimes(b.from,b.to).forEach(t=>{S.idx[`${b.room}|${d}|${t}`]=id;});
+    });
+  }
+}
+function isMine(b){return b.ownerUid===S.session?.uid;}
+function isAdmin(){return S.me?.role==="admin";}
+function canEdit(b){return isAdmin()||(isMine(b)&&b.kind!=="block");}
+function repeatText(b){
+  if(b.repeat==="once"||!b.repeat) return `${dayLong(b.startDate)} · ${b.from}–${b.to}`;
+  const days=asArr(b.days).map(Number).sort().map(d=>DAY_NAMES[d]).join(", ");
+  return `${REPEAT_LABEL[b.repeat]} · ימי ${days} · ${b.from}–${b.to} · ${fmt(b.startDate)} – ${fmt(b.endDate)}`;
+}
+// בדיקת התנגשויות: מחזיר רשימת {date,time,id} של משבצות תפוסות. exclude(id,date) → להתעלם
+function findConflicts(room,dates,from,to,exclude){
+  const out=[];
+  dates.forEach(d=>slotTimes(from,to).forEach(t=>{
+    const id=S.idx[`${room}|${d}|${t}`];
+    if(id&&!(exclude&&exclude(id,d)))out.push({date:d,time:t,id});
+  }));
+  return out;
+}
+function groupConflicts(conf){
+  const m=new Map();
+  conf.forEach(c=>{const k=`${c.date}|${c.id}`;if(!m.has(k))m.set(k,{date:c.date,id:c.id});});
+  return [...m.values()];
+}
+
+/* ═════════ AUTH (Firebase Authentication REST) ═════════ */
+function usernameToEmail(u){return `${u.trim().toLowerCase()}@${CONFIG.emailDomain}`;}
+function validUsername(u){return /^[a-z0-9._-]{3,30}$/.test(u);}
+function saveSession(){try{S.session?localStorage.setItem(SESSION_KEY,JSON.stringify(S.session)):localStorage.removeItem(SESSION_KEY);}catch{}}
+function loadSession(){try{return JSON.parse(localStorage.getItem(SESSION_KEY))||null;}catch{return null;}}
+function authErr(raw){
+  const s=String(raw||""),code=s.split(/[ :]/)[0];
+  const map={EMAIL_NOT_FOUND:"שם משתמש או סיסמה שגויים.",INVALID_PASSWORD:"שם משתמש או סיסמה שגויים.",INVALID_LOGIN_CREDENTIALS:"שם משתמש או סיסמה שגויים.",
+    INVALID_EMAIL:"שם משתמש לא תקין.",USER_DISABLED:"המשתמש חסום.",EMAIL_EXISTS:"שם המשתמש כבר קיים.",WEAK_PASSWORD:"הסיסמה חלשה מדי — לפחות 6 תווים.",
+    MISSING_PASSWORD:"נא להזין סיסמה.",OPERATION_NOT_ALLOWED:"כניסה עם סיסמה לא הופעלה ב-Firebase (Authentication → Sign-in method → Email/Password).",
+    CONFIGURATION_NOT_FOUND:"שירות Authentication לא הופעל בפרויקט ה-Firebase.",TOO_MANY_ATTEMPTS_TRY_LATER:"יותר מדי ניסיונות. נסו שוב בעוד כמה דקות.",
+    TOKEN_EXPIRED:"פג תוקף ההתחברות — יש להתחבר מחדש.",INVALID_ID_TOKEN:"פג תוקף ההתחברות — יש להתחבר מחדש."};
+  if(s.includes("API key"))return "מפתח ה-API של Firebase שגוי.";
+  return map[code]||`שגיאת התחברות: ${s}`;
+}
+async function authCall(ep,body){
+  let r;
+  try{r=await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:${ep}?key=${encodeURIComponent(CONFIG.apiKey)}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});}
+  catch{throw new Error("אין חיבור לשרת ההתחברות.");}
+  const data=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error(authErr(data?.error?.message||`HTTP ${r.status}`));
+  return data;
+}
+function sessionFrom(d,username){return{uid:d.localId,username,idToken:d.idToken,refreshToken:d.refreshToken,expiresAt:Date.now()+(+d.expiresIn||3600)*1000};}
+async function idToken(){
+  if(!S.session)throw new Error("יש להתחבר.");
+  if(Date.now()<S.session.expiresAt-60000)return S.session.idToken;
+  const r=await fetch(`https://securetoken.googleapis.com/v1/token?key=${encodeURIComponent(CONFIG.apiKey)}`,{method:"POST",
+    headers:{"Content-Type":"application/x-www-form-urlencoded"},body:`grant_type=refresh_token&refresh_token=${encodeURIComponent(S.session.refreshToken)}`}).catch(()=>null);
+  const d=r?await r.json().catch(()=>({})):{};
+  if(!r||!r.ok){logout();throw new Error("פג תוקף ההתחברות — יש להתחבר מחדש.");}
+  Object.assign(S.session,{idToken:d.id_token,refreshToken:d.refresh_token,expiresAt:Date.now()+(+d.expires_in||3600)*1000});
+  saveSession();return S.session.idToken;
+}
+
+/* ═════════ DATABASE (REST) ═════════ */
+async function db(method,path,body){
+  const tok=await idToken();
+  let r;
+  try{r=await fetch(`${CONFIG.dbUrl}${CONFIG.root}${path}.json?auth=${encodeURIComponent(tok)}`,{method,headers:{"Content-Type":"application/json"},body:body===undefined?undefined:JSON.stringify(body)});}
+  catch{throw new Error("אין חיבור לשרת. בדקו את החיבור לאינטרנט.");}
+  if(r.status===401||r.status===403){const e=new Error("הפעולה נדחתה על ידי השרת.");e.code="DENIED";throw e;}
+  if(!r.ok)throw new Error(`שגיאת שרת (HTTP ${r.status})`);
+  return r.json();
+}
+async function publicGet(path){
+  const r=await fetch(`${CONFIG.dbUrl}${CONFIG.root}${path}.json`);
+  if(!r.ok)throw new Error(`HTTP ${r.status}`);
+  return r.json();
+}
+function setSync(state,label){$("syncDot").className=`dot ${state}`;$("syncLabel").textContent=label;}
+async function loadData(){
+  setSync("loading","טוען…");
+  try{
+    const [b,me]=await Promise.all([db("GET","/bookings"),db("GET",`/users/${S.session.uid}`)]);
+    if(!me){logout();showGate("החשבון שלך הוסר מרשימת המשתמשים המורשים.");return false;}
+    S.me=me;
+    S.bookings=(b&&typeof b==="object")?b:{};
+    if(isAdmin()){const u=await db("GET","/users");S.users=(u&&typeof u==="object")?u:{};}
+    buildIndex();S.loadedAt=Date.now();
+    setSync("ok","מעודכן "+new Date().toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit"}));
+    return true;
+  }catch(e){setSync("err",e.code==="DENIED"?"אין הרשאת צפייה":"שגיאת חיבור");throw e;}
+}
+async function refresh(){
+  if(!S.me||document.hidden)return;
+  try{await loadData();renderAll();if(S.form)updateFormCheck();}catch{}
+}
+
+/* ═════════ GATE: LOGIN / FIRST SETUP ═════════ */
+async function showGate(msg){
+  $("app").hidden=true;$("gate").hidden=false;closeModal();
+  $("gateBody").innerHTML=`<p class="muted">טוען…</p>`;
+  let initialized=true;
+  try{initialized=!!(await publicGet("/meta/initialized"));}catch{}
+  if(!initialized){
+    $("gateBody").innerHTML=`
+      <div class="check-box warn" style="margin-top:0">הגדרה ראשונית: עדיין לא הוגדרו משתמשים. צרו עכשיו את חשבון המנהל הראשון — הוא יוכל להוסיף משתמשים מורשים נוספים.</div>
+      <div class="row"><label class="f"><span>שם משתמש (אנגלית)</span><input type="text" class="ltr" id="g_user" autocomplete="username" placeholder="admin" /></label></div>
+      <div class="row"><label class="f"><span>שם מלא</span><input type="text" id="g_name" /></label></div>
+      <div class="row"><label class="f"><span>יחידה ארגונית</span><input type="text" id="g_unit" /></label></div>
+      <div class="row c2"><label class="f"><span>סיסמה</span><input type="password" id="g_pass" autocomplete="new-password" /></label>
+        <label class="f"><span>אימות סיסמה</span><input type="password" id="g_pass2" autocomplete="new-password" /></label></div>
+      <button class="btn-primary btn-block" id="g_btn" onclick="firstSetup()">צור מנהל ראשי</button>
+      <div class="msg" id="g_msg"></div>`;
+  } else {
+    $("gateBody").innerHTML=`
+      <div class="row"><label class="f"><span>שם משתמש</span><input type="text" class="ltr" id="g_user" autocomplete="username" /></label></div>
+      <div class="row"><label class="f"><span>סיסמה</span><input type="password" id="g_pass" autocomplete="current-password" /></label></div>
+      <button class="btn-primary btn-block" id="g_btn" onclick="login()">כניסה</button>
+      <div class="msg" id="g_msg"></div>
+      <p class="muted small" style="margin:14px 0 0">הכניסה למשתמשים מורשים בלבד. לקבלת שם משתמש פנו למנהל/ת המערכת.</p>`;
+    $("g_pass").addEventListener("keydown",e=>{if(e.key==="Enter")login();});
+  }
+  if(msg)setMsg("g_msg","error",msg);
+  $("g_user")?.focus();
+}
+async function login(){
+  const u=$("g_user").value.trim().toLowerCase(),p=$("g_pass").value;
+  if(!u||!p){setMsg("g_msg","error","נא למלא שם משתמש וסיסמה.");return;}
+  $("g_btn").disabled=true;
+  try{
+    const d=await authCall("signInWithPassword",{email:usernameToEmail(u),password:p,returnSecureToken:true});
+    S.session=sessionFrom(d,u);
+    try{await loadData();}
+    catch(e){S.session=null;S.me=null;throw new Error(e.code==="DENIED"?"המשתמש אינו מורשה במערכת. פנו למנהל/ת המערכת.":e.message);}
+    if(!S.me)return;
+    saveSession();enterApp();
+  }catch(e){setMsg("g_msg","error",e.message);}
+  finally{const b=$("g_btn");if(b)b.disabled=false;}
+}
+async function firstSetup(){
+  const u=$("g_user").value.trim().toLowerCase(),n=$("g_name").value.trim(),unit=$("g_unit").value.trim(),p=$("g_pass").value,p2=$("g_pass2").value;
+  if(!validUsername(u)){setMsg("g_msg","error","שם משתמש: 3–30 תווים — אותיות קטנות באנגלית, ספרות, נקודה, מקף או קו תחתון.");return;}
+  if(!n){setMsg("g_msg","error","נא להזין שם מלא.");return;}
+  if(p.length<6){setMsg("g_msg","error","הסיסמה חייבת להכיל לפחות 6 תווים.");return;}
+  if(p!==p2){setMsg("g_msg","error","הסיסמאות אינן תואמות.");return;}
+  $("g_btn").disabled=true;
+  try{
+    let d;
+    try{d=await authCall("signUp",{email:usernameToEmail(u),password:p,returnSecureToken:true});}
+    catch(e){if(!e.message.includes("כבר קיים"))throw e;d=await authCall("signInWithPassword",{email:usernameToEmail(u),password:p,returnSecureToken:true});}
+    S.session=sessionFrom(d,u);
+    await db("PATCH","",{[`users/${d.localId}`]:clean({username:u,displayName:n,unit,role:"admin",createdAt:new Date().toISOString()}),"meta/initialized":true});
+    saveSession();await loadData();enterApp();
+  }catch(e){S.session=null;setMsg("g_msg","error",e.code==="DENIED"?"המערכת כבר הוגדרה. רעננו את הדף והתחברו.":e.message);}
+  finally{const b=$("g_btn");if(b)b.disabled=false;}
+}
+function logout(){S.session=null;S.me=null;S.bookings={};S.users={};saveSession();showGate();}
+function enterApp(){
+  $("gate").hidden=true;$("app").hidden=false;
+  $("meName").textContent=S.me.displayName||S.me.username;
+  $("meRole").textContent=isAdmin()?"· מנהל/ת":"";
+  $("navAdmin").hidden=!isAdmin();
+  if(!isAdmin()&&S.view==="admin")S.view="calendar";
+  showView(S.view);
+}
+
+/* ═════════ UI PLUMBING ═════════ */
+function setMsg(id,type,text){const el=$(id);if(!el)return;el.className=`msg show ${type}`;el.textContent=text;}
+function clearMsg(id){const el=$(id);if(el){el.className="msg";el.textContent="";}}
+let toastT;
+function toast(text,type){const t=$("toast");t.textContent=text;t.className=`toast show ${type||""}`;clearTimeout(toastT);toastT=setTimeout(()=>t.className="toast",3200);}
+function openModal(title,html,narrow){
+  $("modalTitle").textContent=title;$("modalBody").innerHTML=html;
+  $("modal").className="modal"+(narrow?" narrow":"");$("modalBg").classList.add("show");
+}
+function closeModal(){$("modalBg").classList.remove("show");S.form=null;}
+function showView(v){
+  S.view=v;
+  document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("active",b.dataset.view===v));
+  ["calendar","avail","search","admin"].forEach(x=>$(`view-${x}`).hidden=x!==v);
+  renderAll();
+}
+function renderAll(){
+  if(!S.me)return;
+  if(S.view==="calendar")renderCalendar();
+  if(S.view==="avail")renderAvail(true);
+  if(S.view==="search")renderSearch();
+  if(S.view==="admin")renderAdmin();
+}
+
+/* ═════════ CALENDAR ═════════ */
+function setRoom(r){S.room=r;renderCalendar();}
+function shiftWeek(n){S.weekDate=addDays(S.weekDate,n*7);S.mobileDay=addDays(S.mobileDay,n*7);renderCalendar();}
+function goToday(){S.weekDate=today();S.mobileDay=today();renderCalendar();}
+function renderCalendar(){
+  const week=weekDates(S.weekDate),mobile=isMobile(),td=today();
+  if(!week.includes(S.mobileDay))S.mobileDay=week.includes(td)?td:week[0];
+  $("weekPicker").value=S.weekDate;
+  $("weekLabel").textContent=`${fmtShort(week[0])} – ${fmt(week[4])}`;
+  $("roomSeg").innerHTML=[["all","כל החדרים"],...ROOMS.map(r=>[r,r])].map(([v,l])=>`<button class="${S.room===v?"active":""}" onclick="setRoom('${v}')">${l}</button>`).join("");
+  $("mobileDays").innerHTML=week.map(d=>`<button class="${d===S.mobileDay?"active":""} ${d===td?"today":""}" onclick="S.mobileDay='${d}';renderCalendar()">${DAY_NAMES[dow(d)]}<small>${fmtShort(d)}</small></button>`).join("");
+
+  const days=mobile?[S.mobileDay]:week;
+  const rooms=S.room==="all"?ROOMS:[S.room];
+  const lanes=[];days.forEach(d=>rooms.forEach((r,i)=>lanes.push({d,r,first:i===0})));
+  const minW=mobile?70:(rooms.length>1?62:120);
+  const H=((DAY_END-DAY_START)/STEP)*ROW;
+  let h=`<div class="grid${rooms.length>1?" multi":""}" style="grid-template-columns:var(--gutter) repeat(${lanes.length},minmax(${minW}px,1fr))">`;
+  h+=`<div class="gh"></div>`;
+  days.forEach(d=>h+=`<div class="gh day${d===td?" today":""}" style="grid-column:span ${rooms.length}">${DAY_NAMES[dow(d)]}<small>${fmt(d)}</small></div>`);
+  if(rooms.length>1){
+    h+=`<div class="gh room-sub"></div>`;
+    lanes.forEach(l=>h+=`<button class="gh room-sub${l.first?" day-start":""}" onclick="setRoom('${l.r}')" title="הצג רק את חדר ${l.r}">${l.r}</button>`);
+  }
+  h+=`<div class="gutter" style="height:${H}px">`;
+  for(let m=DAY_START;m<DAY_END;m+=60)h+=`<span style="top:${(m-DAY_START)/STEP*ROW}px">${fromMin(m)}</span>`;
+  h+=`</div>`;
+  lanes.forEach(({d,r,first})=>{
+    h+=`<div class="lane${d<td?" past":""}${first&&rooms.length>1?" day-start":""}" data-room="${r}" data-date="${d}" style="height:${H}px">`;
+    (S.dayEvents[`${r}|${d}`]||[]).forEach(id=>{
+      const b=S.bookings[id];
+      const top=(Math.max(toMin(b.from),DAY_START)-DAY_START)/STEP*ROW, ht=Math.max(ROW,(Math.min(toMin(b.to),DAY_END)-Math.max(toMin(b.from),DAY_START))/STEP*ROW)-2;
+      const cls=b.kind==="block"?"ev-block":isMine(b)?"ev-mine":"ev-busy";
+      const label=b.kind==="block"?`🚫 ${b.title}`:b.title;
+      h+=`<div class="ev ${cls}" data-id="${id}" data-date="${d}" style="top:${top+1}px;height:${ht}px" title="${esc(`${b.from}–${b.to} · ${b.title}${b.organizer?` · ${b.organizer}`:""}`)}">
+        <b>${esc(label)}</b>${ht>=ROW*2-2?`<span class="tm">${b.from}–${b.to}</span>`:""}${ht>=ROW*3-2&&b.organizer?`<span>${esc(b.organizer)}</span>`:""}</div>`;
+    });
+    h+=`<div class="ghost"></div></div>`;
+  });
+  $("grid").innerHTML=h+`</div>`;
+}
+function laneSlot(lane,clientY){
+  const i=Math.floor((clientY-lane.getBoundingClientRect().top)/ROW);
+  return Math.min(Math.max(i,0),(DAY_END-DAY_START)/STEP-1);
+}
+function setupGridEvents(){
+  const g=$("grid");
+  g.addEventListener("click",e=>{
+    const ev=e.target.closest(".ev");
+    if(ev){openDetails(ev.dataset.id,ev.dataset.date);return;}
+    const lane=e.target.closest(".lane");if(!lane)return;
+    if(lane.classList.contains("past")){toast("לא ניתן להזמין בתאריך שעבר","warn");return;}
+    const room=lane.dataset.room,date=lane.dataset.date,start=DAY_START+laneSlot(lane,e.clientY)*STEP;
+    // ברירת מחדל: שעה, או חצי שעה אם המשבצת הבאה תפוסה
+    const t2=fromMin(start+STEP).replace(":","");
+    const end=start+STEP<DAY_END&&!S.idx[`${room}|${date}|${t2}`]?start+60:start+STEP;
+    openBookingForm({room,startDate:date,from:fromMin(start),to:fromMin(Math.min(end,DAY_END))});
+  });
+  g.addEventListener("mousemove",e=>{
+    const lane=e.target.closest(".lane");
+    g.querySelectorAll(".ghost.on").forEach(x=>{if(!lane||x.parentElement!==lane)x.classList.remove("on");});
+    if(!lane||e.target.closest(".ev")||lane.classList.contains("past")){lane?.querySelector(".ghost")?.classList.remove("on");return;}
+    const i=laneSlot(lane,e.clientY),gh=lane.querySelector(".ghost");
+    gh.style.top=`${i*ROW}px`;gh.textContent=`+ ${fromMin(DAY_START+i*STEP)}`;gh.classList.add("on");
+  });
+  g.addEventListener("mouseleave",()=>g.querySelectorAll(".ghost.on").forEach(x=>x.classList.remove("on")));
+}
+
+/* ═════════ BOOKING DETAILS ═════════ */
+function openDetails(id,date){
+  const b=S.bookings[id];if(!b)return;
+  const block=b.kind==="block",rec=b.repeat&&b.repeat!=="once",edit=canEdit(b);
+  const contact=[b.phone?`<a href="tel:${esc(b.phone)}" class="ltr">${esc(b.phone)}</a>`:"",b.email?`<a href="mailto:${esc(b.email)}" class="ltr">${esc(b.email)}</a>`:""].filter(Boolean).join(" · ");
+  let h=`<div style="margin-bottom:10px"><span class="badge room">חדר ${esc(b.room)}</span> ${block?`<span class="badge block">חסום לשימוש</span>`:""} ${rec?`<span class="badge rep">${REPEAT_LABEL[b.repeat]}</span>`:""} ${isMine(b)&&!block?`<span class="badge mine">ההזמנה שלי</span>`:""}</div>
+    <dl class="detail-grid">
+      <dt>מועד</dt><dd>${dayLong(date)} · ${esc(b.from)}–${esc(b.to)}</dd>
+      ${rec?`<dt>סדרה</dt><dd>${esc(repeatText(b))} <span class="muted">(${occDates(b).length} מפגשים)</span></dd>`:""}
+      ${b.description?`<dt>${block?"פירוט":"תיאור"}</dt><dd>${esc(b.description)}</dd>`:""}
+      ${b.organizer?`<dt>מזמין/ה</dt><dd>${esc(b.organizer)}</dd>`:""}
+      ${b.unit?`<dt>יחידה</dt><dd>${esc(b.unit)}</dd>`:""}
+      ${contact?`<dt>פרטי קשר</dt><dd>${contact}</dd>`:""}
+      <dt>נוצר ע"י</dt><dd>${esc(b.ownerName||"")} <span class="muted small">${b.createdAt?fmt(b.createdAt.slice(0,10)):""}</span></dd>
+    </dl>`;
+  if(edit){
+    const past=date<today();
+    h+=`<div class="sect"><div class="sect-title">${past?"המפגש הזה כבר התקיים":"עריכה וביטול"}</div><div class="actions">`;
+    if(rec){
+      if(!past)h+=`<button class="btn" onclick="openBookingForm({editOcc:'${id}',date:'${date}'})">עריכת מפגש זה בלבד</button>`;
+      h+=`<button class="btn" onclick="openBookingForm({edit:'${id}'})">עריכת כל הסדרה</button>`;
+      if(!past)h+=`<button class="btn-danger" onclick="cancelOccurrence('${id}','${date}')">ביטול מפגש זה</button>`;
+      h+=`<button class="btn-danger" onclick="cancelSeries('${id}')">ביטול הסדרה</button>`;
+    } else {
+      if(!past)h+=`<button class="btn" onclick="openBookingForm({edit:'${id}'})">עריכה</button>`;
+      h+=`<button class="btn-danger" onclick="cancelSeries('${id}')">${block?"הסרת החסימה":"ביטול ההזמנה"}</button>`;
+    }
+    h+=`</div></div>`;
+  }
+  openModal(b.title,h);
+}
+
+/* ═════════ BOOKING FORM ═════════ */
+// opts: {room,startDate,from,to} להזמנה חדשה · {edit:id} לעריכת סדרה · {editOcc:id,date} לעריכת מפגש בודד · {kind:'block'}
+function openBookingForm(opts={}){
+  let mode="new",b,title;
+  const td=today();
+  if(opts.edit){
+    mode="edit";b={...S.bookings[opts.edit]};title=b.kind==="block"?"עריכת חסימה":"עריכת הזמנה";
+  } else if(opts.editOcc){
+    mode="editOcc";const src=S.bookings[opts.editOcc];
+    b={...src,repeat:"once",startDate:opts.date,endDate:opts.date,days:[dow(opts.date)],exceptions:null};
+    title="עריכת מפגש בודד";
+  } else {
+    const p=S.me||{};const kind=opts.kind==="block"&&isAdmin()?"block":"booking";
+    let sd=opts.startDate||(S.view==="calendar"?(isMobile()?S.mobileDay:S.weekDate):td);
+    if(sd<td)sd=td;
+    if(!WORK_DAYS.includes(dow(sd)))sd=addDays(sundayOf(sd),7);
+    b={kind,room:opts.room||(S.room!=="all"?S.room:ROOMS[0]),title:"",description:"",repeat:"once",startDate:sd,endDate:addDays(sd,7*12),
+      days:[dow(sd)],from:opts.from||"10:00",to:opts.to||"11:00",
+      organizer:kind==="block"?"":(p.displayName||""),unit:kind==="block"?"":(p.unit||""),phone:kind==="block"?"":(p.phone||""),email:kind==="block"?"":(p.email||"")};
+    title=kind==="block"?"חסימת חדר":"הזמנה חדשה";
+  }
+  if(b.repeat==="once")b.endDate=addDays(b.startDate,7*12);
+  const block=b.kind==="block";
+  S.form={mode,id:opts.edit||opts.editOcc||null,origDate:opts.date||null,kind:b.kind||"booking",orig:opts.edit?S.bookings[opts.edit]:null};
+  const days=asArr(b.days).map(Number);
+  const html=`
+    <div class="row c2">
+      <label class="f"><span>חדר <em>*</em></span><select id="f_room">${ROOMS.map(r=>`<option${r===b.room?" selected":""} value="${r}">חדר ${r} · עד ${CAPACITY} משתתפים</option>`).join("")}</select></label>
+      <label class="f"><span>${block?"סיבת החסימה":"שם הפעילות"} <em>*</em></span><input type="text" id="f_title" value="${esc(b.title)}" maxlength="80" placeholder="${block?"לדוגמה: תחזוקה":"לדוגמה: הדרכה פרטנית — סמינריון"}" /></label>
+    </div>
+    <div class="row"><label class="f"><span>${block?"פירוט (אופציונלי)":"תיאור קצר (אופציונלי)"}</span><textarea id="f_desc" maxlength="300">${esc(b.description)}</textarea></label></div>
+
+    <div class="sect">
+      <div class="sect-title">מועד</div>
+      ${mode==="editOcc"?`<p class="muted small" style="margin-top:0">השינוי יחול רק על המפגש של ${dayLong(S.form.origDate)}. שאר הסדרה לא תשתנה.</p>`:`
+      <div class="seg" id="f_repeat" style="margin-bottom:10px">${["once","weekly","biweekly"].map(r=>`<button type="button" data-v="${r}" class="${b.repeat===r?"active":""}">${REPEAT_LABEL[r]}</button>`).join("")}</div>`}
+      <div class="row c3">
+        <label class="f"><span id="f_dateLbl">תאריך</span><input type="date" id="f_start" value="${b.startDate}" /></label>
+        <label class="f"><span>שעת התחלה</span><select id="f_from">${timeOptions(START_TIMES,b.from)}</select></label>
+        <label class="f"><span>שעת סיום</span><select id="f_to">${timeOptions(END_TIMES,b.to)}</select></label>
+      </div>
+      <div id="f_recur">
+        <label class="f"><span>ימים בשבוע</span></label>
+        <div class="dow" id="f_days">${WORK_DAYS.map(d=>`<label><input type="checkbox" value="${d}"${days.includes(d)?" checked":""}><span>${DAY_NAMES[d]}</span></label>`).join("")}</div>
+        <div class="row c2"><label class="f"><span>עד תאריך</span><input type="date" id="f_end" value="${b.endDate}" /></label><div></div></div>
+      </div>
+      <div id="f_check" class="check-box" hidden></div>
+      <label class="chk" id="f_skipWrap" hidden><input type="checkbox" id="f_skip" /> לדלג על המועדים התפוסים ולהזמין את השאר</label>
+    </div>
+
+    <div class="sect" ${block?"hidden":""}>
+      <div class="sect-title">פרטי המזמין</div>
+      <div class="row c2">
+        <label class="f"><span>שם המזמין/ה <em>*</em></span><input type="text" id="f_org" value="${esc(b.organizer)}" maxlength="60" /></label>
+        <label class="f"><span>יחידה ארגונית <em>*</em></span><input type="text" id="f_unit" value="${esc(b.unit)}" maxlength="60" placeholder="לדוגמה: החוג להיסטוריה" /></label>
+      </div>
+      <div class="row c2">
+        <label class="f"><span>טלפון</span><input type="tel" class="ltr" id="f_phone" value="${esc(b.phone)}" maxlength="20" /></label>
+        <label class="f"><span>דוא"ל</span><input type="email" class="ltr" id="f_email" value="${esc(b.email)}" maxlength="80" /></label>
+      </div>
+      <p class="muted small" style="margin:-4px 0 0">יש למלא לפחות טלפון או דוא"ל.</p>
+    </div>
+    <div class="actions">
+      <button class="btn-primary" id="f_save" onclick="submitBooking()">${mode==="new"?(block?"חסום חדר":"הזמן חדר"):"שמור שינויים"}</button>
+      <button class="btn" onclick="closeModal()">ביטול</button>
+    </div>
+    <div id="f_msg" class="msg"></div>`;
+  openModal(title,html);
+  S.form.repeat=b.repeat||"once";
+  document.querySelectorAll("#f_repeat button").forEach(btn=>btn.addEventListener("click",()=>{
+    S.form.repeat=btn.dataset.v;
+    document.querySelectorAll("#f_repeat button").forEach(x=>x.classList.toggle("active",x===btn));
+    syncDaysToStart(false);
+    updateFormCheck();
+  }));
+  // יום בשבוע עוקב אחרי התאריך שנבחר, כל עוד המשתמש לא בחר כמה ימים בעצמו
+  function syncDaysToStart(force){
+    const sd=$("f_start").value;if(!sd)return;
+    const checked=[...document.querySelectorAll("#f_days input:checked")];
+    if(force||checked.length<=1){checked.forEach(c=>c.checked=false);const c=document.querySelector(`#f_days input[value="${dow(sd)}"]`);if(c)c.checked=true;}
+  }
+  $("f_start").addEventListener("change",()=>{
+    const sd=$("f_start").value;
+    syncDaysToStart(S.form.repeat==="once");
+    if(sd&&$("f_end").value<sd)$("f_end").value=addDays(sd,7*12);
+    updateFormCheck();
+  });
+  $("f_from").addEventListener("change",()=>{if($("f_to").value<=$("f_from").value)$("f_to").value=fromMin(Math.min(toMin($("f_from").value)+60,DAY_END));updateFormCheck();});
+  ["f_room","f_to","f_end"].forEach(id=>$(id).addEventListener("change",updateFormCheck));
+  document.querySelectorAll("#f_days input").forEach(c=>c.addEventListener("change",updateFormCheck));
+  $("f_skip").addEventListener("change",updateFormCheck);
+  updateFormCheck();
+  if(mode==="new")setTimeout(()=>$("f_title").focus(),50);
+}
+// קורא את הטופס ומחזיר {b,dates,error}
+function readForm(){
+  const f=S.form,rep=f.repeat;
+  const b={
+    kind:f.kind,room:$("f_room").value,title:$("f_title").value.trim(),description:$("f_desc").value.trim(),repeat:rep,
+    from:$("f_from").value,to:$("f_to").value,startDate:$("f_start").value,
+    organizer:$("f_org").value.trim(),unit:$("f_unit").value.trim(),phone:$("f_phone").value.trim(),email:$("f_email").value.trim()
+  };
+  if(rep==="once"){b.endDate=b.startDate;b.days=b.startDate?[dow(b.startDate)]:[];}
+  else{b.endDate=$("f_end").value;b.days=[...document.querySelectorAll("#f_days input:checked")].map(c=>+c.value);}
+  if(f.mode==="edit"&&f.orig?.exceptions)b.exceptions={...f.orig.exceptions};
+  if(!b.startDate)return{b,error:"נא לבחור תאריך."};
+  if(rep==="once"&&!WORK_DAYS.includes(dow(b.startDate)))return{b,error:"החדרים פעילים בימים א'–ה' בלבד."};
+  if(b.to<=b.from)return{b,error:"שעת הסיום חייבת להיות אחרי שעת ההתחלה."};
+  if(rep!=="once"){
+    if(!b.days.length)return{b,error:"נא לסמן לפחות יום אחד בשבוע."};
+    if(!b.endDate||b.endDate<b.startDate)return{b,error:"תאריך הסיום חייב להיות אחרי תאריך ההתחלה."};
+    if(weeksBetween(b.startDate,b.endDate)>53)return{b,error:"הזמנה חוזרת מוגבלת לשנה לכל היותר."};
+  }
+  const dates=occDates(b);
+  if(!dates.length)return{b,dates,error:"אין אף מועד בטווח שנבחר."};
+  return{b,dates};
+}
+function formExclude(){
+  const f=S.form;
+  if(f.mode==="edit")return id=>id===f.id;
+  if(f.mode==="editOcc")return (id,d)=>id===f.id&&d===f.origDate;
+  return null;
+}
+function updateFormCheck(){
+  if(!S.form||!$("f_check"))return;
+  const rec=S.form.repeat!=="once";
+  $("f_recur").hidden=!rec;$("f_dateLbl").textContent=rec?"מתאריך":"תאריך";
+  const box=$("f_check"),skipWrap=$("f_skipWrap");
+  const {b,dates,error}=readForm();
+  skipWrap.hidden=true;
+  if(error){box.hidden=false;box.className="check-box warn";box.textContent=error;$("f_save").disabled=false;return;}
+  const conf=findConflicts(b.room,dates,b.from,b.to,formExclude());
+  const groups=groupConflicts(conf);
+  const confDates=[...new Set(groups.map(g=>g.date))];
+  box.hidden=false;
+  if(!groups.length){
+    box.className="check-box ok";
+    box.textContent=dates.length>1?`✓ חדר ${b.room} פנוי בכל ${dates.length} המועדים (${fmt(dates[0])} – ${fmt(dates[dates.length-1])}).`:`✓ חדר ${b.room} פנוי ב${dayLong(dates[0])}, ${b.from}–${b.to}.`;
+    $("f_save").disabled=false;return;
+  }
+  const lines=groups.slice(0,6).map(g=>{const x=S.bookings[g.id];return `• ${dayLong(g.date)} ${x.from}–${x.to}: ${x.kind==="block"?"🚫 חסום — ":""}${x.title}${x.organizer?` (${x.organizer})`:""}`;});
+  let txt=`✗ החדר אינו פנוי ב-${confDates.length} ${confDates.length===1?"מועד":"מועדים"}${dates.length>1?` מתוך ${dates.length}`:""}:\n${lines.join("\n")}${groups.length>6?`\n… ועוד ${groups.length-6}`:""}`;
+  box.className="check-box bad";box.textContent=txt;
+  // הצעת חדרים חלופיים פנויים
+  const alts=ROOMS.filter(r=>r!==b.room&&!findConflicts(r,dates,b.from,b.to,formExclude()).length);
+  if(alts.length){
+    const d=document.createElement("div");d.className="alt";
+    d.innerHTML=`חדרים פנויים בכל המועדים: `+alts.map(r=>`<button type="button" class="btn btn-sm" onclick="$('f_room').value='${r}';updateFormCheck()">עבור לחדר ${r}</button>`).join(" ");
+    box.appendChild(d);
+  }
+  const canSkip=rec&&confDates.length<dates.length;
+  skipWrap.hidden=!canSkip;
+  $("f_save").disabled=!(canSkip&&$("f_skip").checked);
+  if(canSkip&&$("f_skip").checked){box.className="check-box warn";}
+}
+async function submitBooking(){
+  const f=S.form;if(!f)return;
+  const btn=$("f_save");
+  let {b,dates,error}=readForm();
+  if(error){setMsg("f_msg","error",error);return;}
+  if(!b.title){setMsg("f_msg","error",f.kind==="block"?"נא לציין את סיבת החסימה.":"נא להזין שם פעילות.");return;}
+  if(f.kind!=="block"){
+    if(!b.organizer||!b.unit){setMsg("f_msg","error","נא למלא שם מזמין/ה ויחידה ארגונית.");return;}
+    if(!b.phone&&!b.email){setMsg("f_msg","error","נא למלא טלפון או דוא\"ל ליצירת קשר.");return;}
+    if(b.email&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(b.email)){setMsg("f_msg","error","כתובת הדוא\"ל אינה תקינה.");return;}
+  }
+  btn.disabled=true;clearMsg("f_msg");
+  try{
+    await loadData();                                   // נתונים עדכניים לפני בדיקה סופית
+    if(!S.form)return;
+    const conf=findConflicts(b.room,dates,b.from,b.to,formExclude());
+    if(conf.length){
+      const cd=[...new Set(conf.map(c=>c.date))];
+      if(b.repeat!=="once"&&$("f_skip").checked&&cd.length<dates.length){
+        b.exceptions={...(b.exceptions||{})};cd.forEach(d=>b.exceptions[d]=true);dates=occDates(b);
+      } else {updateFormCheck();setMsg("f_msg","error","החדר אינו פנוי במועד שנבחר. בחרו מועד או חדר אחר.");btn.disabled=false;return;}
+    }
+    const td=today(),now=new Date().toISOString(),me=S.me.displayName||S.me.username;
+    const patch={};
+    let saveId=f.id,newDates=dates;
+    if(f.mode==="new"){
+      saveId=newId();
+      Object.assign(b,{ownerUid:S.session.uid,ownerName:me,createdAt:now});
+    } else if(f.mode==="edit"){
+      const old=f.orig;
+      const oldDates=occDates(old),pastOld=oldDates.filter(d=>d<td);
+      const sched=["room","from","to","repeat","startDate"].some(k=>old[k]!==b[k])||asArr(old.days).map(Number).sort().join()!==b.days.slice().sort().join();
+      if(pastOld.length&&sched){
+        // לסדרה יש מפגשים שכבר התקיימו: שומרים אותם כפי שהם, והשינוי חל מהיום והלאה כסדרה חדשה
+        patch[`bookings/${f.id}/endDate`]=addDays(td,-1);
+        patch[`bookings/${f.id}/updatedAt`]=now;
+        slotPaths(old,oldDates.filter(d=>d>=td)).forEach(p=>patch[p]=null);
+        let ns=b.startDate<td?td:b.startDate;
+        if(b.repeat==="biweekly"&&weeksBetween(sundayOf(b.startDate),sundayOf(ns))%2!==0)ns=addDays(sundayOf(ns),7);
+        b.startDate=ns;
+        if(b.exceptions)Object.keys(b.exceptions).forEach(d=>{if(d<ns)delete b.exceptions[d];});
+        dates=occDates(b);
+        if(!dates.length)throw new Error("אחרי השינוי לא נותרו מועדים עתידיים בסדרה.");
+        saveId=newId();newDates=dates;
+        Object.assign(b,{ownerUid:old.ownerUid,ownerName:old.ownerName,createdAt:now,splitFrom:f.id});
+      } else {
+        Object.assign(b,{ownerUid:old.ownerUid,ownerName:old.ownerName,createdAt:old.createdAt,updatedAt:now,updatedBy:me});
+        const oldPaths=new Set(slotPaths(old)),newPaths=new Set(slotPaths(b,dates));
+        oldPaths.forEach(p=>{if(!newPaths.has(p))patch[p]=null;});
+        newDates=dates.filter(d=>slotPaths(b,[d]).some(p=>!oldPaths.has(p)));
+      }
+    } else if(f.mode==="editOcc"){
+      const src=S.bookings[f.id];
+      if(!src){throw new Error("ההזמנה המקורית לא נמצאה (ייתכן שבוטלה).");}
+      patch[`bookings/${f.id}/exceptions/${f.origDate}`]=true;
+      patch[`bookings/${f.id}/updatedAt`]=now;
+      slotPaths(src,[f.origDate]).forEach(p=>patch[p]=null);
+      saveId=newId();
+      Object.assign(b,{ownerUid:src.ownerUid,ownerName:src.ownerName,createdAt:now,splitFrom:f.id});
+    }
+    if(newDates.some(d=>d<td)){throw new Error("לא ניתן להוסיף מועדים בתאריך שעבר.");}
+    if(f.mode==="edit"&&!slotPaths(b,dates).length){throw new Error("אין מועדים בהזמנה.");}
+    patch[`bookings/${saveId}`]=clean(b);
+    slotPaths(b,dates).forEach(p=>patch[p]=saveId);
+    try{await db("PATCH","",patch);}
+    catch(e){
+      if(e.code==="DENIED"){await loadData().catch(()=>{});renderAll();updateFormCheck();
+        throw new Error("השמירה נדחתה: ייתכן שהמועד נתפס הרגע על ידי הזמנה אחרת, או שאין לך הרשאה לשנות הזמנה זו.");}
+      throw e;
+    }
+    await loadData();closeModal();renderAll();
+    toast(f.mode==="new"?(f.kind==="block"?"החדר נחסם ✓":`ההזמנה נשמרה ✓ ${dates.length>1?`(${dates.length} מפגשים)`:""}`):"השינויים נשמרו ✓");
+    if(S.view==="calendar"&&f.mode!=="edit"){S.weekDate=b.startDate;S.mobileDay=b.startDate;renderCalendar();}
+  }catch(e){setMsg("f_msg","error",e.message);}
+  finally{const x=$("f_save");if(x)x.disabled=false;}
+}
+
+/* ═════════ CANCEL ═════════ */
+async function cancelOccurrence(id,date){
+  const b=S.bookings[id];if(!b)return;
+  if(!confirm(`לבטל את המפגש "${b.title}" ב${dayLong(date)}?\nשאר המפגשים בסדרה יישארו.`))return;
+  const patch={[`bookings/${id}/exceptions/${date}`]:true,[`bookings/${id}/updatedAt`]:new Date().toISOString()};
+  slotPaths(b,[date]).forEach(p=>patch[p]=null);
+  // אם זה היה המפגש האחרון — מוחקים את ההזמנה כולה
+  if(occDates(b).length<=1){await removeBooking(id,b,"המפגש בוטל ✓");return;}
+  try{await db("PATCH","",patch);await loadData();closeModal();renderAll();toast("המפגש בוטל ✓");}
+  catch(e){alert(e.code==="DENIED"?"אין לך הרשאה לבטל הזמנה זו.":e.message);}
+}
+async function cancelSeries(id){
+  const b=S.bookings[id];if(!b)return;
+  const td=today(),dates=occDates(b),past=dates.filter(d=>d<td),future=dates.filter(d=>d>=td);
+  const rec=b.repeat&&b.repeat!=="once";
+  const what=b.kind==="block"?"להסיר את החסימה":rec?"לבטל את כל המפגשים העתידיים בסדרה":"לבטל את ההזמנה";
+  if(!confirm(`${what} "${b.title}"?${rec&&future.length?`\n(${future.length} מפגשים יבוטלו${past.length?`; ${past.length} מפגשים שכבר התקיימו יישמרו בהיסטוריה`:""})`:""}`))return;
+  if(past.length&&future.length){
+    // שומרים את ההיסטוריה: מקצרים את הסדרה עד אתמול
+    const patch={[`bookings/${id}/endDate`]:addDays(td,-1),[`bookings/${id}/updatedAt`]:new Date().toISOString()};
+    slotPaths(b,future).forEach(p=>patch[p]=null);
+    try{await db("PATCH","",patch);await loadData();closeModal();renderAll();toast("המפגשים העתידיים בוטלו ✓");}
+    catch(e){alert(e.code==="DENIED"?"אין לך הרשאה לבטל הזמנה זו.":e.message);}
+    return;
+  }
+  await removeBooking(id,b,b.kind==="block"?"החסימה הוסרה ✓":"ההזמנה בוטלה ✓");
+}
+async function removeBooking(id,b,msg){
+  const patch={[`bookings/${id}`]:null};
+  slotPaths(b).forEach(p=>patch[p]=null);
+  try{await db("PATCH","",patch);await loadData();closeModal();renderAll();toast(msg);}
+  catch(e){alert(e.code==="DENIED"?"אין לך הרשאה לבטל הזמנה זו.":e.message);}
+}
+
+/* ═════════ AVAILABILITY ═════════ */
+function renderAvail(silent){
+  const d=$("a_date").value,from=$("a_from").value,to=$("a_to").value;
+  clearMsg("availMsg");
+  if(!d){$("availResults").innerHTML="";return;}
+  if(!WORK_DAYS.includes(dow(d))){setMsg("availMsg","warn","החדרים פעילים בימים א'–ה' בלבד.");$("availResults").innerHTML="";return;}
+  if(to<=from){setMsg("availMsg","error","שעת הסיום חייבת להיות אחרי שעת ההתחלה.");$("availResults").innerHTML="";return;}
+  const past=d<today();
+  const selTimes=new Set(slotTimes(from,to));
+  $("availResults").innerHTML=ROOMS.map(r=>{
+    const groups=groupConflicts(findConflicts(r,[d],from,to));
+    const ids=[...new Set(groups.map(g=>g.id))];
+    const blocked=ids.length&&ids.every(id=>S.bookings[id].kind==="block");
+    const st=!ids.length?"free":blocked?"block":"busy";
+    const label={free:"פנוי",busy:"תפוס",block:"חסום"}[st];
+    let bar="";
+    slotTimes(fromMin(DAY_START),fromMin(DAY_END)).forEach(t=>{
+      const id=S.idx[`${r}|${d}|${t}`],x=id&&S.bookings[id];
+      bar+=`<i class="${x?(x.kind==="block"?"k":isMine(x)?"m":"b"):""}${selTimes.has(t)?" sel":""}" title="${t.slice(0,2)}:${t.slice(2)}${x?` · ${esc(x.title)}`:""}"></i>`;
+    });
+    return `<div class="room-card ${st}">
+      <div class="rc-head"><span class="rc-name">חדר ${r}</span><span class="status ${st}">${label}</span></div>
+      <div class="muted small">${dayLong(d)} · ${from}–${to} · עד ${CAPACITY} משתתפים</div>
+      <div class="daybar">${bar}</div><div class="daybar-scale"><span>08:00</span><span>14:00</span><span>20:00</span></div>
+      ${ids.length?`<ul class="conf-list">${ids.map(id=>{const x=S.bookings[id];return `<li>${x.kind==="block"?"🚫 ":""}<b>${x.from}–${x.to}</b> ${esc(x.title)}${x.organizer?` · ${esc(x.organizer)}`:""}</li>`;}).join("")}</ul>`:""}
+      ${st==="free"&&!past?`<button class="btn-primary btn-block" style="margin-top:10px" onclick="openBookingForm({room:'${r}',startDate:'${d}',from:'${from}',to:'${to}'})">הזמן את חדר ${r}</button>`:""}
+    </div>`;
+  }).join("");
+  if(past)setMsg("availMsg","warn","התאריך שנבחר כבר עבר — מוצגת תפוסה בלבד.");
+  else if(!silent){const free=ROOMS.filter(r=>!findConflicts(r,[d],from,to).length);setMsg("availMsg",free.length?"success":"error",free.length?`${free.length} מתוך ${ROOMS.length} חדרים פנויים: ${free.join(", ")}`:"אין חדר פנוי בטווח הזמן שנבחר.");}
+}
+
+/* ═════════ SEARCH ═════════ */
+function clearSearch(){["s_room","s_from","s_to","s_title","s_org"].forEach(id=>$(id).value="");$("s_mine").checked=false;$("s_past").checked=false;$("s_blocks").checked=true;renderSearch();}
+function renderSearch(){
+  const room=$("s_room").value,from=$("s_from").value,to=$("s_to").value,qt=$("s_title").value.trim().toLowerCase(),qo=$("s_org").value.trim().toLowerCase();
+  const mine=$("s_mine").checked,withPast=$("s_past").checked,withBlocks=$("s_blocks").checked,td=today();
+  const items=[];
+  for(const[id,b]of Object.entries(S.bookings)){
+    if(!safeId(id)||!validBooking(b))continue;
+    if(room&&b.room!==room)continue;
+    if(mine&&!isMine(b))continue;
+    if(!withBlocks&&b.kind==="block")continue;
+    if(qt&&!`${b.title} ${b.description||""}`.toLowerCase().includes(qt))continue;
+    if(qo&&!`${b.organizer||""} ${b.unit||""} ${b.ownerName||""}`.toLowerCase().includes(qo))continue;
+    let dates=occDates(b);
+    if(from)dates=dates.filter(d=>d>=from);
+    if(to)dates=dates.filter(d=>d<=to);
+    if(!withPast&&!from)dates=dates.filter(d=>d>=td);
+    if(!dates.length)continue;
+    const next=dates.find(d=>d>=td)||dates[0];
+    items.push({id,b,dates,next});
+  }
+  items.sort((a,b)=>a.next.localeCompare(b.next)||a.b.from.localeCompare(b.b.from));
+  $("searchMeta").textContent=items.length?`נמצאו ${items.length} הזמנות`:"";
+  $("searchResults").innerHTML=items.length?items.map(({id,b,dates,next})=>{
+    const block=b.kind==="block",rec=b.repeat&&b.repeat!=="once";
+    const contact=[b.phone,b.email].filter(Boolean).map(esc).join(" · ");
+    return `<div class="bk${block?" block":isMine(b)?" mine":""}">
+      <div style="min-width:0;flex:1">
+        <div class="bk-title">${block?"🚫 ":""}${esc(b.title)} <span class="badge room">חדר ${b.room}</span> ${rec?`<span class="badge rep">${REPEAT_LABEL[b.repeat]}</span>`:""} ${isMine(b)&&!block?`<span class="badge mine">שלי</span>`:""}</div>
+        <div class="bk-meta">${esc(repeatText(b))}${rec?` · ${dates.length} מפגשים`:""}<br>
+          ${block?"חסימה":`${esc(b.organizer||"")}${b.unit?` · ${esc(b.unit)}`:""}${contact?` · <span class="ltr" style="display:inline-block">${contact}</span>`:""}`}
+          ${rec?`<br>המפגש הקרוב: ${dayLong(next)}`:""}</div>
+      </div>
+      <div class="bk-actions">
+        <button class="btn btn-sm" onclick="jumpTo('${id}','${next}')">הצג ביומן</button>
+        ${canEdit(b)?`<button class="btn btn-sm" onclick="openBookingForm({edit:'${id}'})">עריכה</button><button class="btn-danger btn-sm" onclick="cancelSeries('${id}')">${block?"הסרה":"ביטול"}</button>`:""}
+      </div></div>`;
+  }).join(""):`<div class="empty">לא נמצאו הזמנות התואמות לחיפוש.</div>`;
+}
+function jumpTo(id,date){const b=S.bookings[id];S.room=b.room;S.weekDate=date;S.mobileDay=date;showView("calendar");}
+
+/* ═════════ ADMIN ═════════ */
+function renderAdmin(){
+  if(!isAdmin())return;
+  const users=Object.entries(S.users).sort((a,b)=>(a[1].displayName||"").localeCompare(b[1].displayName||"","he"));
+  $("usersTable").innerHTML=`<tr><th>שם</th><th>שם משתמש</th><th>יחידה</th><th>הרשאה</th><th></th></tr>`+users.map(([uid,u])=>`<tr>
+    <td><b>${esc(u.displayName)}</b>${u.email||u.phone?`<div class="muted small ltr" style="text-align:right">${esc(u.email||u.phone)}</div>`:""}</td>
+    <td class="ltr" style="text-align:right">${esc(u.username)}</td><td>${esc(u.unit||"")}</td>
+    <td>${u.role==="admin"?`<span class="badge mine">מנהל/ת</span>`:`<span class="badge">משתמש</span>`}</td>
+    <td style="white-space:nowrap">${uid===S.session.uid?`<span class="muted small">(את/ה)</span>`:`<button class="btn btn-sm" onclick="toggleRole('${uid}')">${u.role==="admin"?"הפוך למשתמש":"הפוך למנהל"}</button> <button class="btn-danger btn-sm" onclick="removeUser('${uid}')">הסר</button>`}</td></tr>`).join("");
+  const td=today();
+  const blocks=Object.entries(S.bookings).filter(([id,b])=>safeId(id)&&b.kind==="block"&&occDates(b).some(d=>d>=td));
+  $("blocksList").innerHTML=blocks.length?blocks.map(([id,b])=>`<div class="bk block"><div style="flex:1;min-width:0"><div class="bk-title">${esc(b.title)} <span class="badge room">חדר ${b.room}</span></div><div class="bk-meta">${esc(repeatText(b))}</div></div>
+    <div class="bk-actions"><button class="btn btn-sm" onclick="openBookingForm({edit:'${id}'})">עריכה</button><button class="btn-danger btn-sm" onclick="cancelSeries('${id}')">הסרה</button></div></div>`).join(""):`<div class="empty">אין חסימות פעילות.</div>`;
+}
+async function addUser(){
+  const u=$("u_user").value.trim().toLowerCase(),p=$("u_pass").value,n=$("u_name").value.trim();
+  if(!validUsername(u)){setMsg("usersMsg","error","שם משתמש: 3–30 תווים — אותיות קטנות באנגלית, ספרות, נקודה, מקף או קו תחתון.");return;}
+  if(p.length<6){setMsg("usersMsg","error","הסיסמה חייבת להכיל לפחות 6 תווים.");return;}
+  if(!n){setMsg("usersMsg","error","נא להזין שם מלא.");return;}
+  $("addUserBtn").disabled=true;
+  try{
+    let uid;
+    try{uid=(await authCall("signUp",{email:usernameToEmail(u),password:p,returnSecureToken:true})).localId;}
+    catch(e){
+      if(!e.message.includes("כבר קיים"))throw e;
+      uid=(await authCall("signInWithPassword",{email:usernameToEmail(u),password:p,returnSecureToken:true}).catch(()=>{throw new Error("שם המשתמש כבר קיים. כדי להחזיר משתמש שהוסר בעבר, הזינו את הסיסמה הקודמת שלו, או בחרו שם משתמש אחר.");})).localId;
+      if(S.users[uid])throw new Error("המשתמש כבר קיים ברשימה.");
+    }
+    const rec=clean({username:u,displayName:n,unit:$("u_unit").value.trim(),phone:$("u_phone").value.trim(),email:$("u_email").value.trim(),role:$("u_role").value,createdAt:new Date().toISOString(),createdBy:S.me.username});
+    await db("PUT",`/users/${uid}`,rec);
+    S.users[uid]=rec;
+    ["u_user","u_pass","u_name","u_unit","u_phone","u_email"].forEach(id=>$(id).value="");
+    renderAdmin();
+    setMsg("usersMsg","success",`המשתמש נוצר. פרטי כניסה למסירה:\nשם משתמש: ${u}\nסיסמה: ${p}`);
+  }catch(e){setMsg("usersMsg","error",e.code==="DENIED"?"אין הרשאה להוסיף משתמשים.":e.message);}
+  finally{$("addUserBtn").disabled=false;}
+}
+async function removeUser(uid){
+  const u=S.users[uid];if(!u)return;
+  if(!confirm(`להסיר את ההרשאה של ${u.displayName} (${u.username})?\nההזמנות שביצע יישארו ביומן.`))return;
+  try{await db("DELETE",`/users/${uid}`);delete S.users[uid];renderAdmin();setMsg("usersMsg","success",`ההרשאה של ${u.username} הוסרה.`);}
+  catch(e){setMsg("usersMsg","error",e.message);}
+}
+async function toggleRole(uid){
+  const u=S.users[uid];if(!u)return;
+  const role=u.role==="admin"?"user":"admin";
+  try{await db("PUT",`/users/${uid}/role`,role);u.role=role;renderAdmin();}
+  catch(e){setMsg("usersMsg","error",e.message);}
+}
+
+/* ═════════ MY ACCOUNT ═════════ */
+function openAccount(){
+  const m=S.me;
+  openModal("החשבון שלי",`
+    <p class="muted small" style="margin-top:0">שם משתמש: <b class="ltr">${esc(m.username)}</b>. הפרטים כאן ימולאו אוטומטית בכל הזמנה חדשה.</p>
+    <div class="row c2"><label class="f"><span>שם מלא</span><input type="text" id="m_name" value="${esc(m.displayName)}" /></label>
+      <label class="f"><span>יחידה ארגונית</span><input type="text" id="m_unit" value="${esc(m.unit)}" /></label></div>
+    <div class="row c2"><label class="f"><span>טלפון</span><input type="tel" class="ltr" id="m_phone" value="${esc(m.phone)}" /></label>
+      <label class="f"><span>דוא"ל</span><input type="email" class="ltr" id="m_email" value="${esc(m.email)}" /></label></div>
+    <button class="btn-primary btn-block" id="m_save" onclick="saveProfile()">שמור פרטים</button>
+    <div class="msg" id="m_msg"></div>
+    <div class="sect" style="margin-top:16px">
+      <div class="sect-title">שינוי סיסמה</div>
+      <div class="row c3"><label class="f"><span>סיסמה נוכחית</span><input type="password" id="m_old" autocomplete="current-password" /></label>
+        <label class="f"><span>סיסמה חדשה</span><input type="password" id="m_new" autocomplete="new-password" /></label>
+        <label class="f"><span>אימות</span><input type="password" id="m_new2" autocomplete="new-password" /></label></div>
+      <button class="btn btn-block" id="m_pw" onclick="changePassword()">עדכן סיסמה</button>
+      <div class="msg" id="m_pwmsg"></div>
+    </div>`);
+}
+async function saveProfile(){
+  const n=$("m_name").value.trim();if(!n){setMsg("m_msg","error","נא להזין שם.");return;}
+  const upd={displayName:n,unit:$("m_unit").value.trim(),phone:$("m_phone").value.trim(),email:$("m_email").value.trim()};
+  try{await db("PATCH",`/users/${S.session.uid}`,upd);Object.assign(S.me,upd);if(S.users[S.session.uid])Object.assign(S.users[S.session.uid],upd);$("meName").textContent=n;setMsg("m_msg","success","הפרטים נשמרו.");}
+  catch(e){setMsg("m_msg","error",e.message);}
+}
+async function changePassword(){
+  const o=$("m_old").value,p=$("m_new").value,p2=$("m_new2").value;
+  if(p.length<6){setMsg("m_pwmsg","error","הסיסמה החדשה חייבת להכיל לפחות 6 תווים.");return;}
+  if(p!==p2){setMsg("m_pwmsg","error","הסיסמאות אינן תואמות.");return;}
+  $("m_pw").disabled=true;
+  try{
+    const fresh=await authCall("signInWithPassword",{email:usernameToEmail(S.session.username),password:o,returnSecureToken:true}).catch(()=>{throw new Error("הסיסמה הנוכחית שגויה.");});
+    const d=await authCall("update",{idToken:fresh.idToken,password:p,returnSecureToken:true});
+    S.session=sessionFrom({...d,localId:S.session.uid},S.session.username);saveSession();
+    ["m_old","m_new","m_new2"].forEach(id=>$(id).value="");setMsg("m_pwmsg","success","הסיסמה עודכנה.");
+  }catch(e){setMsg("m_pwmsg","error",e.message);}
+  finally{$("m_pw").disabled=false;}
+}
+
+/* ═════════ INIT ═════════ */
+async function init(){
+  S.weekDate=today();S.mobileDay=today();
+  $("a_date").value=today();
+  $("a_from").innerHTML=timeOptions(START_TIMES,"10:00");$("a_to").innerHTML=timeOptions(END_TIMES,"11:00");
+  $("s_room").innerHTML+=ROOMS.map(r=>`<option value="${r}">חדר ${r}</option>`).join("");
+  document.querySelectorAll("#nav button").forEach(b=>b.addEventListener("click",()=>showView(b.dataset.view)));
+  ["a_date","a_to"].forEach(id=>$(id).addEventListener("change",()=>renderAvail()));
+  $("a_from").addEventListener("change",()=>{if($("a_to").value<=$("a_from").value)$("a_to").value=fromMin(Math.min(toMin($("a_from").value)+60,DAY_END));renderAvail();});
+  ["s_room","s_from","s_to","s_mine","s_past","s_blocks"].forEach(id=>$(id).addEventListener("change",renderSearch));
+  ["s_title","s_org"].forEach(id=>$(id).addEventListener("input",renderSearch));
+  $("weekPicker").addEventListener("change",e=>{if(e.target.value){S.weekDate=e.target.value;S.mobileDay=e.target.value;renderCalendar();}});
+  $("modalBg").addEventListener("mousedown",e=>{if(e.target.id==="modalBg")closeModal();});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
+  window.matchMedia("(max-width:760px)").addEventListener("change",()=>{if(S.view==="calendar")renderCalendar();});
+  setupGridEvents();
+  setInterval(refresh,30000);
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden&&Date.now()-S.loadedAt>15000)refresh();});
+
+  S.session=loadSession();
+  if(S.session){
+    try{if(await loadData())enterApp();return;}
+    catch(e){if(e.code==="DENIED"||!S.session){S.session=null;saveSession();}else{showGate("שגיאת חיבור: "+e.message);return;}}
+  }
+  showGate();
+}
+init();
+</script>
+</body>
+</html>

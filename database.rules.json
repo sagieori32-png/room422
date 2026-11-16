@@ -2,21 +2,47 @@
   "rules": {
     "room422": {
       ".read": true,
-
       "bookings": {
         ".write": true
       },
-
       "courses": {
         ".write": "auth != null && root.child('room422/admins').child(auth.uid).exists()"
       },
-
       "settings": {
         ".write": "auth != null && root.child('room422/admins').child(auth.uid).exists()"
       },
-
       "admins": {
         ".write": "auth != null && (!data.exists() || root.child('room422/admins').child(auth.uid).child('role').val() === 'super')"
+      }
+    },
+    "humrooms": {
+      ".read": "auth != null && root.child('humrooms/users/'+auth.uid).exists()",
+      "meta": {
+        ".read": true,
+        "initialized": {
+          ".write": "auth != null && !data.exists() && newData.val() === true && newData.parent().parent().child('users/'+auth.uid+'/role').val() === 'admin'"
+        }
+      },
+      "users": {
+        "$uid": {
+          ".write": "auth != null && (root.child('humrooms/users/'+auth.uid+'/role').val() === 'admin' || (!root.child('humrooms/meta/initialized').exists() && $uid === auth.uid && newData.child('role').val() === 'admin') || ($uid === auth.uid && data.exists() && newData.exists() && newData.child('role').val() === data.child('role').val()))"
+        }
+      },
+      "bookings": {
+        "$id": {
+          ".write": "auth != null && root.child('humrooms/users/'+auth.uid).exists() && (root.child('humrooms/users/'+auth.uid+'/role').val() === 'admin' || ((!data.exists() || data.child('ownerUid').val() === auth.uid) && (!newData.exists() || (newData.child('ownerUid').val() === auth.uid && newData.child('kind').val() !== 'block'))))",
+          ".validate": "newData.hasChildren(['room','title','startDate','endDate','from','to','ownerUid']) && newData.child('room').val().matches(/^4250[234]$/)"
+        }
+      },
+      "slots": {
+        "$room": {
+          "$date": {
+            "$t": {
+              ".write": "auth != null && root.child('humrooms/users/'+auth.uid).exists() && ((!data.exists() && !newData.exists()) || (!data.exists() && (newData.parent().parent().parent().parent().child('bookings/'+newData.val()+'/ownerUid').val() === auth.uid || root.child('humrooms/users/'+auth.uid+'/role').val() === 'admin')) || (data.exists() && !newData.exists() && (root.child('humrooms/bookings/'+data.val()+'/ownerUid').val() === auth.uid || root.child('humrooms/users/'+auth.uid+'/role').val() === 'admin')) || (data.exists() && newData.exists() && root.child('humrooms/bookings/'+data.val()+'/ownerUid').val() === newData.parent().parent().parent().parent().child('bookings/'+newData.val()+'/ownerUid').val() && (root.child('humrooms/bookings/'+data.val()+'/ownerUid').val() === auth.uid || root.child('humrooms/users/'+auth.uid+'/role').val() === 'admin')))",
+              ".validate": "newData.isString() && newData.parent().parent().parent().parent().child('bookings/'+newData.val()).exists()"
+            }
+          }
+        }
       }
     }
   }
